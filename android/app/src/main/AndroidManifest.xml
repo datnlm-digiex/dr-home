@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="MetaCine"
+        android:label="Dr.Home"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

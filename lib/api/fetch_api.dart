@@ -37,17 +37,13 @@ import 'package:dio/dio.dart';
 
 class FetchAPI {
   static Future<String> loginWithToken(String tokenId) async {
-    print("fetech_api");
-    print("token");
     print(tokenId);
     final Map<String, dynamic> data = new Map<String, dynamic>();
     final storage = new Storage.FlutterSecureStorage();
     data['tokenId'] = tokenId;
     data['loginType'] = 3;
     final accountController = GetX.Get.put(AccountController());
-    print("fetch_api_l-48");
     try {
-      print("chay toi day");
       final response =
           await http.post(Uri.parse("https://13.232.213.53:8189/api/v1/login"),
               headers: <String, String>{

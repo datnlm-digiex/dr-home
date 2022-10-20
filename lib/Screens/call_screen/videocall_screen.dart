@@ -18,6 +18,7 @@ import '../../constant.dart';
 
 //appID in Agora
 const appID = "834dec7fc5144086a2fe803cb3e51fff";
+const channel = "<-- Insert Channel Name -->";
 //token to get in room of Agora
 // const token =
 //     "006834dec7fc5144086a2fe803cb3e51fffIABR16jJtM+hfS4WT9ZxVJqnzvzsApLRgvAZicdfUEJn4p/w5cEh39v0KADCh505agF6YQUAAQAAAAAAAgAAAAAAAwAAAAAABAAAAAAA6AMAAAAA";
@@ -118,7 +119,7 @@ class _CallScreenState extends State<CallScreen> {
   List<Widget> _getRenderViews() {
     final List<StatefulWidget> list = [];
     list.add(RtcLocalView.SurfaceView());
-    _users.forEach((int uid) => list.add(RtcRemoteView.SurfaceView(uid: uid)));
+    _users.forEach((int uid) => list.add(RtcRemoteView.SurfaceView(uid: uid,   channelId: channel,)));
     return list;
   }
 

@@ -23,6 +23,7 @@ import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/News.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../widget/discover_card.dart';
 import 'video_player/video_player_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -238,6 +239,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 18),
+                    child: DiscoverCard(
+                      tag: "sleepMeditation",
+                      onTap: () {},
+                      title: "TIẾN ĐỘ TẬP LUYỆN",
+                      subtitle: "1/23 Bài tập",
+                    ),
+                  ),
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(18, 20, 18, 20),
@@ -282,12 +292,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 20,
                   ),
-              Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 18),
                     child: Row(
                       children: [
                         Text(
-                          'Video',
+                          'Bài tập',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: kTitleTextColor,
@@ -310,7 +320,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(
                     height: 20,
-                  ),    
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 18),
                     child: Row(

@@ -9,7 +9,7 @@ import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/models/Doctor.dart';
 
 class ListDoctorScreen extends StatefulWidget {
-  const ListDoctorScreen({Key? key}) : super(key: key);
+  // const ListDoctorScreen({Key? key}) : super(key: key);
 
   @override
   _ListDoctorScreenState createState() => _ListDoctorScreenState();

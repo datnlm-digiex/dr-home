@@ -12,12 +12,14 @@ import 'package:telemedicine_mobile/Screens/components/category.dart';
 import 'package:telemedicine_mobile/Screens/detail_screen.dart';
 import 'package:telemedicine_mobile/Screens/notification_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
+import 'package:telemedicine_mobile/Screens/survey_screen/overViewSurvey_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 import 'package:telemedicine_mobile/controller/filter_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
+import 'package:telemedicine_mobile/controller/overViewSurvey_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/News.dart';
@@ -129,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final bottomNavbarController = Get.put(BottomNavbarController());
   final filterController = Get.put(FilterController());
-
+  final overViewSurveyController = Get.put(OverViewSurveyController());
   Future<bool> getDoctorData({bool isRefresh = false}) async {
     if (!isRefresh) {
       if (listDoctorController.currentPage.value >=
@@ -227,6 +229,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: kTitleTextColor,
                       ),
                     ),
+                  ),
+                  OutlinedButton(
+                    onPressed: () => {
+                      overViewSurveyController.getSurveyOverView(),
+                      Get.to(OverViewSurveyScreen())
+                    },
+                    child: Text("Đóng"),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 18),

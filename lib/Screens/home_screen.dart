@@ -129,6 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final patientProfileController = Get.put(PatientProfileController());
+  final overViewSurveyController = Get.put(OverViewSurveyController());
 
   final listDoctorController = Get.put(ListDoctorController());
 
@@ -139,7 +140,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final bottomNavbarController = Get.put(BottomNavbarController());
   final filterController = Get.put(FilterController());
-  final overViewSurveyController = Get.put(OverViewSurveyController());
   Future<bool> getDoctorData({bool isRefresh = false}) async {
     if (!isRefresh) {
       if (listDoctorController.currentPage.value >=
@@ -235,7 +235,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 240,
                     child: DiscoverCard(
                       tag: "DAS",
-                      onTap: () {},
+                      onTap: () {
+                        overViewSurveyController.getSurveyOverView(1);
+                        Get.to(OverViewSurveyScreen());
+                      },
                       title: "Khảo sát DAS",
                       subtitle: contentDAS,
                     ),
@@ -244,7 +247,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 240,
                     child: DiscoverCard(
                       tag: "DAS",
-                      onTap: () {},
+                      onTap: () {
+                        overViewSurveyController.getSurveyOverView(1);
+                        // Get.to(OverViewSurveyScreen());
+                        Get.to(OverViewSurveyScreen());
+                      },
                       title: "Khảo sát DAS",
                       subtitle: contentDAS,
                     ),

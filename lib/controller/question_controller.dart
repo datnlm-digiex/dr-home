@@ -1,6 +1,9 @@
 import 'dart:convert';
 
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:telemedicine_mobile/Screens/home_screen.dart';
+import 'package:telemedicine_mobile/Screens/survey_screen/resultSurvey_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/models/Answer.dart';
 import 'package:telemedicine_mobile/models/Question.dart';
@@ -62,7 +65,7 @@ class QuestionController extends GetxController {
   //   print(jsonEncode(answer));
   // }
 
-  Future<bool> submitSurvey({bool isRefresh = false}) async {
+  Future<bool> submitSurvey() async {
     List<Surveypatientan> surveypatientans = [];
     answerMap.forEach((key, value) {
       surveypatientans.add(new Surveypatientan(questionid: key, rate: value));
@@ -72,16 +75,19 @@ class QuestionController extends GetxController {
         patientid: 1,
         createdate: DateTime.now(),
         surveypatientans: surveypatientans);
-    print(jsonEncode(answer));
 
     await FetchAPI.submitSurvey(answer).then((dataFromServer) {
-      print(dataFromServer);
+      if (dataFromServer == 201 || dataFromServer == 200) {
+        Get.offAll(ResultSurveyScreen());
+        Fluttertoast.showToast(
+            msg: "Cập nhật khảo sát thành công", fontSize: 18);
+      }
     });
-    return false;
+    return true;
   }
 
-  Future<bool> getListQuestion({bool isRefresh = false}) async {
-    await FetchAPI.fetchListQuestion(1).then((dataFromServer) {
+  Future<bool> getListQuestion(int surveyId) async {
+    await FetchAPI.fetchListQuestion(surveyId).then((dataFromServer) {
       listQuestion.value = dataFromServer;
       totalQuestion.value = dataFromServer.length;
     });

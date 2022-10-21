@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:telemedicine_mobile/Screens/home_screen.dart';
 import 'package:telemedicine_mobile/Screens/survey_screen/overViewSurvey_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/question_controller.dart';
@@ -86,7 +87,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                   // overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 14,
+                                      fontSize: 16,
                                       color: Colors.green),
                                 ),
                                 SizedBox(
@@ -240,8 +241,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                             ),
                             label: Text('Quit'),
                             onPressed: () {
-                              // Navigator.of(context)
-                              //     .pushReplacementNamed(HomeScreen.routeName);
+                              Get.offAll(HomeScreen());
                             },
                             style: OutlinedButton.styleFrom(
                                 primary: Colors.black, // background
@@ -263,10 +263,21 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                   ),
                                   label: const Text("Hoàn thành"),
                                   onPressed: () {
-                                    // Navigator.of(context)
-                                    //     .pushReplacementNamed(HomeScreen.routeName);
-                                    questionController.submitSurvey();
-                                    Get.offAll(OverViewSurveyScreen());
+                                    if (questionController.answerMap[
+                                            questionController
+                                                .currenQuestion.value.id] ==
+                                        999) {
+                                      Get.snackbar(
+                                        "Thông báo",
+                                        "Vui lòng chọn câu trả lời",
+                                        icon: Icon(Icons.notification_important,
+                                            color: Colors.white),
+                                        snackPosition: SnackPosition.TOP,
+                                        // backgroundColor: Colors.green,
+                                      );
+                                    } else {
+                                      questionController.submitSurvey();
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.green, // background
@@ -283,9 +294,22 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                   onPressed: () {
                                     // Navigator.of(context)
                                     //     .pushReplacementNamed(HomeScreen.routeName);
-
-                                    questionController.tangNumber();
-                                    questionController.changeQuestion();
+                                    if (questionController.answerMap[
+                                            questionController
+                                                .currenQuestion.value.id] ==
+                                        999) {
+                                      Get.snackbar(
+                                        "Thông báo",
+                                        "Vui lòng chọn câu trả lời",
+                                        icon: Icon(Icons.notification_important,
+                                            color: Colors.white),
+                                        snackPosition: SnackPosition.TOP,
+                                        // backgroundColor: Colors.yellow,
+                                      );
+                                    } else {
+                                      questionController.tangNumber();
+                                      questionController.changeQuestion();
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                       primary: Colors.green, // background

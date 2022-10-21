@@ -19,7 +19,7 @@ class OverViewSurveyScreen extends StatefulWidget {
 class _OverViewSurveyScreenState extends State<OverViewSurveyScreen> {
   final overViewSurveyController = Get.put(OverViewSurveyController());
   final questionController = Get.put(QuestionController());
-  String _value = '0';
+
   @override
   Widget build(BuildContext context) {
     const ratingList = [
@@ -231,7 +231,7 @@ class _OverViewSurveyScreenState extends State<OverViewSurveyScreen> {
                       child: ElevatedButton(
                         child: const Text("Bắt đầu"),
                         onPressed: () {
-                          questionController.getListQuestion();
+                          questionController.getListQuestion(1);
                           Get.to(QuestionScreen(), arguments: [
                             {"first": 'First data'},
                             {"second": 'Second data'}

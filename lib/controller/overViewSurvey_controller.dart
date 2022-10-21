@@ -7,12 +7,12 @@ class OverViewSurveyController extends GetxController {
     id: 0,
     numberquestion: 0,
     title: "",
-    description: "s",
+    description: "",
     status: false,
   ).obs;
 
-  Future<bool> getSurveyOverView({bool isRefresh = false}) async {
-    await FetchAPI.fetchSurveyOverView(1).then((dataFromServer) {
+  Future<bool> getSurveyOverView(int surveyID) async {
+    await FetchAPI.fetchSurveyOverView(surveyID).then((dataFromServer) {
       surveyOverView.value = dataFromServer;
       return true;
     });

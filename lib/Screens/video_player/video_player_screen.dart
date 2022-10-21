@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:telemedicine_mobile/Screens/video_player/exercise_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:video_player/video_player.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
-
 import '../../controller/exercise_controller.dart';
 import '../../widget/exercise_widget.dart';
 
@@ -29,37 +27,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       backgroundColor: kBackgroundColor,
       body: Column(
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.fromLTRB(18, 20, 18, 20),
-          //   child: InkWell(
-          //     onTap: () {},
-          //     child: Container(
-          //       width: double.infinity,
-          //       height: 46,
-          //       padding: EdgeInsets.only(left: 20),
-          //       decoration: BoxDecoration(
-          //           color: Colors.white,
-          //           borderRadius: BorderRadius.circular(50)),
-          //       child: Row(children: [
-          //         Icon(
-          //           Icons.search,
-          //           size: 30,
-          //           color: Colors.black,
-          //         ),
-          //         Padding(
-          //           padding: const EdgeInsets.only(left: 20),
-          //           child: Text(
-          //             "Tìm kiếm bài tập",
-          //             style: TextStyle(
-          //               fontSize: 18,
-          //               color: Colors.black,
-          //             ),
-          //           ),
-          //         ),
-          //       ]),
-          //     ),
-          //   ),
-          // ),
           SizedBox(
             height: 20,
           ),
@@ -82,23 +49,24 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
             height: 20,
           ),
           ConstrainedBox(
-              constraints: new BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.60,
-              ),
-              child: GetBuilder<ExerciseController>(
-                builder: (controller) => controller.isLoading.isTrue
-                    ? const Center(child: CircularProgressIndicator())
-                    : ListView.separated(
-                        itemCount: exerciseController.exercise.content!.length,
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(),
-                        itemBuilder: (BuildContext context, int index) {
-                          return Exercise(
-                              exerciseModel:
-                                  exerciseController.exercise.content![index]);
-                        },
-                      ),
-              )),
+            constraints: new BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.60,
+            ),
+            child: GetBuilder<ExerciseController>(
+              builder: (controller) => controller.isLoading.isTrue
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.separated(
+                      itemCount: exerciseController.exercise.content!.length,
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const Divider(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Exercise(
+                            exerciseModel:
+                                exerciseController.exercise.content![index]);
+                      },
+                    ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 40.0),
             child: SizedBox(

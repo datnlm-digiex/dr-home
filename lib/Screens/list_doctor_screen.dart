@@ -46,24 +46,6 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("Danh sách bác sĩ"),
-          backgroundColor: kBlueColor,
-          automaticallyImplyLeading: false,
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.search,
-              ),
-              onPressed: () {
-                Get.to(FilterScreen(),
-                    transition: Transition.downToUp,
-                    duration: Duration(milliseconds: 600));
-              },
-            ),
-          ],
-        ),
         backgroundColor: kBackgroundColor,
         body: Obx(
           () => Stack(
@@ -98,13 +80,25 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
                                 fontSize: 19, fontWeight: FontWeight.w500),
                           ),
                         )
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: listDoctorController.listDoctor.length,
-                          itemBuilder: (BuildContext context, index) {
-                            return buildDoctorList(
-                                listDoctorController.listDoctor[index]);
-                          },
+                      : Column(
+                          children: [
+                            searchDoctor(),
+                            ConstrainedBox(
+                              constraints: new BoxConstraints(
+                                maxHeight:
+                                    MediaQuery.of(context).size.height * 0.60,
+                              ),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount:
+                                    listDoctorController.listDoctor.length,
+                                itemBuilder: (BuildContext context, index) {
+                                  return buildDoctorList(
+                                      listDoctorController.listDoctor[index]);
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                 ),
               ),
@@ -162,6 +156,43 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
               )
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Padding searchDoctor() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(18, 20, 18, 20),
+      child: InkWell(
+        onTap: () {
+          Get.to(FilterScreen(),
+              transition: Transition.downToUp,
+              duration: Duration(milliseconds: 600));
+        },
+        child: Container(
+          width: double.infinity,
+          height: 46,
+          padding: EdgeInsets.only(left: 20),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(50)),
+          child: Row(children: [
+            Icon(
+              Icons.search,
+              size: 30,
+              color: Colors.black,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Text(
+                "Tìm kiếm bác sĩ",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ]),
         ),
       ),
     );

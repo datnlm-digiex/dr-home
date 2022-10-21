@@ -32,13 +32,6 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 8,
-        title: Text("Lịch khám"),
-        centerTitle: true,
-        backgroundColor: kBlueColor,
-        automaticallyImplyLeading: false,
-      ),
       body: SafeArea(
         child: Obx(
           () => Container(

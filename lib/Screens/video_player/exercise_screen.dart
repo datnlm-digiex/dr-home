@@ -4,6 +4,7 @@ import 'package:video_player/video_player.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:get/get.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:skeletons/skeletons.dart';
 
 class ExerciseScreen extends StatefulWidget {
   @override
@@ -81,6 +82,8 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                   SizedBox(
                     height: 16,
                   ),
+                  SizedBox(height: 12),
+                  SizedBox(height: 12),
                   ClipPath(
                     child: videoPlayerController.value.isInitialized
                         ? AspectRatio(
@@ -96,7 +99,13 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                               ],
                             ),
                           )
-                        : Container(),
+                        : SkeletonAvatar(
+                            style: SkeletonAvatarStyle(
+                              width: double.infinity,
+                              minHeight: MediaQuery.of(context).size.height / 8,
+                              maxHeight: MediaQuery.of(context).size.height / 3,
+                            ),
+                          ),
                     clipper: ShapeBorderClipper(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
@@ -118,12 +127,16 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                           Text('Nhóm'),
                         ],
                       ),
-                      IconButton(
-                        onPressed: () => onStart(),
-                        icon: videoPlayerController.value.isPlaying
-                            ? Icon(Icons.pause, size: 36)
-                            : Icon(Icons.play_arrow, size: 36),
-                      ),
+                      videoPlayerController.value.isInitialized
+                          ? IconButton(
+                              onPressed: () => setState(
+                                () => onStart(),
+                              ),
+                              icon: videoPlayerController.value.isPlaying
+                                  ? Icon(Icons.pause, size: 36)
+                                  : Icon(Icons.play_arrow, size: 36),
+                            )
+                          : Container(),
                       Column(
                         children: [
                           Text(
@@ -160,7 +173,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                     },
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.symmetric(horizontal: 28),
                     child: Text('${controller.exerciseModel.description}'),
                   ),
                 ],

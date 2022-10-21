@@ -11,13 +11,8 @@ class ExerciseController extends GetxController {
   ExercisePaging exercise = new ExercisePaging();
   ExerciseModel exerciseModel = new ExerciseModel();
   var isLoading = false.obs;
-  @override
-  onInit() {
-    fetchExercise();
-    super.onInit();
-  }
 
-  Future<void> fetchExercise() async {
+  Future<void> fetchExercise(int type) async {
     try {
       isLoading(true);
       final storage = new Storage.FlutterSecureStorage();
@@ -30,7 +25,7 @@ class ExerciseController extends GetxController {
         data['token'] = tokenFcm;
 
         Map<String, String> queryParams = {
-          'exercise-group': '3',
+          'exercise-group': type.toString(),
         };
         final response = await http.get(
             Uri.parse('https://13.232.213.53:8189/api/v1/exercises')

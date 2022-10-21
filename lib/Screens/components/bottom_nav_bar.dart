@@ -27,6 +27,13 @@ class _BottomNavBarState extends State<BottomNavBar> {
     patientProfileController.getMyPatient();
   }
 
+  final screenLabel = [
+    "Trang chủ",
+    "Danh sách bác sĩ",
+    "Lịch sử",
+    "Thông tin của tôi"
+  ];
+
   final screens = [
     HomeScreen(),
     ListDoctorScreen(),
@@ -35,6 +42,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
   ];
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: Obx(() => Text(
+              "${screenLabel[bottomNavbarController.currentIndex.value]}")),
+          automaticallyImplyLeading: false,
+          centerTitle: false,
+          backgroundColor: kBlueColor,
+
+          // actions: [notification()],
+        ),
         body: Obx(() => SafeArea(
             child: screens[bottomNavbarController.currentIndex.value])),
         bottomNavigationBar: Obx(

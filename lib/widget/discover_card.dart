@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../constant.dart';
+import 'icons.dart';
+import 'svg_asset.dart';
 
 class DiscoverCard extends StatelessWidget {
   final String? title;
@@ -36,62 +36,84 @@ class DiscoverCard extends StatelessWidget {
         onTap: () => onTap!(),
         borderRadius: BorderRadius.circular(26),
         child: Ink(
+          height: 240,
+          width: 340,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(26),
-            gradient: LinearGradient(
-              colors: [
-                gradientStartColor ?? Color.fromARGB(238, 91, 184, 72),
-                gradientEndColor ?? kBlueColor,
-              ],
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage("assets/images/background1.png"),
             ),
           ),
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: double.infinity,
-            child: Stack(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 24, top: 24, bottom: 24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Hero(
-                            tag: tag ?? '',
-                            child: Material(
-                              color: Colors.transparent,
-                              child: Text(
-                                title!,
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+          child: Padding(
+            padding: EdgeInsets.only(left: 24, top: 24, bottom: 24),
+            child: Container(
+              height: 176,
+              width: 305,
+              child: Stack(
+                children: [
+                  vectorBottom ??
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(26),
+                        child: SvgAsset(
+                            height: 176,
+                            width: 305,
+                            assetName: AssetName.vectorBottom),
+                      ),
+                  vectorTop ??
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(26),
+                        child: SvgAsset(
+                            height: 176,
+                            width: 305,
+                            assetName: AssetName.vectorTop),
+                      ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 24, top: 24, bottom: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Hero(
+                              tag: tag ?? '',
+                              child: Material(
+                                color: Colors.transparent,
+                                child: Text(
+                                  title!,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          subtitle != null
-                              ? Text(
-                                  subtitle!,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.white),
-                                )
-                              : Container(),
-                        ],
-                      ),
-                    ],
+                            SizedBox(
+                              height: 5,
+                            ),
+                            subtitle != null
+                                ? SizedBox(
+                                  width: 260,
+                                    child: Flexible(
+                                      child: Text(
+                                        subtitle!,
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  )
+                                : Container(),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

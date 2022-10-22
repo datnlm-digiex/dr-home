@@ -6,7 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/survey_screen/question_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
-import 'package:telemedicine_mobile/controller/overViewSurvey_controller.dart';
+import 'package:telemedicine_mobile/controller/over_view_survey_controller.dart';
 import 'package:telemedicine_mobile/controller/question_controller.dart';
 import 'package:telemedicine_mobile/models/Survey.dart';
 
@@ -38,13 +38,14 @@ class _OverViewSurveyScreenState extends State<OverViewSurveyScreen> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("${widget.survey.title}"),
-          backgroundColor: kBlueColor,
-        ),
-        backgroundColor: kBackgroundColor,
-        body: Column(children: [
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("${widget.survey.title}"),
+        backgroundColor: kBlueColor,
+      ),
+      backgroundColor: kBackgroundColor,
+      body: Column(
+        children: [
           Container(
             // Center is a layout widget. It takes a single child and positions it
             // in the middle of the parent.
@@ -223,35 +224,42 @@ class _OverViewSurveyScreenState extends State<OverViewSurveyScreen> {
                     ),
                   ),
                   Center(
-                    child: Container(
-                      padding: EdgeInsets.only(top: 5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(60),
-                        border: Border.all(
-                            color: Color.fromARGB(255, 209, 253, 211)),
-                      ),
-                      width: width * 0.95, // <-- match_parent
-                      height: 40, // <-- match-parent
-                      child: ElevatedButton(
-                        child: const Text("Bắt đầu"),
-                        onPressed: () {
-                          questionController.getListQuestion(1);
-                          Get.to(QuestionScreen(), arguments: [
-                            {"first": 'Khảo sát'},
-                            {"second": 'Second data'}
-                          ]);
-                        },
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.green, // background
-                            onPrimary: Colors.white, // foreground
-                            textStyle: TextStyle(fontSize: 20)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(29),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 20),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                backgroundColor: kBlueColor),
+                            onPressed: () {
+                              questionController.getListQuestion(1);
+                              Get.to(QuestionScreen(), arguments: [
+                                {"first": 'Khảo sát'},
+                                {"second": 'Second data'},
+                                {"surveyId": widget.survey.id},
+                              ]);
+                            },
+                            child: Text(
+                              'Bắt đầu',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
           ),
-        ]));
+        ],
+      ),
+    );
   }
 }

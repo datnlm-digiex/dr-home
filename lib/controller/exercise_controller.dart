@@ -10,6 +10,8 @@ import 'package:telemedicine_mobile/models/ExercisePaging.dart';
 class ExerciseController extends GetxController {
   ExercisePaging exercise = new ExercisePaging();
   ExerciseModel exerciseModel = new ExerciseModel();
+  DateTime startTime = new DateTime.now();
+  RxInt patientId = 0.obs;
   var isLoading = false.obs;
 
   Future<void> fetchExercise(int type) async {
@@ -86,6 +88,49 @@ class ExerciseController extends GetxController {
       }
     } catch (e) {
       e.toString();
+      //  log(e.toString());
+    } finally {
+      isLoading(false);
+      update();
+    }
+  }
+
+  Future<void> submitExercise() async {
+    try {
+      DateTime endTime = new DateTime.now();
+      isLoading(true);
+      final storage = new Storage.FlutterSecureStorage();
+      // final accountController = GetX.Get.put(AccountController());
+      String tokenFcm = await storage.read(key: "tokenFCM") ?? "";
+      String token = await storage.read(key: "accessToken") ?? "";
+      print('if');
+      if (tokenFcm != "" && token != "") {
+        print('chay do if');
+        String body = json.encode({
+          "patientid": patientId.value,
+          "exerciseid": exerciseModel.id,
+          "starttime": startTime.toIso8601String(),
+          "endtime": endTime.toIso8601String(),
+        });
+        print(body);
+
+        final response = await http.post(
+            Uri.parse('https://13.232.213.53:8189/api/v1/patientexercises'),
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer $token",
+            },
+            body: body);
+
+        print(response.statusCode);
+        if (response.statusCode == 200) {
+          print("submit sucess");
+        }
+      }
+      print('end if');
+    } catch (e) {
+      print("nhay catch");
+      // e.toString();
       //  log(e.toString());
     } finally {
       isLoading(false);

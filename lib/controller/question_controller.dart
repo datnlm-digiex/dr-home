@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/home_screen.dart';
-import 'package:telemedicine_mobile/Screens/survey_screen/resultSurvey_screen.dart';
+import 'package:telemedicine_mobile/Screens/survey_screen/result_survey_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/models/Answer.dart';
 import 'package:telemedicine_mobile/models/Question.dart';
@@ -15,6 +15,7 @@ class QuestionController extends GetxController {
   // var answerMap = new Map();
   RxInt totalQuestion = 0.obs;
   RxInt state = 4.obs;
+  RxInt patientId = 0.obs;
   RxInt numberCurrentQuestion = 1.obs;
   Rx<Question> currenQuestion = new Question(
     id: 0,
@@ -28,8 +29,6 @@ class QuestionController extends GetxController {
 
   setState(int value, int questionId) {
     // state.value = value;
-    print('value ${value}');
-    print('questionId ${questionId}');
     answerMap[questionId] = value;
   }
 
@@ -65,23 +64,24 @@ class QuestionController extends GetxController {
   //   print(jsonEncode(answer));
   // }
 
-  Future<bool> submitSurvey() async {
+  Future<bool> submitSurvey(int surveyId) async {
+    print(surveyId);
+    print(patientId.value);
+    print('bang bang');
     List<Surveypatientan> surveypatientans = [];
     answerMap.forEach((key, value) {
       surveypatientans.add(new Surveypatientan(questionid: key, rate: value));
     });
     Answer answer = new Answer(
-        surveyid: 1,
-        patientid: 1,
+        surveyid: surveyId,
+        patientid: patientId.value,
         createdate: DateTime.now(),
         surveypatientans: surveypatientans);
     await FetchAPI.submitSurvey(answer).then((dataFromServer) {
       if (dataFromServer.id > 0) {
         Get.off(ResultSurveyScreen(surveyRespone: dataFromServer));
-
         Fluttertoast.showToast(
             msg: "Cập nhật khảo sát thành công", fontSize: 18);
-
         update();
       }
     });

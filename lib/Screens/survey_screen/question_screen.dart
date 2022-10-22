@@ -5,7 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:telemedicine_mobile/Screens/home_screen.dart';
-import 'package:telemedicine_mobile/Screens/survey_screen/overViewSurvey_screen.dart';
+import 'package:telemedicine_mobile/Screens/survey_screen/over_view_survey_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/question_controller.dart';
 
@@ -33,13 +33,19 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
     return Obx(
       () => Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text("$test"),
-            backgroundColor: kBlueColor,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("$test"),
+          automaticallyImplyLeading: false,
+          backgroundColor: kBlueColor,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new),
+            onPressed: () => showAlertDialog(context),
           ),
-          backgroundColor: kBackgroundColor,
-          body: Column(children: [
+        ),
+        backgroundColor: kBackgroundColor,
+        body: Column(
+          children: [
             Container(
               child: Container(
                 decoration: BoxDecoration(
@@ -47,7 +53,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   color: Color.fromARGB(255, 255, 255, 255),
                 ),
                 padding: EdgeInsets.only(top: 10),
-                // margin: EdgeInsets.only(top: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -225,106 +230,60 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    // Survey info
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(top: 5),
-                          width: width * 0.35, // <-- match_parent
-                          height: 40, // <-- match-parent
-                          child: OutlinedButton.icon(
-                            icon: Icon(
-                              // <-- Icon
-                              Icons.arrow_circle_left_outlined,
-                              size: 24.0,
-                            ),
-                            label: Text('Quit'),
+                    Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(29),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 20),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                backgroundColor: kBlueColor),
                             onPressed: () {
-                              // Get.offAll(HomeScreen());
-                              showAlertDialog(context);
+                              if (questionController.answerMap[
+                                      questionController
+                                          .currenQuestion.value.id] ==
+                                  999) {
+                                Get.snackbar(
+                                  "Thông báo",
+                                  "Vui lòng chọn câu trả lời",
+                                  icon: Icon(Icons.notification_important,
+                                      color: Colors.white),
+                                  snackPosition: SnackPosition.TOP,
+                                  // backgroundColor: Colors.green,
+                                );
+                              } else if (questionController
+                                      .numberCurrentQuestion.value ==
+                                  questionController.listQuestion.length) {
+                                questionController
+                                    .submitSurvey(argumentData[2]['surveyId']);
+                              } else {
+                                questionController.tangNumber();
+                                questionController.changeQuestion();
+                              }
                             },
-                            style: OutlinedButton.styleFrom(
-                                primary: Colors.black, // background
-                                // foregroundColor: Colors.green,
-                                textStyle: TextStyle(fontSize: 20)),
+                            // onPressed: () => Get.to(ExerciseScreen()),
+                            child: Text(
+                              questionController.numberCurrentQuestion.value !=
+                                      questionController.listQuestion.length
+                                  ? 'Tiếp theo'
+                                  : 'Hoàn thành',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
-                        questionController.numberCurrentQuestion ==
-                                questionController.listQuestion.length
-                            ? Container(
-                                padding: EdgeInsets.only(top: 5),
-                                width: width * 0.45, // <-- match_parent
-                                height: 40, // <-- match-parent
-                                child: ElevatedButton.icon(
-                                  icon: Icon(
-                                    // <-- Icon
-                                    Icons.done_sharp,
-                                    size: 24.0,
-                                  ),
-                                  label: const Text("Hoàn thành"),
-                                  onPressed: () {
-                                    if (questionController.answerMap[
-                                            questionController
-                                                .currenQuestion.value.id] ==
-                                        999) {
-                                      Get.snackbar(
-                                        "Thông báo",
-                                        "Vui lòng chọn câu trả lời",
-                                        icon: Icon(Icons.notification_important,
-                                            color: Colors.white),
-                                        snackPosition: SnackPosition.TOP,
-                                        // backgroundColor: Colors.green,
-                                      );
-                                    } else {
-                                      questionController.submitSurvey();
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Colors.green, // background
-                                      onPrimary: Colors.white, // foreground
-                                      textStyle: TextStyle(fontSize: 20)),
-                                ),
-                              )
-                            : Container(
-                                padding: EdgeInsets.only(top: 5),
-                                width: width * 0.35, // <-- match_parent
-                                height: 40, // <-- match-parent
-                                child: ElevatedButton(
-                                  child: const Text("Câu kế tiếp"),
-                                  onPressed: () {
-                                    // Navigator.of(context)
-                                    //     .pushReplacementNamed(HomeScreen.routeName);
-                                    if (questionController.answerMap[
-                                            questionController
-                                                .currenQuestion.value.id] ==
-                                        999) {
-                                      Get.snackbar(
-                                        "Thông báo",
-                                        "Vui lòng chọn câu trả lời",
-                                        icon: Icon(Icons.notification_important,
-                                            color: Colors.white),
-                                        snackPosition: SnackPosition.TOP,
-                                        // backgroundColor: Colors.yellow,
-                                      );
-                                    } else {
-                                      questionController.tangNumber();
-                                      questionController.changeQuestion();
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Colors.green, // background
-                                      onPrimary: Colors.white, // foreground
-                                      textStyle: TextStyle(fontSize: 20)),
-                                ),
-                              )
-                      ],
-                    )
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-          ])),
+          ],
+        ),
+      ),
     );
   }
 

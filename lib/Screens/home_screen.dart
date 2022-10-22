@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:skeletons/skeletons.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:telemedicine_mobile/Screens/components/category.dart';
 import 'package:telemedicine_mobile/Screens/detail_screen.dart';
 import 'package:telemedicine_mobile/Screens/notification_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
-import 'package:telemedicine_mobile/Screens/survey_screen/overViewSurvey_screen.dart';
+import 'package:telemedicine_mobile/Screens/survey_screen/over_view_survey_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
@@ -20,7 +18,7 @@ import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 import 'package:telemedicine_mobile/controller/exercise_controller.dart';
 import 'package:telemedicine_mobile/controller/filter_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
-import 'package:telemedicine_mobile/controller/overViewSurvey_controller.dart';
+import 'package:telemedicine_mobile/controller/over_view_survey_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/News.dart';
@@ -162,13 +160,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        // appBar: AppBar(
-        //   title: Text("Trang chủ"),
-        //   centerTitle: true,
-        //   automaticallyImplyLeading: false,
-        //   backgroundColor: kBlueColor,
-        //   actions: [notification()],
-        // ),
         backgroundColor: kBackgroundColor,
         body: ListView(
           physics: BouncingScrollPhysics(),
@@ -225,32 +216,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontSize: 14),
               ),
             ),
-            // SizedBox(
-            //   height: 240,
-            //   child: ListView(
-            //     physics: BouncingScrollPhysics(),
-            //     scrollDirection: Axis.horizontal,
-            //     children: [
-            //       SizedBox(
-            //         height: 240,
-            //         child: DiscoverCard(
-            //           tag: "DAS",
-            //           onTap: () {
-            //             overViewSurveyController.getSurveyOverView(1);
-            //             Get.to(OverViewSurveyScreen(surveyID: 1));
-            //           },
-            //           title: "Khảo sát DAS",
-            //           subtitle: contentDAS,
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
             SizedBox(
                 height: 240,
                 child: GetBuilder<OverViewSurveyController>(
                   builder: (controller) => (controller.isLoading)
-                      ? const Center(child: CircularProgressIndicator())
+                      ? Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: SkeletonAvatar(
+                              style: SkeletonAvatarStyle(
+                                width: double.infinity,
+                                minHeight: MediaQuery.of(context).size.height / 8,
+                                maxHeight: MediaQuery.of(context).size.height / 3,
+                              ),
+                            ),
+                          ),
+                      )
                       : controller.surveyOverViewListResponeObject.content!
                                   .isEmpty &&
                               !controller.isLoading
@@ -1252,7 +1236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 10,
                                   ),
                                   Text(
-                                    '1/23 Bài tập',
+                                    '1/4 Bài tập',
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w300,
@@ -1267,9 +1251,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: new CircularPercentIndicator(
                                 radius: 55.0,
                                 lineWidth: 4.0,
-                                percent: 0.90,
+                                percent: 0.25,
                                 center: new Text(
-                                  "90%",
+                                  "25%",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),

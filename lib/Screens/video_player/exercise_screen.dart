@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:telemedicine_mobile/controller/exercise_controller.dart';
 import 'package:video_player/video_player.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:get/get.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:material_dialogs/material_dialogs.dart';
-import 'package:lottie/lottie.dart';
 
 class ExerciseScreen extends StatefulWidget {
   @override
@@ -31,11 +28,13 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
       onEnded: () => setState(
         () => onEnd(),
       ),
-      presetMillisecond: StopWatchTimer.getMilliSecFromMinute(
-          exerciseController.exerciseModel.practicetime == null
-              ? 0
-              : exerciseController
-                  .exerciseModel.practicetime!), // millisecond => minute.
+      presetMillisecond:
+          StopWatchTimer.getMilliSecFromSecond(4), // millisecond => minute.
+      // presetMillisecond: StopWatchTimer.getMilliSecFromMinute(
+      //     exerciseController.exerciseModel.practicetime == null
+      //         ? 0
+      //         : exerciseController
+      //             .exerciseModel.practicetime!), // millisecond => minute.
     );
     videoPlayerController = VideoPlayerController.network(
         exerciseController.exerciseModel.linkvideo!)
@@ -70,6 +69,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
 
   void onEnd() {
     print('abcc');
+    exerciseController.submitExercise();
     showAlertDialog(contextGobal);
     videoPlayerController.pause();
     _stopWatchTimer.dispose();
@@ -91,17 +91,15 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
             : Column(
                 children: [
                   SizedBox(
-                    height: 10,
+                    height: 16,
                   ),
                   Text(
                     '${controller.exerciseModel.title}',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
-                    height: 16,
+                    height: 26,
                   ),
-                  SizedBox(height: 12),
-                  SizedBox(height: 12),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ClipPath(
@@ -166,37 +164,46 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                       Column(
                         children: [
                           Text(
-                            '${exerciseController.exerciseModel.practicetime!} phút',
+                            '${exerciseController.exerciseModel.practicetime!}',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          Icon(
-                            Icons.access_time,
-                            semanticLabel: 'Thời gian',
-                          ),
+                          Text('Phút'),
+                          // Icon(
+                          //   Icons.access_time,
+                          //   semanticLabel: 'Thời gian',
+                          // ),
                         ],
                       ),
                     ],
                   ),
-                  StreamBuilder<int>(
-                    stream: _stopWatchTimer.rawTime,
-                    initialData: 0,
-                    builder: (contextStream, snap) {
-                      final value = snap.data;
-                      return Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Text(
-                              StopWatchTimer.getDisplayTime(value!),
-                              style: TextStyle(
-                                  fontSize: 40,
-                                  fontFamily: 'Helvetica',
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
+                  SizedBox(
+                    height: 16,
+                  ),
+                  isCount
+                      ? StreamBuilder<int>(
+                          stream: _stopWatchTimer.rawTime,
+                          initialData: 0,
+                          builder: (contextStream, snap) {
+                            final value = snap.data;
+                            return Column(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Text(
+                                    StopWatchTimer.getDisplayTime(value!),
+                                    style: TextStyle(
+                                        fontSize: 40,
+                                        fontFamily: 'Helvetica',
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        )
+                      : Container(),
+                  SizedBox(
+                    height: 16,
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 28),

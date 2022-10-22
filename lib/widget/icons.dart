@@ -20,7 +20,8 @@ class MeditationSvgAssets {
     AssetName.chart: "assets/icons/chart.svg",
     AssetName.discover: "assets/icons/discover.svg",
     AssetName.profile: "assets/icons/profile.svg",
-    AssetName.brain: "assets/icons/brain-svgrepo-com.svg"
+    AssetName.brain: "assets/icons/brain-svgrepo-com.svg",
+    AssetName.lungs: "assets/icons/lungs-svgrepo-com.svg"
   };
 }
 
@@ -37,5 +38,6 @@ enum AssetName {
   chart,
   discover,
   profile,
-  brain
+  brain,
+  lungs
 }

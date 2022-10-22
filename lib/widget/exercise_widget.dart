@@ -56,7 +56,7 @@ class _ExerciseState extends State<Exercise> {
           ),
         ),
         subtitle: Text(
-          'thoi gian',
+          '${ widget.exerciseModel.durationvideo! ~/ 60}:${widget.exerciseModel.durationvideo! % 60}',
           style: const TextStyle(fontSize: 14),
         ),
         trailing: IconButton(

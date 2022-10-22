@@ -61,6 +61,7 @@ class ExerciseModel {
         this.bodyposition,
         this.practicetime,
         this.levelexercises,
+        this.durationvideo
     });
 
     int? id;
@@ -71,6 +72,7 @@ class ExerciseModel {
     String? bodyposition;
     int? practicetime;
     int? levelexercises;
+    int? durationvideo;
 
     factory ExerciseModel.fromJson(Map<String, dynamic> json) => ExerciseModel(
         id: json["id"],
@@ -81,6 +83,7 @@ class ExerciseModel {
         bodyposition: json["bodyposition"],
         practicetime: json["practicetime"],
         levelexercises: json["levelexercises"],
+        durationvideo: json["durationvideo"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -92,5 +95,6 @@ class ExerciseModel {
         "bodyposition": bodyposition,
         "practicetime": practicetime,
         "levelexercises": levelexercises,
+        "durationvideo": durationvideo
     };
 }

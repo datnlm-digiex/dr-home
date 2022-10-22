@@ -166,7 +166,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                       Column(
                         children: [
                           Text(
-                            '${exerciseController.exerciseModel.practicetime!}',
+                            '${exerciseController.exerciseModel.practicetime!} phút',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Icon(

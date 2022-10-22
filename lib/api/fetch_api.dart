@@ -9,6 +9,7 @@ import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/Account.dart';
 import 'package:telemedicine_mobile/models/AccountPost.dart';
+import 'package:telemedicine_mobile/models/Answer.dart';
 import 'package:telemedicine_mobile/models/ContentDoctor.dart';
 import 'package:telemedicine_mobile/models/ContentHealthCheck.dart';
 import 'package:telemedicine_mobile/models/ContentHospital.dart';
@@ -28,9 +29,13 @@ import 'package:telemedicine_mobile/models/Major.dart';
 import 'package:telemedicine_mobile/models/News.dart';
 import 'package:telemedicine_mobile/models/Notification.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
+import 'package:telemedicine_mobile/models/Question.dart';
 import 'package:telemedicine_mobile/models/Role.dart';
 import 'package:telemedicine_mobile/models/Slot.dart';
 import 'package:telemedicine_mobile/models/StatisticCovid/StatisticCovid.dart';
+import 'package:telemedicine_mobile/models/Survey.dart';
+import 'package:telemedicine_mobile/models/SurveyOverViewListResponse.dart';
+import 'package:telemedicine_mobile/models/SurveyRespone.dart';
 import 'package:telemedicine_mobile/models/Symptom.dart';
 import 'package:telemedicine_mobile/models/TimeFrame.dart';
 import 'package:dio/dio.dart';
@@ -52,7 +57,7 @@ class FetchAPI {
               body: jsonEncode(data));
       print(response.statusCode);
       Map bodyJson = json.decode(utf8.decode(response.bodyBytes));
-      
+
       String message = "Login Success";
       if (bodyJson.length == 1) {
         bodyJson.values.forEach((value) {
@@ -174,6 +179,113 @@ class FetchAPI {
       } else {
         throw Exception("Internal server error");
       }
+    }
+  }
+
+  static Future<Survey> fetchSurveyOverView(int SurveyID) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.get(
+        Uri.parse("https://13.232.213.53:8189/api/v1/surveys/$SurveyID"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+        Survey contentDoctor = Survey.fromJson(contentJSon);
+        return contentDoctor;
+      } else if (response.statusCode == 404) {
+        throw Exception("Not found survey");
+      } else if (response.statusCode == 401) {
+        throw Exception("Error: Unauthorized");
+      } else {
+        throw Exception("Internal server error");
+      }
+    }
+  }
+
+  static Future<List<Question>> fetchListQuestion(int SurveyID) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.get(
+        Uri.parse(
+            "https://13.232.213.53:8189/api/v1/questions?surveyId=$SurveyID"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        List<Question> questions = welcomeFromJson(response.body);
+        return questions;
+      } else if (response.statusCode == 404) {
+        throw Exception("Not found survey");
+      } else if (response.statusCode == 401) {
+        throw Exception("Error: Unauthorized");
+      } else {
+        throw Exception("Internal server error");
+      }
+    }
+  }
+
+  static Future<SurveyOverViewListRespone> fetchListSurveyOverView() async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.get(
+        Uri.parse(
+            "https://13.232.213.53:8189/api/v1/surveys?page-offset=1&limit=20"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        SurveyOverViewListRespone surveyOverViewListRespone =
+            surveyOverViewListResponeFromJson(response.body);
+        return surveyOverViewListRespone;
+      } else if (response.statusCode == 404) {
+        throw Exception("Not found survey");
+      } else if (response.statusCode == 401) {
+        throw Exception("Error: Unauthorized");
+      } else {
+        throw Exception("Internal server error");
+      }
+    }
+  }
+
+  static Future<SurveyResponse> submitSurvey(Answer answer) async {
+    final response = await http.post(
+        Uri.parse("https://13.232.213.53:8189/api/v1/survey-patients"),
+        body: jsonEncode(answer.toJson()),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json-patch+json',
+        });
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      var contentJSon = json.decode(utf8.decode(response.bodyBytes));
+      SurveyResponse contentNews = SurveyResponse.fromJson(contentJSon);
+      return contentNews;
+    } else {
+      throw Exception("Internal server error");
     }
   }
 

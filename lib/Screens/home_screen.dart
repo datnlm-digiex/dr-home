@@ -12,6 +12,7 @@ import 'package:telemedicine_mobile/Screens/components/category.dart';
 import 'package:telemedicine_mobile/Screens/detail_screen.dart';
 import 'package:telemedicine_mobile/Screens/notification_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
+import 'package:telemedicine_mobile/Screens/survey_screen/overViewSurvey_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
@@ -19,6 +20,7 @@ import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 import 'package:telemedicine_mobile/controller/exercise_controller.dart';
 import 'package:telemedicine_mobile/controller/filter_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
+import 'package:telemedicine_mobile/controller/overViewSurvey_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/News.dart';
@@ -48,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<News>? listNews;
   var statisticCovid;
   NumberFormat formatter = NumberFormat('###,000');
-
+  final overViewSurveyController = Get.put(OverViewSurveyController());
   @override
   void initState() {
     super.initState();
@@ -58,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Get.put(PatientProfileController());
     patientProfileController.getNearestHealthCheck();
     _fireBaseConfig();
+    overViewSurveyController.getSuverOverViewListRespone();
   }
 
   void getNews() async {
@@ -137,7 +140,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final bottomNavbarController = Get.put(BottomNavbarController());
   final filterController = Get.put(FilterController());
-
   Future<bool> getDoctorData({bool isRefresh = false}) async {
     if (!isRefresh) {
       if (listDoctorController.currentPage.value >=
@@ -223,33 +225,69 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontSize: 14),
               ),
             ),
+            // SizedBox(
+            //   height: 240,
+            //   child: ListView(
+            //     physics: BouncingScrollPhysics(),
+            //     scrollDirection: Axis.horizontal,
+            //     children: [
+            //       SizedBox(
+            //         height: 240,
+            //         child: DiscoverCard(
+            //           tag: "DAS",
+            //           onTap: () {
+            //             overViewSurveyController.getSurveyOverView(1);
+            //             Get.to(OverViewSurveyScreen(surveyID: 1));
+            //           },
+            //           title: "Khảo sát DAS",
+            //           subtitle: contentDAS,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(
-              height: 240,
-              child: ListView(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                children: [
-                  SizedBox(
-                    height: 240,
-                    child: DiscoverCard(
-                      tag: "DAS",
-                      onTap: () {},
-                      title: "Khảo sát DAS",
-                      subtitle: contentDAS,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 240,
-                    child: DiscoverCard(
-                      tag: "DAS",
-                      onTap: () {},
-                      title: "Khảo sát DAS",
-                      subtitle: contentDAS,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                height: 240,
+                child: GetBuilder<OverViewSurveyController>(
+                  builder: (controller) => (controller.isLoading)
+                      ? const Center(child: CircularProgressIndicator())
+                      : controller.surveyOverViewListResponeObject.content!
+                                  .isEmpty &&
+                              !controller.isLoading
+                          ? Container(
+                              child: Text("Không có bài tập"),
+                            )
+                          : ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: controller
+                                  .surveyOverViewListResponeObject
+                                  .content!
+                                  .length,
+                              itemBuilder: ((context, index) {
+                                return SizedBox(
+                                  height: 240,
+                                  child: DiscoverCard(
+                                    tag: "$index",
+                                    onTap: () {
+                                      overViewSurveyController
+                                          .getSurveyOverView(controller
+                                              .surveyOverViewListResponeObject
+                                              .content![index]
+                                              .id);
+                                      Get.to(OverViewSurveyScreen(
+                                          survey: controller
+                                              .surveyOverViewListResponeObject
+                                              .content![index]));
+                                    },
+                                    title:
+                                        "${controller.surveyOverViewListResponeObject.content![index].title}",
+                                    subtitle:
+                                        "${controller.surveyOverViewListResponeObject.content![index].description}",
+                                  ),
+                                );
+                              }),
+                            ),
+                )),
             Padding(
               padding: EdgeInsets.only(left: 28),
               child: Text(

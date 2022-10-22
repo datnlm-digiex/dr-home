@@ -110,7 +110,9 @@ class ResultSurveyScreen extends StatelessWidget {
                       child: ElevatedButton(
                         child: const Text("Trang chủ"),
                         onPressed: () {
-                          Get.offAll(HomeScreen());
+                          // Get.offAll(HomeScreen());
+                          Get.back();
+                          Get.back();
                         },
                         style: ElevatedButton.styleFrom(
                             primary: Colors.green, // background

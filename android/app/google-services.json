@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "247221704893-f3pu634mf6fnntprv4nnubhchsalhn7j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.telemedicine_mobile",
+            "certificate_hash": "0ff9d52fc472227fd1c5dcd8b9a110cbc8803c77"
+          }
+        },
+        {
           "client_id": "247221704893-56t41eaobrg9cjfh3kf00ilmc643969r.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -39,10 +47,10 @@
               "client_type": 3
             },
             {
-              "client_id": "247221704893-i6lb6mc994oo0ickkhbj4t30tda02vev.apps.googleusercontent.com",
+              "client_id": "247221704893-akh12mm3q67cre673jam1a8o6sl7amh7.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "2312"
+                "bundle_id": "dasda"
               }
             }
           ]

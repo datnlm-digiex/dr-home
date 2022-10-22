@@ -75,12 +75,14 @@ class QuestionController extends GetxController {
         patientid: 1,
         createdate: DateTime.now(),
         surveypatientans: surveypatientans);
-
     await FetchAPI.submitSurvey(answer).then((dataFromServer) {
-      if (dataFromServer == 201 || dataFromServer == 200) {
-        Get.offAll(ResultSurveyScreen());
+      if (dataFromServer.id > 0) {
+        Get.off(ResultSurveyScreen(surveyRespone: dataFromServer));
+
         Fluttertoast.showToast(
             msg: "Cập nhật khảo sát thành công", fontSize: 18);
+
+        update();
       }
     });
     return true;

@@ -241,7 +241,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
                             ),
                             label: Text('Quit'),
                             onPressed: () {
-                              Get.offAll(HomeScreen());
+                              // Get.offAll(HomeScreen());
+                              showAlertDialog(context);
                             },
                             style: OutlinedButton.styleFrom(
                                 primary: Colors.black, // background
@@ -324,6 +325,87 @@ class _QuestionScreenState extends State<QuestionScreen> {
               ),
             ),
           ])),
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext contextDialog) {
+        return Dialog(
+          elevation: 0,
+          backgroundColor: const Color(0xffffffff),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 15),
+              Text(
+                "Khảo sát chưa hoàn thành!",
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 15),
+              //Would you like to delete this image?
+              Text("Bạn có muốn ngừng làm khảo sát"),
+              const SizedBox(height: 20),
+              const Divider(
+                height: 1,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+                child: InkWell(
+                  highlightColor: Colors.grey[200],
+                  onTap: () {
+                    Navigator.pop(contextDialog);
+                    Get.offAll(HomeScreen());
+                  },
+                  child: Center(
+                    child: Text(
+                      "Thoát",
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const Divider(
+                height: 1,
+              ),
+              SizedBox(
+                width: MediaQuery.of(this.context).size.width,
+                height: 50,
+                child: InkWell(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(15.0),
+                    bottomRight: Radius.circular(15.0),
+                  ),
+                  highlightColor: Colors.grey[200],
+                  onTap: () => Navigator.pop(contextDialog),
+                  child: Center(
+                    child: Text(
+                      "Tiếp tục làm khảo sát",
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

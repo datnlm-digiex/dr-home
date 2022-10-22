@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<News>? listNews;
   var statisticCovid;
   NumberFormat formatter = NumberFormat('###,000');
-
+  final overViewSurveyController = Get.put(OverViewSurveyController());
   @override
   void initState() {
     super.initState();
@@ -60,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Get.put(PatientProfileController());
     patientProfileController.getNearestHealthCheck();
     _fireBaseConfig();
+    overViewSurveyController.getSuverOverViewListRespone();
   }
 
   void getNews() async {
@@ -129,7 +130,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final patientProfileController = Get.put(PatientProfileController());
-  final overViewSurveyController = Get.put(OverViewSurveyController());
 
   final listDoctorController = Get.put(ListDoctorController());
 
@@ -225,40 +225,69 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontSize: 14),
               ),
             ),
+            // SizedBox(
+            //   height: 240,
+            //   child: ListView(
+            //     physics: BouncingScrollPhysics(),
+            //     scrollDirection: Axis.horizontal,
+            //     children: [
+            //       SizedBox(
+            //         height: 240,
+            //         child: DiscoverCard(
+            //           tag: "DAS",
+            //           onTap: () {
+            //             overViewSurveyController.getSurveyOverView(1);
+            //             Get.to(OverViewSurveyScreen(surveyID: 1));
+            //           },
+            //           title: "Khảo sát DAS",
+            //           subtitle: contentDAS,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(
-              height: 240,
-              child: ListView(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                children: [
-                  SizedBox(
-                    height: 240,
-                    child: DiscoverCard(
-                      tag: "DAS",
-                      onTap: () {
-                        overViewSurveyController.getSurveyOverView(1);
-                        Get.to(OverViewSurveyScreen());
-                      },
-                      title: "Khảo sát DAS",
-                      subtitle: contentDAS,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 240,
-                    child: DiscoverCard(
-                      tag: "DAS",
-                      onTap: () {
-                        overViewSurveyController.getSurveyOverView(1);
-                        // Get.to(OverViewSurveyScreen());
-                        Get.to(OverViewSurveyScreen());
-                      },
-                      title: "Khảo sát DAS",
-                      subtitle: contentDAS,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                height: 240,
+                child: GetBuilder<OverViewSurveyController>(
+                  builder: (controller) => (controller.isLoading)
+                      ? const Center(child: CircularProgressIndicator())
+                      : controller.surveyOverViewListResponeObject.content!
+                                  .isEmpty &&
+                              !controller.isLoading
+                          ? Container(
+                              child: Text("Không có bài tập"),
+                            )
+                          : ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: controller
+                                  .surveyOverViewListResponeObject
+                                  .content!
+                                  .length,
+                              itemBuilder: ((context, index) {
+                                return SizedBox(
+                                  height: 240,
+                                  child: DiscoverCard(
+                                    tag: "$index",
+                                    onTap: () {
+                                      overViewSurveyController
+                                          .getSurveyOverView(controller
+                                              .surveyOverViewListResponeObject
+                                              .content![index]
+                                              .id);
+                                      Get.to(OverViewSurveyScreen(
+                                          survey: controller
+                                              .surveyOverViewListResponeObject
+                                              .content![index]));
+                                    },
+                                    title:
+                                        "${controller.surveyOverViewListResponeObject.content![index].title}",
+                                    subtitle:
+                                        "${controller.surveyOverViewListResponeObject.content![index].description}",
+                                  ),
+                                );
+                              }),
+                            ),
+                )),
             Padding(
               padding: EdgeInsets.only(left: 28),
               child: Text(

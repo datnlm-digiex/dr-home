@@ -5,9 +5,13 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/home_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
+import 'package:telemedicine_mobile/models/SurveyRespone.dart';
 
 class ResultSurveyScreen extends StatelessWidget {
-  const ResultSurveyScreen({Key? key}) : super(key: key);
+  final SurveyResponse surveyRespone;
+
+  const ResultSurveyScreen({Key? key, required this.surveyRespone})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +20,7 @@ class ResultSurveyScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Kết quả khảo sát"),
+          title: Text("Kết quả: ${surveyRespone.surveyTitle}"),
           backgroundColor: kBlueColor,
         ),
         backgroundColor: kBackgroundColor,
@@ -27,14 +31,14 @@ class ResultSurveyScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 color: Color.fromARGB(255, 255, 255, 255),
               ),
-              padding: EdgeInsets.only(top: 10),
+              // padding: EdgeInsets.only(top: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                       padding: const EdgeInsets.all(20),
                       margin: const EdgeInsets.only(
-                          left: 10.0, right: 10.0, top: 30),
+                          left: 10.0, right: 10.0, top: 20),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         // border: Border.all(color: Colors.green),
@@ -59,7 +63,7 @@ class ResultSurveyScreen extends StatelessWidget {
                                 children: [
                                   SizedBox(height: 52),
                                   Text(
-                                    'Thank you for your support!',
+                                    '${surveyRespone.resulttext}',
                                     textAlign: TextAlign.center,
                                     // overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
@@ -77,13 +81,10 @@ class ResultSurveyScreen extends StatelessWidget {
                                       fontSize: 16,
                                     ),
                                   ),
-                                  SizedBox(height: 42),
-                                  Icon(
-                                    Icons.done_outlined,
-                                    color: Colors.green,
-                                    size: 120.0,
-                                    semanticLabel:
-                                        'Text to announce in accessibility modes',
+                                  SizedBox(height: 20),
+                                  Image.network(
+                                    '${surveyRespone.resultimage}',
+                                    fit: BoxFit.cover,
                                   ),
                                 ],
                               ),
@@ -117,7 +118,10 @@ class ResultSurveyScreen extends StatelessWidget {
                             textStyle: TextStyle(fontSize: 20)),
                       ),
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
                 ],
               ),
             ),

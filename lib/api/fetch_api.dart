@@ -34,8 +34,9 @@ import 'package:telemedicine_mobile/models/Role.dart';
 import 'package:telemedicine_mobile/models/Slot.dart';
 import 'package:telemedicine_mobile/models/StatisticCovid/StatisticCovid.dart';
 import 'package:telemedicine_mobile/models/Survey.dart';
+import 'package:telemedicine_mobile/models/SurveyHistoryResponse.dart';
 import 'package:telemedicine_mobile/models/SurveyOverViewListResponse.dart';
-import 'package:telemedicine_mobile/models/SurveyRespone.dart';
+import 'package:telemedicine_mobile/models/SurveyResult.dart';
 import 'package:telemedicine_mobile/models/Symptom.dart';
 import 'package:telemedicine_mobile/models/TimeFrame.dart';
 import 'package:dio/dio.dart';
@@ -273,7 +274,39 @@ class FetchAPI {
     }
   }
 
-  static Future<SurveyResponse> submitSurvey(Answer answer) async {
+  static Future<SurveyHistoryResponse> fetchListHistorySurvey(
+      int patientId) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.get(
+        Uri.parse(
+            "https://13.232.213.53:8189/api/v1/survey-patients?patientid=$patientId&page-offset=1&limit=20"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        SurveyHistoryResponse surveyHistoryResponse =
+            surveyHistoryResponseFromJson(response.body);
+        return surveyHistoryResponse;
+      } else if (response.statusCode == 404) {
+        throw Exception("Not found survey");
+      } else if (response.statusCode == 401) {
+        throw Exception("Error: Unauthorized");
+      } else {
+        throw Exception("Internal server error");
+      }
+    }
+  }
+
+  static Future<SurveyResult> submitSurvey(Answer answer) async {
     final response = await http.post(
         Uri.parse("https://13.232.213.53:8189/api/v1/survey-patients"),
         body: jsonEncode(answer.toJson()),
@@ -282,7 +315,7 @@ class FetchAPI {
         });
     if (response.statusCode == 201 || response.statusCode == 200) {
       var contentJSon = json.decode(utf8.decode(response.bodyBytes));
-      SurveyResponse contentNews = SurveyResponse.fromJson(contentJSon);
+      SurveyResult contentNews = SurveyResult.fromJson(contentJSon);
       return contentNews;
     } else {
       throw Exception("Internal server error");

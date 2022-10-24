@@ -13,17 +13,20 @@ import 'package:telemedicine_mobile/Screens/detail_screen.dart';
 import 'package:telemedicine_mobile/Screens/notification_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
 import 'package:telemedicine_mobile/Screens/survey_screen/overViewSurvey_screen.dart';
+import 'package:telemedicine_mobile/Screens/survey_screen/survey_history_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 import 'package:telemedicine_mobile/controller/exercise_controller.dart';
 import 'package:telemedicine_mobile/controller/filter_controller.dart';
+import 'package:telemedicine_mobile/controller/history_survey_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/overViewSurvey_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/News.dart';
+import 'package:telemedicine_mobile/widget/survey_history.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../widget/discover_card.dart';
@@ -130,6 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final patientProfileController = Get.put(PatientProfileController());
+  final historySurveyController = Get.put(HistorySurveyController());
 
   final listDoctorController = Get.put(ListDoctorController());
 
@@ -215,37 +219,44 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 26,
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 28),
-              child: Text(
-                "Làm khảo sát trực tuyến",
-                style: TextStyle(
-                    color: Color(0xff515979),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14),
-              ),
-            ),
-            // SizedBox(
-            //   height: 240,
-            //   child: ListView(
-            //     physics: BouncingScrollPhysics(),
-            //     scrollDirection: Axis.horizontal,
-            //     children: [
-            //       SizedBox(
-            //         height: 240,
-            //         child: DiscoverCard(
-            //           tag: "DAS",
-            //           onTap: () {
-            //             overViewSurveyController.getSurveyOverView(1);
-            //             Get.to(OverViewSurveyScreen(surveyID: 1));
-            //           },
-            //           title: "Khảo sát DAS",
-            //           subtitle: contentDAS,
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
+            Container(
+                // width: 200,
+                padding: EdgeInsets.only(left: 28, right: 28),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Làm khảo sát trực tuyến",
+                      style: TextStyle(
+                          color: Color(0xff515979),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
+                    ),
+                    OutlinedButton.icon(
+                      icon: Icon(
+                        // <-- Icon
+                        Icons.history,
+                        size: 14.0,
+                        // color: Colors.green,
+                      ),
+                      label: Text('Lịch sử',
+                          style: TextStyle(
+                              // color: Color(0xff515979),
+                              // fontWeight: FontWeight.bold,
+                              fontSize: 14)),
+                      onPressed: () {
+                        historySurveyController.getListSurveyHistory(1);
+                        Get.to(SurveyHistoryScreen());
+                        // showAlertDialog(context);
+                      },
+                      style: OutlinedButton.styleFrom(
+                          primary: Colors.green, // background
+                          // foregroundColor: Colors.green,
+                          side:BorderSide(color: Colors.green),
+                          textStyle: TextStyle(fontSize: 14,color: Colors.green)),
+                    )
+                  ],
+                )),
             SizedBox(
                 height: 240,
                 child: GetBuilder<OverViewSurveyController>(

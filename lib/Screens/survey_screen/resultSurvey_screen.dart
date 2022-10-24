@@ -5,10 +5,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/home_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
-import 'package:telemedicine_mobile/models/SurveyRespone.dart';
+import 'package:telemedicine_mobile/models/SurveyResult.dart';
 
 class ResultSurveyScreen extends StatelessWidget {
-  final SurveyResponse surveyRespone;
+  final SurveyResult surveyRespone;
 
   const ResultSurveyScreen({Key? key, required this.surveyRespone})
       : super(key: key);

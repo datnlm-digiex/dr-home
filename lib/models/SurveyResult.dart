@@ -4,13 +4,13 @@
 
 import 'dart:convert';
 
-SurveyResponse surveyResponseFromJson(String str) =>
-    SurveyResponse.fromJson(json.decode(str));
+SurveyResult surveyResponseFromJson(String str) =>
+    SurveyResult.fromJson(json.decode(str));
 
-String surveyResponseToJson(SurveyResponse data) => json.encode(data.toJson());
+String surveyResultToJson(SurveyResult data) => json.encode(data.toJson());
 
-class SurveyResponse {
-  SurveyResponse({
+class SurveyResult {
+  SurveyResult({
     required this.id,
     required this.surveyid,
     required this.surveyTitle,
@@ -30,7 +30,7 @@ class SurveyResponse {
   String resultimage;
   DateTime createdate;
 
-  factory SurveyResponse.fromJson(Map<String, dynamic> json) => SurveyResponse(
+  factory SurveyResult.fromJson(Map<String, dynamic> json) => SurveyResult(
         id: json["id"],
         surveyid: json["surveyid"],
         surveyTitle: json["surveyTitle"],

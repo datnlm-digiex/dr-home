@@ -28,13 +28,11 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
       onEnded: () => setState(
         () => onEnd(),
       ),
-      presetMillisecond:
-          StopWatchTimer.getMilliSecFromSecond(4), // millisecond => minute.
-      // presetMillisecond: StopWatchTimer.getMilliSecFromMinute(
-      //     exerciseController.exerciseModel.practicetime == null
-      //         ? 0
-      //         : exerciseController
-      //             .exerciseModel.practicetime!), // millisecond => minute.
+      presetMillisecond: StopWatchTimer.getMilliSecFromMinute(
+          exerciseController.exerciseModel.practicetime == null
+              ? 0
+              : exerciseController
+                  .exerciseModel.practicetime!), // millisecond => minute.
     );
     videoPlayerController = VideoPlayerController.network(
         exerciseController.exerciseModel.linkvideo!)
@@ -67,6 +65,10 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
     }
   }
 
+  void onResetTimer() {
+    _stopWatchTimer.onResetTimer();
+  }
+
   void onEnd() {
     print('abcc');
     exerciseController.submitExercise();
@@ -82,7 +84,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Bài tập"),
+        title: Text('${exerciseController.exerciseModel.title}'),
         backgroundColor: kBlueColor,
       ),
       body: GetBuilder<ExerciseController>(
@@ -92,10 +94,6 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                 children: [
                   SizedBox(
                     height: 16,
-                  ),
-                  Text(
-                    '${controller.exerciseModel.title}',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 26,
@@ -140,45 +138,6 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                   SizedBox(
                     height: 16,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            'Vừa',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text('Mực độ'),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text(
-                            '${exerciseController.exerciseModel.bodyposition!}',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text('Nhóm'),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text(
-                            '${exerciseController.exerciseModel.practicetime!}',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text('Phút'),
-                          // Icon(
-                          //   Icons.access_time,
-                          //   semanticLabel: 'Thời gian',
-                          // ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
                   isCount
                       ? StreamBuilder<int>(
                           stream: _stopWatchTimer.rawTime,
@@ -206,25 +165,102 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                     height: 16,
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 28),
-                    child: Text(
-                      '${controller.exerciseModel.description}',
-                      style: TextStyle(),
+                    padding: EdgeInsets.symmetric(horizontal: 14),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Tên bài tập:',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Text(
+                          '${exerciseController.exerciseModel.title!}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ],
                     ),
                   ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 14),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Thời gian:',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Text(
+                          '${exerciseController.exerciseModel.practicetime!} phút',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 14),
+                    child: Text(
+                      '${controller.exerciseModel.description}',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(29),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 18, horizontal: 20),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            backgroundColor: kBlueColor),
+                        onPressed: () => setState(
+                          () => onStart(),
+                        ),
+                        child: Text(
+                          videoPlayerController.value.isPlaying
+                              ? 'Dừng lại'
+                              : 'Phát',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  // SizedBox(
+                  //   width: MediaQuery.of(context).size.width * 0.8,
+                  //   child: OutlinedButton(
+                  //     style: OutlinedButton.styleFrom(
+                  //       padding: const EdgeInsets.symmetric(
+                  //           vertical: 18, horizontal: 20),
+                  //       // backgroundColor: Colors.teal,
+                  //       shape: const RoundedRectangleBorder(
+                  //           borderRadius:
+                  //               BorderRadius.all(Radius.circular(29))),
+                  //     ),
+                  //     child: Text(
+                  //       'Tạo lại',
+                  //       style: TextStyle(
+                  //           fontSize: 16, fontWeight: FontWeight.bold),
+                  //     ),
+                  //     onPressed: () => onResetTimer(),
+                  //   ),
+                  // )
                 ],
               ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: new FloatingActionButton(
-        elevation: 0.0,
-        child: videoPlayerController.value.isPlaying
-            ? Icon(Icons.pause, size: 36)
-            : Icon(Icons.play_arrow, size: 36),
-        backgroundColor: kBlueColor,
-        onPressed: () => setState(
-          () => onStart(),
-        ),
       ),
     );
   }

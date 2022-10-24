@@ -28,10 +28,13 @@ class OverViewSurveyController extends GetxController {
   }
 
   Future<bool> getSurveyOverView(int surveyID) async {
+    isLoading = true;
     await FetchAPI.fetchSurveyOverView(surveyID).then((dataFromServer) {
       surveyOverView.value = dataFromServer;
+      update();
       return true;
     });
+    isLoading = false;
     return false;
   }
 }

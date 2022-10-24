@@ -61,13 +61,13 @@ class _PatientProfileState extends State<PatientProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 8,
-        title: Text("Thông tin của tôi"),
-        centerTitle: true,
-        backgroundColor: kBlueColor,
-        automaticallyImplyLeading: false,
-      ),
+      // appBar: AppBar(
+      //   elevation: 8,
+      //   title: Text("Thông tin của tôi"),
+      //   centerTitle: true,
+      //   backgroundColor: kBlueColor,
+      //   automaticallyImplyLeading: false,
+      // ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Obx(

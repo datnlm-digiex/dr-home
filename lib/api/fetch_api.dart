@@ -212,7 +212,7 @@ class FetchAPI {
     }
   }
 
-  static Future<List<Question>> fetchListQuestion(int SurveyID) async {
+  static Future<List<Question>> fetchListQuestion(int surveyId) async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
     if (token.isEmpty) {
@@ -223,7 +223,7 @@ class FetchAPI {
     } else {
       final response = await http.get(
         Uri.parse(
-            "https://13.232.213.53:8189/api/v1/questions?surveyId=$SurveyID"),
+            "https://13.232.213.53:8189/api/v1/questions?surveyId=$surveyId"),
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $token',

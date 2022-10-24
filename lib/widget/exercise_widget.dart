@@ -35,28 +35,25 @@ class _ExerciseState extends State<Exercise> {
         onTap: () => controller.getById(widget.exerciseModel.id!),
         minLeadingWidth: 65,
         leading: ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child:
-              // CachedNetworkImage(
-              //   imageUrl: widget.exerciseModel.thumbnail ?? '',
-              //   fit: BoxFit.cover,
-              //   progressIndicatorBuilder: (context, url, downloadProgress) =>
-              //       Center(
-              //     child:
-              //         CircularProgressIndicator(value: downloadProgress.progress),
-              //   ),
-              //   errorWidget: (context, url, error) => const Icon(Icons.error),
-              // )
-              Image.network(widget.exerciseModel.thumbnail!, fit: BoxFit.cover),
-        ),
+            borderRadius: BorderRadius.circular(8.0),
+            child: CachedNetworkImage(
+              imageUrl: widget.exerciseModel.thumbnail ?? '',
+              fit: BoxFit.cover,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  CircularProgressIndicator(value: downloadProgress.progress),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            )
+            // Image.network(widget.exerciseModel.thumbnail!, fit: BoxFit.cover),
+            ),
         title: Text(
           '${widget.exerciseModel.title}',
           style: const TextStyle(
             fontSize: 16,
+            fontWeight: FontWeight.bold
           ),
         ),
         subtitle: Text(
-          '${ widget.exerciseModel.durationvideo! ~/ 60}:${widget.exerciseModel.durationvideo! % 60}',
+          '${widget.exerciseModel.durationvideo! ~/ 60}:${widget.exerciseModel.durationvideo! % 60}',
           style: const TextStyle(fontSize: 14),
         ),
         trailing: IconButton(

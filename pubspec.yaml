@@ -34,7 +34,7 @@ dependencies:
   get: ^4.3.8
   bubble: ^1.1.9+1
   geolocator: ^9.0.2
-  geocoder: ^0.2.1
+  # geocoder: ^0.2.1
   http: ^0.13.3
   progress_indicators: ^1.0.0
   multi_select_flutter: ^4.0.0
@@ -73,7 +73,7 @@ dependencies:
   flutter_local_notifications: ^11.0.0
 
   #Agora
-  agora_rtc_engine: 5.2.0
+  # agora_rtc_engine: 5.2.0
   permission_handler:
   flutter_secure_storage: ^4.2.1
 

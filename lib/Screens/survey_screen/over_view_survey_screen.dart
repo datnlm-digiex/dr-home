@@ -59,14 +59,14 @@ class _OverViewSurveyScreenState extends State<OverViewSurveyScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(16),
                       margin: const EdgeInsets.only(left: 10.0, right: 10.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.green),
                         color: Color.fromARGB(255, 255, 255, 255),
                       ),
-                      height: height * 0.450,
+                      height: height * 0.390,
                       width: width,
                       // height: 400,
                       // width: 400,
@@ -88,7 +88,7 @@ class _OverViewSurveyScreenState extends State<OverViewSurveyScreen> {
                                       // style: const TextStyle(
                                       //     fontWeight: FontWeight.bold),
                                       style: const TextStyle(fontSize: 16)),
-                                  SizedBox(height: 15),
+                                  SizedBox(height: 10),
                                   Text(
                                     'Mức độ đánh giá: ',
                                     textAlign: TextAlign.left,
@@ -97,30 +97,29 @@ class _OverViewSurveyScreenState extends State<OverViewSurveyScreen> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18),
                                   ),
-                                  SizedBox(height: 10),
+                                  SizedBox(height: 5),
                                   Container(
-                                      padding: EdgeInsets.zero,
+                                      // padding: EdgeInsets.zero,
                                       child: MediaQuery.removePadding(
-                                        context: context,
-                                        removeTop: true,
-                                        child: ListView.builder(
-                                          // scrollDirection: Axis.vertical,
-                                          itemCount: ratingList.length,
-                                          shrinkWrap: true,
-                                          itemBuilder: (context, index) {
-                                            return Container(
-                                              margin: EdgeInsets.only(top: 7),
-                                              child: Text(
-                                                "$index, " +
-                                                    "${ratingList[index]}",
-                                                textAlign: TextAlign.left,
-                                                style: const TextStyle(
-                                                    fontSize: 16),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      )),
+                                    context: context,
+                                    removeTop: true,
+                                    child: ListView.builder(
+                                      // scrollDirection: Axis.vertical,
+                                      itemCount: ratingList.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          margin: EdgeInsets.only(top: 7),
+                                          child: Text(
+                                            "$index, " + "${ratingList[index]}",
+                                            textAlign: TextAlign.left,
+                                            style:
+                                                const TextStyle(fontSize: 16),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  )),
                                 ],
                               ),
                             ),
@@ -233,11 +232,12 @@ class _OverViewSurveyScreenState extends State<OverViewSurveyScreen> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
+                                    vertical: 18, horizontal: 20),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 backgroundColor: kBlueColor),
                             onPressed: () {
-                              questionController.getListQuestion(1);
+                              questionController
+                                  .getListQuestion(widget.survey.id);
                               Get.to(QuestionScreen(), arguments: [
                                 {"first": 'Khảo sát'},
                                 {"second": 'Second data'},

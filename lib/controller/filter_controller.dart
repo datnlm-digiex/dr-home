@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geocoder/geocoder.dart';
+// import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -22,9 +22,9 @@ class FilterController extends GetxController {
   void getMyAddress() async {
     final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    final coordinates = new Coordinates(position.latitude, position.longitude);
-    var address =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    // final coordinates = new Coordinates(position.latitude, position.longitude);
+    // var address =
+    //     await Geocoder.local.findAddressesFromCoordinates(coordinates);
     searchByLocation.value = true;
     myAddress.value = "address.first.addressLine";
   }

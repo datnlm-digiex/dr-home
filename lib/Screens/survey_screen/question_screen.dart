@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/home_screen.dart';
 import 'package:telemedicine_mobile/Screens/survey_screen/over_view_survey_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
@@ -238,7 +239,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
+                                    vertical: 18, horizontal: 20),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 backgroundColor: kBlueColor),
                             onPressed: () {
@@ -323,7 +324,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   highlightColor: Colors.grey[200],
                   onTap: () {
                     Navigator.pop(contextDialog);
-                    Get.offAll(HomeScreen());
+                    Get.off(BottomNavScreen());
                   },
                   child: Center(
                     child: Text(

@@ -3,6 +3,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/home_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/models/SurveyRespone.dart';
@@ -106,12 +107,11 @@ class ResultSurveyScreen extends StatelessWidget {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
+                                    vertical: 18, horizontal: 20),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 backgroundColor: kBlueColor),
                             onPressed: () {
-                              Get.back();
-                              Get.back();
+                              Get.off(BottomNavScreen());
                             },
                             child: Text(
                               'Trang chủ',

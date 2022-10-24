@@ -1,4 +1,4 @@
-import 'package:geocoder/geocoder.dart';
+// import 'package:geocoder/geocoder.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -54,9 +54,9 @@ class AddressController extends GetxController {
           markerId: new MarkerId("origin"),
           icon: BitmapDescriptor.defaultMarker,
           position: LatLng(location.value.lat, location.value.lng));
-      var addressResponse = await Geocoder.local.findAddressesFromCoordinates(
-          Coordinates(location.value.lat, location.value.lng));
-      address.value = addressResponse.first.addressLine;
+      // var addressResponse = await Geocoder.local.findAddressesFromCoordinates(
+      //     Coordinates(location.value.lat, location.value.lng));
+      // address.value = addressResponse.first.addressLine;
     } on Exception catch (_) {} finally {
       loading.value = false;
     }

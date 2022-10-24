@@ -14,14 +14,6 @@ class OverViewSurveyController extends GetxController {
   bool isLoading = false;
   SurveyOverViewListRespone surveyOverViewListResponeObject =
       SurveyOverViewListRespone();
-  // new SurveyOverViewListRespone(
-  //     totalCount: 0,
-  //     pageSize: 0,
-  //     totalPage: 0,
-  //     currentPage: 0,
-  //     nextPage: 0,
-  //     previousPage: 0,
-  //     content: []).obs;
 
   Future<bool> getSuverOverViewListRespone({bool isRefresh = false}) async {
     isLoading = true;
@@ -30,16 +22,19 @@ class OverViewSurveyController extends GetxController {
       update();
       return true;
     });
-     isLoading = false;
-     update();
+    isLoading = false;
+    update();
     return false;
   }
 
   Future<bool> getSurveyOverView(int surveyID) async {
+    isLoading = true;
     await FetchAPI.fetchSurveyOverView(surveyID).then((dataFromServer) {
       surveyOverView.value = dataFromServer;
+      update();
       return true;
     });
+    isLoading = false;
     return false;
   }
 }

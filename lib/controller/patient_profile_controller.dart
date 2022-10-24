@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_address_api.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
+import 'package:telemedicine_mobile/controller/exercise_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/models/Account.dart';
 import 'package:telemedicine_mobile/models/HealthCheck.dart';
@@ -16,10 +17,13 @@ import 'package:telemedicine_mobile/models/Patient.dart';
 import 'package:telemedicine_mobile/models/Role.dart';
 
 import 'account_controller.dart';
+import 'question_controller.dart';
 
 class PatientProfileController extends GetxController {
   final patientHistoryController = Get.put(PatientHistoryController());
   final accountController = Get.put(AccountController());
+  final exerciseController = Get.put(ExerciseController());
+  final questionController = Get.put(QuestionController());
   Rx<Patient> patient = new Patient(
       id: 0,
       email: "",
@@ -87,6 +91,8 @@ class PatientProfileController extends GetxController {
       FetchAPI.fetchMyPatient(myEmail).then((dataFromServer) {
         patient.value = dataFromServer;
         patientHistoryController.patientID.value = patient.value.id;
+        exerciseController.patientId.value = patient.value.id;
+        questionController.patientId.value = patient.value.id;
         getNearestHealthCheck();
         getCountUnread();
         patientHistoryController.getMyHistory();

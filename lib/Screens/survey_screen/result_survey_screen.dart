@@ -3,6 +3,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/home_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/models/SurveyRespone.dart';
@@ -96,28 +97,29 @@ class ResultSurveyScreen extends StatelessWidget {
                     height: 10,
                   ),
                   // Survey info
-
                   Center(
-                    child: Container(
-                      padding: EdgeInsets.only(top: 5),
-                      // decoration: BoxDecoration(
-                      //   borderRadius: BorderRadius.circular(60),
-                      //   border: Border.all(
-                      //       color: Color.fromARGB(255, 209, 253, 211)),
-                      // ),
-                      width: width * 0.35, // <-- match_parent
-                      height: 40, // <-- match-parent
-                      child: ElevatedButton(
-                        child: const Text("Trang chủ"),
-                        onPressed: () {
-                          // Get.offAll(HomeScreen());
-                          Get.back();
-                          Get.back();
-                        },
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.green, // background
-                            onPrimary: Colors.white, // foreground
-                            textStyle: TextStyle(fontSize: 20)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(29),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 18, horizontal: 20),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                backgroundColor: kBlueColor),
+                            onPressed: () {
+                              Get.off(BottomNavScreen());
+                            },
+                            child: Text(
+                              'Trang chủ',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),

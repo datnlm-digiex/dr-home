@@ -34,8 +34,6 @@ class CategoryCard extends StatelessWidget {
           }
         else if (click == 4)
           {Get.to(HospitalMap())}
-        else if (click == 5)
-          {Get.to(Covid19())}
       },
       child: Container(
         width: 130,

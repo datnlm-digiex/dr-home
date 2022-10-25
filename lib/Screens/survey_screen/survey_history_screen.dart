@@ -86,7 +86,7 @@ class _SurveyHistoryScreenState extends State<SurveyHistoryScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(12.0),
                                           ),
-                                          child: CellCard(
+                                          child: SurveyHistoryCard(
                                               surveyResult:
                                                   historySurveyController
                                                       .historySurveyResponse

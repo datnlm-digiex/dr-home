@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:telemedicine_mobile/Screens/home_screen.dart';
+import 'package:telemedicine_mobile/Screens/survey_screen/overViewSurvey_screen.dart';
 import 'package:telemedicine_mobile/Screens/survey_screen/resultSurvey_screen.dart';
+import 'package:telemedicine_mobile/controller/overViewSurvey_controller.dart';
 import 'package:telemedicine_mobile/models/SurveyResult.dart';
 
-class CellCard extends StatefulWidget {
+class SurveyHistoryCard extends StatefulWidget {
   final SurveyResult surveyResult;
 
-  const CellCard({Key? key, required this.surveyResult}) : super(key: key);
+  const SurveyHistoryCard({Key? key, required this.surveyResult})
+      : super(key: key);
 
   // const CellCard({Key? key, required this.cell}) : super(key: key);
 
   @override
-  State<CellCard> createState() => _CellCardState();
+  State<SurveyHistoryCard> createState() => _CellCardState();
 }
 
-class _CellCardState extends State<CellCard> {
+class _CellCardState extends State<SurveyHistoryCard> {
   // final SurveyController _surveyController = Get.find<SurveyController>();
-
+  final overViewSurveyController = Get.put(OverViewSurveyController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,17 +33,22 @@ class _CellCardState extends State<CellCard> {
         child: ListTile(
           onTap: () {
             Get.to(ResultSurveyScreen(surveyRespone: widget.surveyResult));
-
-            // _surveyController.getCellById(widget.cell);
           },
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Nội dung: '),
-              Text('${widget.surveyResult.surveyTitle}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  )),
+              InkWell(
+                child: Text('${widget.surveyResult.surveyTitle}',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.green)),
+                onTap: () {
+                  overViewSurveyController
+                      .getSurveyOverView(widget.surveyResult.surveyid);
+                },
+              )
             ],
           ),
           subtitle: Padding(
@@ -82,7 +91,7 @@ class _CellCardState extends State<CellCard> {
               ],
             ),
           ),
-          // leading: _getCorrectIcon(1),
+          leading: _getCorrectIcon(1),
         ),
       ),
     );
@@ -99,8 +108,7 @@ class _CellCardState extends State<CellCard> {
       case 1:
         return const SizedBox(
           height: double.infinity,
-          child:
-              Icon(Icons.history_toggle_off, size: 40.0, color: Colors.black),
+          child: Icon(Icons.note_alt_outlined, size: 40.0, color: Colors.black),
         );
       case 3:
         return const SizedBox(

@@ -286,7 +286,7 @@ class FetchAPI {
     } else {
       final response = await http.get(
         Uri.parse(
-            "https://13.232.213.53:8189/api/v1/survey-patients?patientid=$patientId&page-offset=1&limit=20"),
+            "https://13.232.213.53:8189/api/v1/survey-patients?patientid=$patientId&order-by=Createdate&order-type=desc&page-offset=1&limit=20"),
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $token',

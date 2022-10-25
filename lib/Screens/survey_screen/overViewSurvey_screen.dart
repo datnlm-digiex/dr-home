@@ -11,10 +11,10 @@ import 'package:telemedicine_mobile/controller/question_controller.dart';
 import 'package:telemedicine_mobile/models/Survey.dart';
 
 class OverViewSurveyScreen extends StatefulWidget {
-  final Survey survey;
+  // final Survey survey;
 
-  const OverViewSurveyScreen({Key? key, required this.survey})
-      : super(key: key);
+  // const OverViewSurveyScreen({Key? key, required this.survey})
+  //     : super(key: key);
 
   @override
   State<OverViewSurveyScreen> createState() => _OverViewSurveyScreenState();
@@ -40,7 +40,7 @@ class _OverViewSurveyScreenState extends State<OverViewSurveyScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("${widget.survey.title}"),
+          title: Text("${overViewSurveyController.surveyOverView.value.title}"),
           backgroundColor: kBlueColor,
         ),
         backgroundColor: kBackgroundColor,

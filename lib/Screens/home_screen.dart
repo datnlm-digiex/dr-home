@@ -252,8 +252,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: OutlinedButton.styleFrom(
                           primary: Colors.green, // background
                           // foregroundColor: Colors.green,
-                          side:BorderSide(color: Colors.green),
-                          textStyle: TextStyle(fontSize: 14,color: Colors.green)),
+                          side: BorderSide(color: Colors.green),
+                          textStyle:
+                              TextStyle(fontSize: 14, color: Colors.green)),
                     )
                   ],
                 )),
@@ -285,10 +286,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                               .surveyOverViewListResponeObject
                                               .content![index]
                                               .id);
-                                      Get.to(OverViewSurveyScreen(
-                                          survey: controller
-                                              .surveyOverViewListResponeObject
-                                              .content![index]));
                                     },
                                     title:
                                         "${controller.surveyOverViewListResponeObject.content![index].title}",

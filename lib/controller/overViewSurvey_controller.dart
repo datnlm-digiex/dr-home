@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:telemedicine_mobile/Screens/survey_screen/overViewSurvey_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/models/Survey.dart';
 import 'package:telemedicine_mobile/models/SurveyOverViewListResponse.dart';
@@ -30,14 +31,17 @@ class OverViewSurveyController extends GetxController {
       update();
       return true;
     });
-     isLoading = false;
-     update();
+    isLoading = false;
+    update();
     return false;
   }
 
   Future<bool> getSurveyOverView(int surveyID) async {
+    print(surveyID);
     await FetchAPI.fetchSurveyOverView(surveyID).then((dataFromServer) {
       surveyOverView.value = dataFromServer;
+
+      Get.to(OverViewSurveyScreen());
       return true;
     });
     return false;

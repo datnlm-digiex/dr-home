@@ -56,7 +56,9 @@ class _CellCardState extends State<CellCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Thời gian:'),
-                        Text('${widget.surveyResult.createdate}',
+                        Text(
+                            // '${DateTime.parse('${widget.surveyResult.createdate.toString()}')}',
+                            '${DateFormat("yyyy-MM-dd hh:mm").format(widget.surveyResult.createdate)}',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             )),

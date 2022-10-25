@@ -79,9 +79,10 @@ class _SurveyHistoryScreenState extends State<SurveyHistoryScreen> {
                                           ),
                                           decoration: BoxDecoration(
                                             color: Color.fromARGB(
-                                                83, 255, 253, 253),
-                                            border:
-                                                Border.all(color: Colors.green),
+                                                82, 225, 223, 223),
+                                            border: Border.all(
+                                                color: Color.fromARGB(
+                                                    82, 225, 223, 223)),
                                             borderRadius:
                                                 BorderRadius.circular(12.0),
                                           ),
@@ -91,8 +92,8 @@ class _SurveyHistoryScreenState extends State<SurveyHistoryScreen> {
                                                       .historySurveyResponse
                                                       .content![index])),
                                       Divider(
-                                        color: Colors.green,
-                                      )
+                                          color:
+                                              Color.fromARGB(82, 44, 44, 44))
                                     ],
                                   ));
                                 }),

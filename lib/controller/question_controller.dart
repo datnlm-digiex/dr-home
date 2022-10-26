@@ -78,10 +78,12 @@ class QuestionController extends GetxController {
     await FetchAPI.submitSurvey(answer).then((dataFromServer) {
       if (dataFromServer.id > 0) {
         Get.off(ResultSurveyScreen(surveyRespone: dataFromServer));
-
         Fluttertoast.showToast(
-            msg: "Cập nhật khảo sát thành công", fontSize: 18);
-
+            msg: "Cập nhật khảo sát thành công", fontSize: 20);
+        update();
+      } else {
+        Get.off(HomeScreen());
+        Fluttertoast.showToast(msg: "Cập nhật khảo sát thất bại", fontSize: 20);
         update();
       }
     });

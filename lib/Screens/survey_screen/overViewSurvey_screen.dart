@@ -242,9 +242,11 @@ class _OverViewSurveyScreenState extends State<OverViewSurveyScreen> {
                           ]);
                         },
                         style: ElevatedButton.styleFrom(
-                            primary: Colors.green, // background
-                            onPrimary: Colors.white, // foreground
-                            textStyle: TextStyle(fontSize: 20)),
+                          foregroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                        ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
                       ),
                     ),
                   )

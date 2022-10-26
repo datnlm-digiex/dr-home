@@ -21,14 +21,14 @@ class Background extends StatelessWidget {
           Positioned(
             top: -50, // set on top of screen
             child: Image.asset(
-              "assets/images/login_top.png", //add picture
+              "assets/images/backround_login_top_2.jpg", //add picture
               width: size.width * 1.5, // size of picture
             ),
           ),
           Positioned(
             bottom: 0,
             child: Image.asset(
-              "assets/images/login_bottom.png", //add picture
+              "assets/images/backround_login_bot_1.jpg", //add picture
               width: size.width * 1.1, // size of picture
             ),
           ),

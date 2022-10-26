@@ -14,6 +14,7 @@ import 'package:telemedicine_mobile/Screens/notification_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
 import 'package:telemedicine_mobile/Screens/survey_screen/overViewSurvey_screen.dart';
 import 'package:telemedicine_mobile/Screens/survey_screen/survey_history_screen.dart';
+import 'package:telemedicine_mobile/Screens/introduction_slider_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
@@ -220,6 +221,9 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 26,
             ),
             Container(
+              child: InkWell(child: Text("testtttttt"),onTap: () => {Get.to(IntroScreenDefault())}),
+            ),
+            Container(
                 // width: 200,
                 padding: EdgeInsets.only(left: 28, right: 28),
                 child: Row(
@@ -245,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               // fontWeight: FontWeight.bold,
                               fontSize: 14)),
                       onPressed: () {
-                        historySurveyController.getListSurveyHistory(1);
+                        historySurveyController.getListSurveyHistory(3);
                         Get.to(SurveyHistoryScreen());
                         // showAlertDialog(context);
                       },

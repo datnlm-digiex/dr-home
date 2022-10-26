@@ -12,14 +12,14 @@ import 'package:telemedicine_mobile/Screens/home_screen.dart';
 import 'package:telemedicine_mobile/Screens/introduction_screen.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
 
-class IntroScreenDefault extends StatefulWidget {
-  const IntroScreenDefault({Key? key}) : super(key: key);
+class IntroductionScreenSlider extends StatefulWidget {
+  const IntroductionScreenSlider({Key? key}) : super(key: key);
 
   @override
-  State<IntroScreenDefault> createState() => IntroScreenDefaultState();
+  State<IntroductionScreenSlider> createState() => IntroductionScreenSliderState();
 }
 
-class IntroScreenDefaultState extends State<IntroScreenDefault> {
+class IntroductionScreenSliderState extends State<IntroductionScreenSlider> {
   List<Widget> listContentConfig = [];
 
   @override

@@ -10,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:telemedicine_mobile/Screens/components/loading.dart';
 import 'package:telemedicine_mobile/Screens/dynamic_link_screen.dart';
+import 'package:telemedicine_mobile/Screens/introduction_slider_screen.dart';
 import 'package:telemedicine_mobile/controller/invite_videocall_controller.dart';
 import 'controller/facebook_login_controller.dart';
 import 'controller/google_login_controller.dart';
@@ -166,7 +167,8 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.blue,
         ),
         debugShowCheckedModeBanner: false,
-        home: LoginScreen(),
+        // home: LoginScreen(),
+        home: IntroductionScreenSlider(),
         localizationsDelegates: [
           GlobalWidgetsLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

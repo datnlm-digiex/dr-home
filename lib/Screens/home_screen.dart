@@ -221,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 26,
             ),
             Container(
-              child: InkWell(child: Text("testtttttt"),onTap: () => {Get.to(IntroScreenDefault())}),
+              child: InkWell(child: Text("testtttttt"),onTap: () => {Get.to(IntroductionScreenSliderState())}),
             ),
             Container(
                 // width: 200,

@@ -11,6 +11,7 @@ import 'package:telemedicine_mobile/Screens/detail_screen.dart';
 import 'package:telemedicine_mobile/Screens/notification_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
 import 'package:telemedicine_mobile/Screens/survey_screen/over_view_survey_screen.dart';
+import 'package:telemedicine_mobile/Screens/video_player/exercise_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
@@ -24,10 +25,12 @@ import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/News.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import '../controller/history_survery_controller.dart';
 import '../widget/discover_card.dart';
 import '../widget/discover_smaill_card.dart';
 import '../widget/icons.dart';
 import '../widget/svg_asset.dart';
+import 'survey_screen/survey_history_screen.dart';
 import 'video_player/video_player_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -36,12 +39,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final PatientProfileController patientProfileController =
+      Get.put(PatientProfileController());
   final ExerciseController _exerciseController = Get.put(ExerciseController());
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  final contentDAS =
-      "Bài test (trắc nghiệm) DAS 21 (gồm 21 câu hỏi) là thang đo chẩn đoán khá phổ biến, chính xác và nhanh chống về mức độ rối loạn lo âu - tầm cảm - stress mà bạn đọc có thể tự làm trong vài phút.";
 
   final storage = new FlutterSecureStorage();
   final accountController = Get.put(AccountController());
@@ -54,9 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     getNews();
     getStatisticCovid();
-    PatientProfileController patientProfileController =
-        Get.put(PatientProfileController());
+
     patientProfileController.getNearestHealthCheck();
+    patientProfileController.getMyPatient();
     _fireBaseConfig();
     overViewSurveyController.getSuverOverViewListRespone();
   }
@@ -130,17 +133,15 @@ class _HomeScreenState extends State<HomeScreen> {
     print("nn");
   }
 
-  final patientProfileController = Get.put(PatientProfileController());
-
+  final historySurveyController = Get.put(HistorySurveyController());
   final listDoctorController = Get.put(ListDoctorController());
-
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);
 
   final patientHistoryController = Get.put(PatientHistoryController());
-
   final bottomNavbarController = Get.put(BottomNavbarController());
   final filterController = Get.put(FilterController());
+
   Future<bool> getDoctorData({bool isRefresh = false}) async {
     if (!isRefresh) {
       if (listDoctorController.currentPage.value >=
@@ -200,25 +201,36 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 20,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14),
-              child: exerciseProcess(),
+            GetBuilder<ExerciseController>(
+              builder: (controller) => Padding(
+                padding: EdgeInsets.symmetric(horizontal: 14),
+                child: exerciseProcess(),
+              ),
             ),
             SizedBox(
               height: 26,
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 14),
-              child: Text(
-                "Làm khảo sát trực tuyến",
-                style: TextStyle(
-                    color: Color(0xff515979),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Làm khảo sát trực tuyến",
+                    style: TextStyle(
+                        color: Color(0xff515979),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14),
+                  ),
+                  TextButton(
+                      onPressed: () => {
+                            historySurveyController.getListSurveyHistory(
+                                patientProfileController.patient.value.id),
+                            Get.to(SurveyHistoryScreen())
+                          },
+                      child: Text('Xem lịch sử'))
+                ],
               ),
-            ),
-            SizedBox(
-              height: 15,
             ),
             SizedBox(
               height: 176,
@@ -298,11 +310,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   DiscoverSmallCard(
                     onTap: () => {
-                      _exerciseController.fetchExercise(1),
-                      Get.to(VideoPlayerScreen(type: "Phổi"))
+                      _exerciseController.fetchExercise(
+                          2, patientProfileController.patient.value.id),
+                      Get.to(VideoPlayerScreen(
+                        type: "Phổi",
+                        groupId: 2,
+                      ))
                     },
                     title: "Bài tập phổi",
-                    subtitle: "1 Bài tập",
                     gradientStartColor: Color(0xff13DEA0),
                     gradientEndColor: Color(0xff06B782),
                     icon: SvgAsset(
@@ -313,11 +328,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   DiscoverSmallCard(
                     onTap: () => {
-                      _exerciseController.fetchExercise(2),
-                      Get.to(VideoPlayerScreen(type: "Tim"))
+                      _exerciseController.fetchExercise(
+                          4, patientProfileController.patient.value.id),
+                      Get.to(VideoPlayerScreen(
+                        type: "Tim",
+                        groupId: 4,
+                      ))
                     },
                     title: "Bài tập tim",
-                    subtitle: "11 Bài tập",
                     gradientStartColor: Color(0xffFC67A7),
                     gradientEndColor: Color(0xffF6815B),
                     icon: SvgAsset(
@@ -328,26 +346,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   DiscoverSmallCard(
                     onTap: () => {
-                      _exerciseController.fetchExercise(3),
-                      Get.to(VideoPlayerScreen(type: "Tim"))
-                    },
-                    title: "Bài tập tim",
-                    subtitle: "8 Bài tập",
-                    gradientStartColor: Color(0xffFC67A7),
-                    gradientEndColor: Color(0xffF6815B),
-                    icon: SvgAsset(
-                      assetName: AssetName.heart,
-                      height: 24,
-                      width: 24,
-                    ),
-                  ),
-                  DiscoverSmallCard(
-                    onTap: () => {
-                      _exerciseController.fetchExercise(4),
-                      Get.to(VideoPlayerScreen(type: "Não"))
+                      _exerciseController.fetchExercise(
+                          3, patientProfileController.patient.value.id),
+                      Get.to(VideoPlayerScreen(
+                        type: "Não",
+                        groupId: 3,
+                      ))
                     },
                     title: "Bài tập não",
-                    subtitle: "19 Bài tập",
                     gradientStartColor: Color(0xffFFD541),
                     gradientEndColor: Color(0xffF0B31A),
                     icon: SvgAsset(
@@ -358,11 +364,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   DiscoverSmallCard(
                     onTap: () => {
-                      _exerciseController.fetchExercise(5),
-                      Get.to(VideoPlayerScreen(type: "Vật lý trị liệu"))
+                      _exerciseController.fetchExercise(
+                          1, patientProfileController.patient.value.id),
+                      Get.to(VideoPlayerScreen(
+                        type: "Vật lý trị liệu",
+                        groupId: 1,
+                      ))
                     },
                     title: "Bài tập vật lý trị liệu",
-                    subtitle: "11 Bài tập",
                     icon: SvgAsset(
                       assetName: AssetName.tape,
                       height: 24,
@@ -451,7 +460,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 10,
                                   ),
                                   Text(
-                                    '1/4 Bài tập',
+                                    "${exerciseController.exerciseProcess.times}/${exerciseController.exerciseProcess.totalTimes} Bài tập",
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w300,
@@ -466,9 +475,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: new CircularPercentIndicator(
                                 radius: 55.0,
                                 lineWidth: 4.0,
-                                percent: 0.25,
+                                percent:
+                                    exerciseController.exerciseProcess.percent /
+                                        100,
                                 center: new Text(
-                                  "25%",
+                                  "${exerciseController.exerciseProcess.percent}%",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),

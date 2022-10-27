@@ -92,10 +92,6 @@ class DiscoverSmallCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Colors.white),
                     ),
-                    Text(
-                      subtitle!,
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    ),
                     Row(
                       children: [
                         icon ??

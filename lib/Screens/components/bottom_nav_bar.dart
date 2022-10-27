@@ -27,17 +27,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
     patientProfileController.getMyPatient();
   }
 
-  final screenLabel = [
-    "Trang chủ",
-    "Danh sách bác sĩ",
-    "Lịch sử",
-    "Thông tin của tôi"
-  ];
+  final screenLabel = ["Trang chủ", "Tư vấn", "Lịch sử", "Thông tin của tôi"];
 
   final screens = [
     HomeScreen(),
     ListDoctorScreen(),
-    PatientHistoryScreen(),
+    // PatientHistoryScreen(),
     PatientProfile(),
   ];
   @override
@@ -58,9 +53,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
             type: BottomNavigationBarType.fixed,
             backgroundColor: kBackgroundColor,
             selectedItemColor: kBlueColor,
-            showUnselectedLabels: false,
+            // showUnselectedLabels: false,
             iconSize: 25,
-            selectedFontSize: 8,
+            selectedFontSize: 14,
             currentIndex: bottomNavbarController.currentIndex.value,
             onTap: (index) => {
               bottomNavbarController.currentIndex.value = index,
@@ -83,15 +78,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.local_hospital),
-                label: "Danh sách bác sĩ",
+                label: "Tư vấn",
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.history),
-                label: "Lịch sử",
-              ),
+              // BottomNavigationBarItem(
+              //   icon: Icon(Icons.history),
+              //   label: "Lịch sử",
+              // ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                label: "Trang cá nhân",
+                label: "Cá nhân",
               ),
             ],
           ),

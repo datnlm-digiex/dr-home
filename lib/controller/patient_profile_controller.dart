@@ -81,8 +81,11 @@ class PatientProfileController extends GetxController {
       slots: [],
       symptomHealthChecks: []).obs;
   RxString statusCovid = "VietNam".obs;
+
   getMyPatient() {
     String myEmail = accountController.account.value.email;
+    print("my Email patient_profile_controller");
+    print(myEmail);
     if (myEmail.isEmpty) {
       Get.off(LoginScreen(),
           transition: Transition.leftToRightWithFade,
@@ -90,9 +93,10 @@ class PatientProfileController extends GetxController {
     } else {
       FetchAPI.fetchMyPatient(myEmail).then((dataFromServer) {
         patient.value = dataFromServer;
+        print(" patient.value.id Email patient_profile_controller");
+        print(patient.value.id);
         patientHistoryController.patientID.value = patient.value.id;
-        exerciseController.patientId.value = patient.value.id;
-        questionController.patientId.value = patient.value.id;
+        exerciseController.getExerciesProcess(patient.value.id);
         getNearestHealthCheck();
         getCountUnread();
         patientHistoryController.getMyHistory();

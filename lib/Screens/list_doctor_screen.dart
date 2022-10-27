@@ -7,6 +7,7 @@ import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/filter_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/models/Doctor.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ListDoctorScreen extends StatefulWidget {
   // const ListDoctorScreen({Key? key}) : super(key: key);
@@ -44,171 +45,177 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    return Scaffold(
         backgroundColor: kBackgroundColor,
-        body: Obx(
-          () => Stack(
-            children: [
-              Container(
-                padding: EdgeInsets.only(top: 50),
-                child: SmartRefresher(
-                  controller: refreshController,
-                  enablePullUp: true,
-                  onRefresh: () async {
-                    final result = await getDoctorData(isRefresh: true);
-                    if (result) {
-                      refreshController.refreshCompleted();
-                    } else {
-                      refreshController.refreshFailed();
-                    }
-                  },
-                  onLoading: () async {
-                    final result = await getDoctorData(isRefresh: false);
-                    if (result) {
-                      refreshController.loadComplete();
-                    } else {
-                      refreshController.loadFailed();
-                    }
-                  },
-                  child: listDoctorController.listDoctor.length == 0 &&
-                          listDoctorController.isLoading.value != true
-                      ? Center(
-                          child: Text(
-                            "Không tìm thấy bác sĩ phù hợp",
-                            style: TextStyle(
-                                fontSize: 19, fontWeight: FontWeight.w500),
-                          ),
-                        )
-                      : Column(
+        body: Column(children: [
+          Container(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color.fromARGB(255, 255, 255, 255),
+              ),
+              // padding: EdgeInsets.only(top: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      padding: const EdgeInsets.all(20),
+                      margin: const EdgeInsets.only(
+                          left: 10.0, right: 10.0, top: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        // border: Border.all(color: Colors.green),
+                        color: Color.fromARGB(255, 255, 255, 255),
+                      ),
+                      height: height * 0.50,
+                      width: width,
+                      // height: 400,
+                      // width: 400,
+                      child: (SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: (Column(
                           children: [
-                            searchDoctor(),
-                            ConstrainedBox(
-                              constraints: new BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height * 0.60,
-                              ),
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount:
-                                    listDoctorController.listDoctor.length,
-                                itemBuilder: (BuildContext context, index) {
-                                  return buildDoctorList(
-                                      listDoctorController.listDoctor[index]);
-                                },
+                            Container(
+                              // height: 600,
+                              width: width,
+                              // color: Color.fromARGB(255, 235, 225, 225),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                // ignore: prefer_const_literals_to_create_immutables
+                                children: [
+                                  SizedBox(height: 30),
+                                  Text(
+                                    'Bạn cần được tư vấn ngay lập tức bởi chuyên gia',
+                                    textAlign: TextAlign.center,
+                                    // overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        color: Colors.black),
+                                  ),
+                                  SizedBox(height: 22),
+                                  Text(
+                                    'Vui lòng liên hệ thông tin dưới đây để được hỗ trợ thêm',
+                                    textAlign: TextAlign.center,
+                                    // overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  // SizedBox(height: 15),
+                                  Image.asset("assets/images/need_support.png")
+                                  // Image.network(
+                                  //   '${surveyRespone.resultimage}',
+                                  //   fit: BoxFit.cover,
+                                  // ),
+                                ],
                               ),
                             ),
                           ],
-                        ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: filterController.listMajor2.map((e) {
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        child: InkWell(
-                          onTap: () {
-                            filterController.majorID.value = e.id;
-                            if (filterController.majorID.value == 0) {
-                              filterController.searchDoctorByCondition(2);
-                            } else {
-                              filterController.searchDoctorByCondition(3);
-                            }
-                          },
-                          child: Container(
-                            height: 40,
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: filterController.majorID == e.id
-                                  ? kBlueColor
-                                  : Color(0xffededed),
-                            ),
-                            child: Center(
-                              child: Text(
-                                e.name
-                                        .toString()
-                                        .replaceAll("Bác sĩ ", "")
-                                        .substring(0, 1)
-                                        .toUpperCase() +
-                                    e.name
-                                        .toString()
-                                        .replaceAll("Bác sĩ ", "")
-                                        .substring(1),
-                                style: TextStyle(
-                                  color: filterController.majorID == e.id
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
+                        )),
+                      ))),
+                  Center(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(29),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 18, horizontal: 20),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              backgroundColor: Colors.redAccent),
+                          onPressed: () => _makePhoneCall('02838569147'),
+                          child: Text(
+                            'Gọi bác sĩ',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                         ),
-                      );
-                    }).toList(),
+                      ),
+                    ),
                   ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Padding searchDoctor() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(18, 20, 18, 20),
-      child: InkWell(
-        onTap: () {
-          Get.to(FilterScreen(),
-              transition: Transition.downToUp,
-              duration: Duration(milliseconds: 600));
-        },
-        child: Container(
-          width: double.infinity,
-          height: 46,
-          padding: EdgeInsets.only(left: 20),
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(50)),
-          child: Row(children: [
-            Icon(
-              Icons.search,
-              size: 30,
-              color: Colors.black,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Text(
-                "Tìm kiếm bác sĩ",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black,
-                ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(29),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 18, horizontal: 20),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              backgroundColor: Colors.amber),
+                          onPressed: () => _makeSms('02838569147'),
+                          child: Text(
+                            'Nhắn tin',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(29),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 18, horizontal: 20),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              backgroundColor: Color.fromARGB(255, 80, 80, 79)),
+                          onPressed: () => _makeEmailLaunch(),
+                          child: Text(
+                            'Gửi Email',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ]),
-        ),
-      ),
-    );
+          ),
+        ]));
+    ;
   }
 
-  buildDoctorList(Doctor doctor) {
-    return Container(
-      margin: EdgeInsets.only(top: 18),
-      padding: EdgeInsets.symmetric(
-        horizontal: 30,
-      ),
-      child: DoctorCard(
-        doctor,
-        doctor.avatar,
-        kBlueColor,
-      ),
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
     );
+    await launchUrl(launchUri);
   }
+
+  Future<void> _makeSms(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'sms',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
+}
+
+Future<void> _makeEmailLaunch() async {
+  final Uri emailLaunchUri = Uri(
+    scheme: 'mailto',
+    path: 'yhph.bvphcn@gmail.com',
+  );
+  await launchUrl(emailLaunchUri);
 }

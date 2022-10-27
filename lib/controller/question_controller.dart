@@ -4,7 +4,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/home_screen.dart';
 import 'package:telemedicine_mobile/Screens/survey_screen/result_survey_screen.dart';
+import 'package:telemedicine_mobile/Screens/video_player/exercise_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
+import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:telemedicine_mobile/models/Answer.dart';
 import 'package:telemedicine_mobile/models/Question.dart';
 import 'package:telemedicine_mobile/models/Survey.dart';
@@ -16,7 +18,8 @@ class QuestionController extends GetxController {
   RxInt totalQuestion = 0.obs;
   RxInt state = 4.obs;
   RxInt patientId = 0.obs;
-  RxInt numberCurrentQuestion = 1.obs;
+  int numberCurrentQuestion = 1;
+  final AccountController accountController = Get.find<AccountController>();
   Rx<Question> currenQuestion = new Question(
     id: 0,
     questiontitle: "",
@@ -33,13 +36,11 @@ class QuestionController extends GetxController {
   }
 
   tangNumber() {
-    if (numberCurrentQuestion.value < totalQuestion.value)
-      numberCurrentQuestion++;
+    if (numberCurrentQuestion < totalQuestion.value) numberCurrentQuestion++;
   }
 
   changeQuestion() {
-    currenQuestion.value =
-        listQuestion[numberCurrentQuestion.value - 1] as Question;
+    currenQuestion.value = listQuestion[numberCurrentQuestion - 1] as Question;
   }
 
   initListAnswer() {
@@ -65,18 +66,17 @@ class QuestionController extends GetxController {
   // }
 
   Future<bool> submitSurvey(int surveyId) async {
-    print(surveyId);
-    print(patientId.value);
-    print('bang bang');
     List<Surveypatientan> surveypatientans = [];
     answerMap.forEach((key, value) {
       surveypatientans.add(new Surveypatientan(questionid: key, rate: value));
     });
     Answer answer = new Answer(
         surveyid: surveyId,
-        patientid: patientId.value,
+        patientid: patientProfileController.patient.value.id,
         createdate: DateTime.now(),
         surveypatientans: surveypatientans);
+
+    print(answer.toJson());
     await FetchAPI.submitSurvey(answer).then((dataFromServer) {
       if (dataFromServer.id > 0) {
         Get.off(ResultSurveyScreen(surveyRespone: dataFromServer));

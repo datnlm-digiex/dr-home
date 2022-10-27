@@ -147,11 +147,11 @@ class _PatientProfileState extends State<PatientProfile> {
                                 ),
                                 RawMaterialButton(
                                   onPressed: () => {
-                                    patientProfileController.getMyAccount(),
-                                    Get.to(() => EditPatientProfile(),
-                                        transition:
-                                            Transition.rightToLeftWithFade,
-                                        duration: Duration(milliseconds: 600))
+                                    // patientProfileController.getMyAccount(),
+                                    // Get.to(() => EditPatientProfile(),
+                                    //     transition:
+                                    //         Transition.rightToLeftWithFade,
+                                    //     duration: Duration(milliseconds: 600))
                                   },
                                   child: Icon(
                                     Icons.edit,
@@ -203,10 +203,10 @@ class _PatientProfileState extends State<PatientProfile> {
                                 Expanded(child: Container()),
                                 RawMaterialButton(
                                   onPressed: () => {
-                                    Get.to(() => EditHealthCheckInfoScreen(),
-                                        transition:
-                                            Transition.rightToLeftWithFade,
-                                        duration: Duration(milliseconds: 600))
+                                    // Get.to(() => EditHealthCheckInfoScreen(),
+                                    //     transition:
+                                    //         Transition.rightToLeftWithFade,
+                                    //     duration: Duration(milliseconds: 600))
                                   },
                                   child: Icon(
                                     Icons.edit,

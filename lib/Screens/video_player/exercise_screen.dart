@@ -1,21 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:telemedicine_mobile/controller/exercise_controller.dart';
+import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
+import 'package:telemedicine_mobile/models/ExercisePaging.dart';
 import 'package:video_player/video_player.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:get/get.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:skeletons/skeletons.dart';
 
+import '../../compoment/status.dart';
+
 class ExerciseScreen extends StatefulWidget {
+  final ExerciseModel exerciseModel;
+
+  const ExerciseScreen({Key? key, required this.exerciseModel})
+      : super(key: key);
+
   @override
   State<ExerciseScreen> createState() => _ExerciseScreenState();
 }
 
 ExerciseController exerciseController = Get.put(ExerciseController());
+PatientProfileController patientProfileController =
+    Get.find<PatientProfileController>();
 
 class _ExerciseScreenState extends State<ExerciseScreen> {
   late VideoPlayerController videoPlayerController;
   late BuildContext contextGobal;
+  late DateTime startTime;
   final raw = 1000;
   var _stopWatchTimer;
   bool isCount = true;
@@ -26,19 +39,18 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
     _stopWatchTimer = StopWatchTimer(
       mode: StopWatchMode.countDown,
       onEnded: () => setState(
-        () => onEnd(),
+        () => onEnd(patientProfileController.patient.value.id),
       ),
       presetMillisecond: StopWatchTimer.getMilliSecFromMinute(
-          exerciseController.exerciseModel.practicetime == null
+          widget.exerciseModel.practicetime == null
               ? 0
-              : exerciseController
-                  .exerciseModel.practicetime!), // millisecond => minute.
+              : widget.exerciseModel.practicetime!), // millisecond => minute.
     );
-    videoPlayerController = VideoPlayerController.network(
-        exerciseController.exerciseModel.linkvideo!)
-      ..initialize().then((_) {
-        setState(() {});
-      });
+    videoPlayerController =
+        VideoPlayerController.network(widget.exerciseModel.linkvideo!)
+          ..initialize().then((_) {
+            setState(() {});
+          });
     videoPlayerController.setLooping(true);
   }
 
@@ -51,6 +63,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
   }
 
   void onStart() {
+    startTime = new DateTime.now();
     print('onStart');
     if (videoPlayerController.value.isPlaying) {
       videoPlayerController.pause();
@@ -69,9 +82,9 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
     _stopWatchTimer.onResetTimer();
   }
 
-  void onEnd() {
-    print('abcc');
-    exerciseController.submitExercise();
+  void onEnd(int patientId) {
+    exerciseController.submitExercise(
+        patientId, widget.exerciseModel.id!, startTime);
     showAlertDialog(contextGobal);
     videoPlayerController.pause();
     _stopWatchTimer.dispose();
@@ -84,8 +97,13 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('${exerciseController.exerciseModel.title}'),
+        title: Text('${widget.exerciseModel.title}'),
         backgroundColor: kBlueColor,
+        actions: [
+          IconButton(
+              onPressed: () => onEnd(patientProfileController.patient.value.id),
+              icon: Icon(Icons.done))
+        ],
       ),
       body: GetBuilder<ExerciseController>(
         builder: (controller) => controller.isLoading.isTrue
@@ -94,9 +112,6 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                 children: [
                   SizedBox(
                     height: 16,
-                  ),
-                  SizedBox(
-                    height: 26,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -161,9 +176,6 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                           },
                         )
                       : Container(),
-                  SizedBox(
-                    height: 16,
-                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 14),
                     child: Row(
@@ -171,12 +183,17 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                       children: [
                         Text(
                           'Tên bài tập:',
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 14),
                         ),
-                        Text(
-                          '${exerciseController.exerciseModel.title!}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 1.75,
+                          child: Text(
+                            '${widget.exerciseModel.title!}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                overflow: TextOverflow.ellipsis),
+                          ),
                         ),
                       ],
                     ),
@@ -191,12 +208,12 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                       children: [
                         Text(
                           'Thời gian:',
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          '${exerciseController.exerciseModel.practicetime!} phút',
+                          '${widget.exerciseModel.practicetime!} phút',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                              fontWeight: FontWeight.bold, fontSize: 14),
                         ),
                       ],
                     ),
@@ -206,13 +223,63 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 14),
-                    child: Text(
-                      '${controller.exerciseModel.description}',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                      textAlign: TextAlign.justify,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Mức độ:',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        Text(
+                          '${AppStatus.levelExercises[widget.exerciseModel.levelexercises!]}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14),
+                        ),
+                      ],
                     ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 14),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Lịch tập:',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        SizedBox(
+                          child: Text(
+                            '${widget.exerciseModel.practiceSchedule!}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: 150),
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 14),
+                        child: Text(
+                          '${widget.exerciseModel.description}',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.justify,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.8,
@@ -237,28 +304,6 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                       ),
                     ),
                   ),
-                  // SizedBox(
-                  //   height: 10,
-                  // ),
-                  // SizedBox(
-                  //   width: MediaQuery.of(context).size.width * 0.8,
-                  //   child: OutlinedButton(
-                  //     style: OutlinedButton.styleFrom(
-                  //       padding: const EdgeInsets.symmetric(
-                  //           vertical: 18, horizontal: 20),
-                  //       // backgroundColor: Colors.teal,
-                  //       shape: const RoundedRectangleBorder(
-                  //           borderRadius:
-                  //               BorderRadius.all(Radius.circular(29))),
-                  //     ),
-                  //     child: Text(
-                  //       'Tạo lại',
-                  //       style: TextStyle(
-                  //           fontSize: 16, fontWeight: FontWeight.bold),
-                  //     ),
-                  //     onPressed: () => onResetTimer(),
-                  //   ),
-                  // )
                 ],
               ),
       ),

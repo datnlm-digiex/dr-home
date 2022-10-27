@@ -59,9 +59,10 @@ class ExerciseModel {
         this.thumbnail,
         this.linkvideo,
         this.bodyposition,
+        this.practiceSchedule,
         this.practicetime,
         this.levelexercises,
-        this.durationvideo
+        this.durationvideo,
     });
 
     int? id;
@@ -70,6 +71,7 @@ class ExerciseModel {
     String? thumbnail;
     String? linkvideo;
     String? bodyposition;
+    String? practiceSchedule;
     int? practicetime;
     int? levelexercises;
     int? durationvideo;
@@ -81,9 +83,10 @@ class ExerciseModel {
         thumbnail: json["thumbnail"],
         linkvideo: json["linkvideo"],
         bodyposition: json["bodyposition"],
+        practiceSchedule: json["practiceSchedule"],
         practicetime: json["practicetime"],
         levelexercises: json["levelexercises"],
-        durationvideo: json["durationvideo"]
+        durationvideo: json["durationvideo"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -93,8 +96,9 @@ class ExerciseModel {
         "thumbnail": thumbnail,
         "linkvideo": linkvideo,
         "bodyposition": bodyposition,
+        "practiceSchedule": practiceSchedule,
         "practicetime": practicetime,
         "levelexercises": levelexercises,
-        "durationvideo": durationvideo
+        "durationvideo": durationvideo,
     };
 }

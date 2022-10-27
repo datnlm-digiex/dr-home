@@ -45,7 +45,7 @@ class ResultSurveyScreen extends StatelessWidget {
                         // border: Border.all(color: Colors.green),
                         color: Color.fromARGB(255, 255, 255, 255),
                       ),
-                      height: height * 0.65,
+                      height: height * 0.60,
                       width: width,
                       // height: 400,
                       // width: 400,
@@ -64,6 +64,16 @@ class ResultSurveyScreen extends StatelessWidget {
                                 children: [
                                   SizedBox(height: 52),
                                   Text(
+                                    'Bạn cần được tư vấn ngay lập tức bởi chuyên gia',
+                                    textAlign: TextAlign.center,
+                                    // overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        color: Colors.black),
+                                  ),
+                                  SizedBox(height: 22),
+                                  Text(
                                     '${surveyRespone.resulttext}',
                                     textAlign: TextAlign.center,
                                     // overflow: TextOverflow.ellipsis,
@@ -72,17 +82,7 @@ class ResultSurveyScreen extends StatelessWidget {
                                         fontSize: 25,
                                         color: Colors.green),
                                   ),
-                                  SizedBox(height: 22),
-                                  Text(
-                                    'Hy vọng bạn có sức khỏe tốt để vững bước tới thành công.',
-                                    textAlign: TextAlign.center,
-                                    // overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: 15),
                                   Image.network(
                                     '${surveyRespone.resultimage}',
                                     fit: BoxFit.cover,
@@ -93,9 +93,6 @@ class ResultSurveyScreen extends StatelessWidget {
                           ],
                         )),
                       ))),
-                  SizedBox(
-                    height: 10,
-                  ),
                   // Survey info
                   Center(
                     child: Padding(
@@ -123,9 +120,9 @@ class ResultSurveyScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 40,
-                  ),
+                  // SizedBox(
+                  //   height: 40,
+                  // ),
                 ],
               ),
             ),

@@ -40,14 +40,12 @@ class _LoginScreenState extends State<LoginScreen> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SvgPicture.asset(
-                  "assets/icons/covid-19.svg",
-                  height: size.height * 0.5,
-                ),
-                FacebookButton(),
-                SizedBox(
-                  height: 20,
-                ),
+                Image(
+                    image: AssetImage("assets/images/login_doctor_image.png")),
+                // FacebookButton(),
+                // SizedBox(
+                //   height: 20,
+                // ),
                 GoogleButton(),
               ],
             ),

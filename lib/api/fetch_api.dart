@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
 import 'package:get/get.dart' as GetX;
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
@@ -40,6 +42,8 @@ import 'package:telemedicine_mobile/models/Symptom.dart';
 import 'package:telemedicine_mobile/models/TimeFrame.dart';
 import 'package:dio/dio.dart';
 
+import '../models/SurveyHistoryResponse.dart';
+
 class FetchAPI {
   static Future<String> loginWithToken(String tokenId) async {
     print(tokenId);
@@ -48,6 +52,7 @@ class FetchAPI {
     data['tokenId'] = tokenId;
     data['loginType'] = 3;
     final accountController = GetX.Get.put(AccountController());
+    print('call login with token - fetech api');
     try {
       final response =
           await http.post(Uri.parse("https://13.232.213.53:8189/api/v1/login"),
@@ -57,7 +62,7 @@ class FetchAPI {
               body: jsonEncode(data));
       print(response.statusCode);
       Map bodyJson = json.decode(utf8.decode(response.bodyBytes));
-
+      print(bodyJson);
       String message = "Login Success";
       if (bodyJson.length == 1) {
         bodyJson.values.forEach((value) {
@@ -94,7 +99,7 @@ class FetchAPI {
       }
     } catch (e) {
       print(e.toString());
-      print("nhay catch");
+      print("nhay catch - login with token fetch API");
       return "";
     }
   }
@@ -280,6 +285,7 @@ class FetchAPI {
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json-patch+json',
         });
+    print(response.statusCode);
     if (response.statusCode == 201 || response.statusCode == 200) {
       var contentJSon = json.decode(utf8.decode(response.bodyBytes));
       SurveyResponse contentNews = SurveyResponse.fromJson(contentJSon);
@@ -622,6 +628,8 @@ class FetchAPI {
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
     } else {
+      print("token gg");
+      print(token);
       final response = await http.get(
         Uri.parse("https://13.232.213.53:8189/api/v1/patients/" +
             email +
@@ -631,9 +639,12 @@ class FetchAPI {
           HttpHeaders.authorizationHeader: 'Bearer $token',
         },
       );
+      print('fetchMyPatient - fetech api *************');
+      print(response.statusCode);
       if (response.statusCode == 200) {
         var contentJSon = json.decode(utf8.decode(response.bodyBytes));
         Patient patient = Patient.fromJson(contentJSon);
+        print(patient.id);
         return patient;
       } else if (response.statusCode == 404) {
         throw Exception("No account found with the type");
@@ -1138,6 +1149,8 @@ class FetchAPI {
         );
         if (response.statusCode == 200) {
           storage.deleteAll();
+          await GoogleSignIn().signOut();
+          // await FirebaseAuth.instance.signOut();
           return true;
         }
       }
@@ -1170,6 +1183,39 @@ class FetchAPI {
         return contentHospital;
       } else if (response.statusCode == 404) {
         throw Exception("Not found doctor");
+      } else if (response.statusCode == 401) {
+        throw Exception("Error: Unauthorized");
+      } else {
+        throw Exception("Internal server error");
+      }
+    }
+  }
+
+  static Future<SurveyHistoryResponse> fetchListHistorySurvey(
+      int patientId) async {
+    final storage = new Storage.FlutterSecureStorage();
+    String token = await storage.read(key: "accessToken") ?? "";
+    if (token.isEmpty) {
+      GetX.Get.offAll(LoginScreen(),
+          transition: GetX.Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500));
+      throw Exception("Error: UnAuthentication");
+    } else {
+      final response = await http.get(
+        Uri.parse(
+            "https://13.232.213.53:8189/api/v1/survey-patients?patientid=$patientId&order-by=Createdate&order-type=desc&page-offset=1&limit=20"),
+        headers: <String, String>{
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $token',
+        },
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        SurveyHistoryResponse surveyHistoryResponse =
+            surveyHistoryResponseFromJson(response.body);
+        return surveyHistoryResponse;
+      } else if (response.statusCode == 404) {
+        throw Exception("Not found survey");
       } else if (response.statusCode == 401) {
         throw Exception("Error: Unauthorized");
       } else {

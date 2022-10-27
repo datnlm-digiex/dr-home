@@ -256,7 +256,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                   // backgroundColor: Colors.green,
                                 );
                               } else if (questionController
-                                      .numberCurrentQuestion.value ==
+                                      .numberCurrentQuestion ==
                                   questionController.listQuestion.length) {
                                 questionController
                                     .submitSurvey(argumentData[2]['surveyId']);
@@ -267,7 +267,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                             },
                             // onPressed: () => Get.to(ExerciseScreen()),
                             child: Text(
-                              questionController.numberCurrentQuestion.value !=
+                              questionController.numberCurrentQuestion !=
                                       questionController.listQuestion.length
                                   ? 'Tiếp theo'
                                   : 'Hoàn thành',
@@ -323,6 +323,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 child: InkWell(
                   highlightColor: Colors.grey[200],
                   onTap: () {
+                    questionController.numberCurrentQuestion = 1;
                     Navigator.pop(contextDialog);
                     Get.off(BottomNavScreen());
                   },

@@ -1126,8 +1126,10 @@ class FetchAPI {
     final storage = new Storage.FlutterSecureStorage();
     final accountController = GetX.Get.put(AccountController());
     String token = await storage.read(key: "accessToken") ?? "";
+
+
     if (token.isEmpty) {
-      GetX.Get.offAll(LoginScreen(),
+      GetX.Get.off(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
@@ -1150,7 +1152,7 @@ class FetchAPI {
         if (response.statusCode == 200) {
           storage.deleteAll();
           await GoogleSignIn().signOut();
-          // await FirebaseAuth.instance.signOut();
+          await FirebaseAuth.instance.signOut();
           return true;
         }
       }

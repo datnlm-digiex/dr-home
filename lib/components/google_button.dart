@@ -36,7 +36,7 @@ class GoogleButton extends StatelessWidget {
                 msg: "Tài khoản của bạn đã bị khóa", fontSize: 18);
           } else if (checkLogin == "Login Success") {
             patientHistoryController.getTopDoctor();
-            Get.to(checkLoginGoogle(context));
+            Get.off(checkLoginGoogle(context));
           } else if (checkLogin == "Create Account") {
             Navigator.push(
                 context, MaterialPageRoute(builder: checkNewAccount));

@@ -314,7 +314,7 @@ class PatientProfileController extends GetxController {
   logout() {
     FetchAPI.userLogout().then((value) {
       if (value)
-        Get.offAll(() => LoginScreen(), duration: Duration(microseconds: 600));
+        Get.off(() => LoginScreen(), duration: Duration(microseconds: 600));
       Fluttertoast.showToast(msg: "Đăng xuất thành công", fontSize: 18);
     });
   }

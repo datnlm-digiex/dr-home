@@ -52,19 +52,6 @@ class QuestionController extends GetxController {
     }
   }
 
-  // compeleteSurvey() {
-  //   List<Surveypatientan> surveypatientans = [];
-  //   answerMap.forEach((key, value) {
-  //     surveypatientans.add(new Surveypatientan(questionid: key, rate: value));
-  //   });
-  //   Answer answer = new Answer(
-  //       surveyid: 1,
-  //       patientid: 1,
-  //       createdate: DateTime.now(),
-  //       surveypatientans: surveypatientans);
-  //   print(jsonEncode(answer));
-  // }
-
   Future<bool> submitSurvey(int surveyId) async {
     List<Surveypatientan> surveypatientans = [];
     answerMap.forEach((key, value) {

@@ -193,7 +193,7 @@ class _OverViewSurveyScreenState extends State<OverViewSurveyScreen> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.normal),
                                       text:
-                                          '${overViewSurveyController.surveyOverView.value.numberquestion + 1}'),
+                                          '${overViewSurveyController.surveyOverView.value.numberquestion}'),
                                 ],
                               ),
                             ),

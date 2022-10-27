@@ -76,9 +76,9 @@ class QuestionController extends GetxController {
         createdate: DateTime.now(),
         surveypatientans: surveypatientans);
 
-    print(answer.toJson());
     await FetchAPI.submitSurvey(answer).then((dataFromServer) {
       if (dataFromServer.id > 0) {
+        numberCurrentQuestion = 1;
         Get.off(ResultSurveyScreen(surveyRespone: dataFromServer));
         Fluttertoast.showToast(
             msg: "Cập nhật khảo sát thành công", fontSize: 18);
@@ -89,9 +89,11 @@ class QuestionController extends GetxController {
   }
 
   Future<bool> getListQuestion(int surveyId) async {
+    print(surveyId);
     await FetchAPI.fetchListQuestion(surveyId).then((dataFromServer) {
       listQuestion.value = dataFromServer;
       totalQuestion.value = dataFromServer.length;
+      print(dataFromServer);
     });
     changeQuestion();
     initListAnswer();

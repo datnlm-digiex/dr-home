@@ -64,16 +64,6 @@ class ResultSurveyScreen extends StatelessWidget {
                                 children: [
                                   SizedBox(height: 52),
                                   Text(
-                                    'Bạn cần được tư vấn ngay lập tức bởi chuyên gia',
-                                    textAlign: TextAlign.center,
-                                    // overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25,
-                                        color: Colors.black),
-                                  ),
-                                  SizedBox(height: 22),
-                                  Text(
                                     '${surveyRespone.resulttext}',
                                     textAlign: TextAlign.center,
                                     // overflow: TextOverflow.ellipsis,
@@ -81,6 +71,16 @@ class ResultSurveyScreen extends StatelessWidget {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 25,
                                         color: Colors.green),
+                                  ),
+                                  SizedBox(height: 22),
+                                  Text(
+                                    'Hy vọng bạn có sức khỏe tốt để vững bước tới thành công.',
+                                    textAlign: TextAlign.center,
+                                    // overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
                                   ),
                                   SizedBox(height: 15),
                                   Image.network(
@@ -98,7 +98,7 @@ class ResultSurveyScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
+                        width: MediaQuery.of(context).size.width * 0.9,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(29),
                           child: ElevatedButton(

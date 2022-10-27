@@ -45,7 +45,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           )
         ],
       ),
-      backgroundColor: kBackgroundColor,
+      backgroundColor: Colors.white,
       body: GetBuilder<ExerciseController>(
         builder: (controller) => Column(
           children: [
@@ -87,7 +87,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                 Column(
                   children: [
                     Text(
-                      exerciseController.duration.toString(),
+                      exerciseController.exercise.totalCount == null
+                          ? '0'
+                          : exerciseController.duration.toString(),
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
@@ -112,7 +114,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                     ),
                   ),
                   Text(
-                    '(${exerciseController.exercise.totalCount})',
+                    '(${exerciseController.exercise.totalCount == null ? 0 : exerciseController.exercise.totalCount})',
                     style: TextStyle(
                       fontSize: 18,
                     ),
@@ -127,9 +129,22 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               child: controller.isLoading.isTrue
                   ? const Center(child: CircularProgressIndicator())
                   : controller.exercise.content!.length == 0
-                      ? Text(
-                          'Không có bài tập nào',
-                          style: TextStyle(fontSize: 18),
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                "assets/images/empty.gif",
+                              ),
+                              Text(
+                                'Không tìm thấy bài tập',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
                         )
                       : Column(
                           children: [

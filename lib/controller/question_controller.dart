@@ -79,6 +79,7 @@ class QuestionController extends GetxController {
     print(answer.toJson());
     await FetchAPI.submitSurvey(answer).then((dataFromServer) {
       if (dataFromServer.id > 0) {
+        numberCurrentQuestion = 1;
         Get.off(ResultSurveyScreen(surveyRespone: dataFromServer));
         Fluttertoast.showToast(
             msg: "Cập nhật khảo sát thành công", fontSize: 18);

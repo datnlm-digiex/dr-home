@@ -20,12 +20,12 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
   final listDoctorController = Get.put(ListDoctorController());
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);
-  FilterController filterController = Get.put(FilterController());
+  // FilterController filterController = Get.put(FilterController());
 
   @override
   void initState() {
     super.initState();
-    filterController.majorID.value = 0;
+    // filterController.majorID.value = 0;
   }
 
   Future<bool> getDoctorData({bool isRefresh = false}) async {

@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final patientHistoryController = Get.put(PatientHistoryController());
   final bottomNavbarController = Get.put(BottomNavbarController());
-  final filterController = Get.put(FilterController());
+  // final filterController = Get.put(FilterController());
 
   Future<bool> getDoctorData({bool isRefresh = false}) async {
     if (!isRefresh) {
@@ -460,7 +460,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 10,
                                   ),
                                   Text(
-                                    "${exerciseController.exerciseProcess.times}/${exerciseController.exerciseProcess.totalTimes} Bài tập",
+                                    "${exerciseController.exerciseProcess.times}/${exerciseController.exerciseProcess.totalTimes} Lần tập",
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w300,

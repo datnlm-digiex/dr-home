@@ -108,122 +108,166 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                       fontSize: 18),
                                 ),
                                 SizedBox(height: 30),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                        color:
-                                            Color.fromARGB(255, 209, 253, 211)),
-                                    color: Color.fromARGB(255, 243, 251, 243),
-                                  ),
-                                  child: ListTile(
-                                    title: Text(
-                                      '${questionController.currenQuestion.value.ans1}',
-                                    ),
-                                    leading: Radio(
-                                      fillColor: MaterialStateColor.resolveWith(
-                                          (states) => Colors.green),
-                                      value: 0,
-                                      groupValue: questionController.answerMap[
-                                          questionController
-                                              .currenQuestion.value.id],
-                                      onChanged: (value) {
-                                        questionController.setState(
-                                            int.parse(value.toString()),
-                                            questionController
-                                                .currenQuestion.value.id!);
-                                      },
-                                    ),
-                                  ),
-                                ),
+                                questionController.currenQuestion.value.ans1 ==
+                                        ''
+                                    ? Container()
+                                    : Container(
+                                        margin: EdgeInsets.only(top: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          border: Border.all(
+                                              color: Color.fromARGB(
+                                                  255, 209, 253, 211)),
+                                          color: Color.fromARGB(
+                                              255, 243, 251, 243),
+                                        ),
+                                        child: ListTile(
+                                          title: Text(
+                                            '${questionController.currenQuestion.value.ans1}',
+                                          ),
+                                          leading: Radio(
+                                            fillColor:
+                                                MaterialStateColor.resolveWith(
+                                                    (states) => Colors.green),
+                                            value: 0,
+                                            groupValue:
+                                                questionController.answerMap[
+                                                    questionController
+                                                        .currenQuestion
+                                                        .value
+                                                        .id],
+                                            onChanged: (value) {
+                                              questionController.setState(
+                                                  int.parse(value.toString()),
+                                                  questionController
+                                                      .currenQuestion
+                                                      .value
+                                                      .id!);
+                                            },
+                                          ),
+                                        ),
+                                      ),
                                 SizedBox(height: 10),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                        color:
-                                            Color.fromARGB(255, 209, 253, 211)),
-                                    color: Color.fromARGB(255, 243, 251, 243),
-                                  ),
-                                  child: ListTile(
-                                    title: Text(
-                                        '${questionController.currenQuestion.value.ans2}'),
-                                    leading: Radio(
-                                      fillColor: MaterialStateColor.resolveWith(
-                                          (states) => Colors.green),
-                                      value: 1,
-                                      groupValue: questionController.answerMap[
-                                          questionController
-                                              .currenQuestion.value.id],
-                                      onChanged: (value) {
-                                        questionController.setState(
-                                            int.parse(value.toString()),
-                                            questionController
-                                                .currenQuestion.value.id!);
-                                      },
-                                    ),
-                                  ),
-                                ),
+                                questionController.currenQuestion.value.ans2 ==
+                                        ''
+                                    ? Container()
+                                    : Container(
+                                        margin: EdgeInsets.only(top: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          border: Border.all(
+                                              color: Color.fromARGB(
+                                                  255, 209, 253, 211)),
+                                          color: Color.fromARGB(
+                                              255, 243, 251, 243),
+                                        ),
+                                        child: ListTile(
+                                          title: Text(
+                                              '${questionController.currenQuestion.value.ans2}'),
+                                          leading: Radio(
+                                            fillColor:
+                                                MaterialStateColor.resolveWith(
+                                                    (states) => Colors.green),
+                                            value: 1,
+                                            groupValue:
+                                                questionController.answerMap[
+                                                    questionController
+                                                        .currenQuestion
+                                                        .value
+                                                        .id],
+                                            onChanged: (value) {
+                                              questionController.setState(
+                                                  int.parse(value.toString()),
+                                                  questionController
+                                                      .currenQuestion
+                                                      .value
+                                                      .id!);
+                                            },
+                                          ),
+                                        ),
+                                      ),
                                 SizedBox(height: 10),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                        color:
-                                            Color.fromARGB(255, 209, 253, 211)),
-                                    color: Color.fromARGB(255, 243, 251, 243),
-                                  ),
-                                  child: ListTile(
-                                    title: Text(
-                                        '${questionController.currenQuestion.value.ans3}'),
-                                    leading: Radio(
-                                      fillColor: MaterialStateColor.resolveWith(
-                                          (states) => Colors.green),
-                                      value: 2,
-                                      groupValue: questionController.answerMap[
-                                          questionController
-                                              .currenQuestion.value.id],
-                                      onChanged: (value) {
-                                        questionController.setState(
-                                            int.parse(value.toString()),
-                                            questionController
-                                                .currenQuestion.value.id!);
-                                      },
-                                    ),
-                                  ),
-                                ),
+                                questionController.currenQuestion.value.ans3 ==
+                                        null
+                                    ? Container()
+                                    : Container(
+                                        margin: EdgeInsets.only(top: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          border: Border.all(
+                                              color: Color.fromARGB(
+                                                  255, 209, 253, 211)),
+                                          color: Color.fromARGB(
+                                              255, 243, 251, 243),
+                                        ),
+                                        child: ListTile(
+                                          title: Text(
+                                              '${questionController.currenQuestion.value.ans3}'),
+                                          leading: Radio(
+                                            fillColor:
+                                                MaterialStateColor.resolveWith(
+                                                    (states) => Colors.green),
+                                            value: 2,
+                                            groupValue:
+                                                questionController.answerMap[
+                                                    questionController
+                                                        .currenQuestion
+                                                        .value
+                                                        .id],
+                                            onChanged: (value) {
+                                              questionController.setState(
+                                                  int.parse(value.toString()),
+                                                  questionController
+                                                      .currenQuestion
+                                                      .value
+                                                      .id!);
+                                            },
+                                          ),
+                                        ),
+                                      ),
                                 SizedBox(height: 10),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                        color:
-                                            Color.fromARGB(255, 209, 253, 211)),
-                                    color: Color.fromARGB(255, 243, 251, 243),
-                                  ),
-                                  child: ListTile(
-                                    title: Text(
-                                        '${questionController.currenQuestion.value.ans4}'),
-                                    leading: Radio(
-                                      fillColor: MaterialStateColor.resolveWith(
-                                          (states) => Colors.green),
-                                      value: 3,
-                                      groupValue: questionController.answerMap[
-                                          questionController
-                                              .currenQuestion.value.id],
-                                      onChanged: (value) {
-                                        questionController.setState(
-                                            int.parse(value.toString()),
-                                            questionController
-                                                .currenQuestion.value.id!);
-                                      },
-                                    ),
-                                  ),
-                                ),
+                                questionController.currenQuestion.value.ans4 ==
+                                        null
+                                    ? Container()
+                                    : Container(
+                                        margin: EdgeInsets.only(top: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          border: Border.all(
+                                              color: Color.fromARGB(
+                                                  255, 209, 253, 211)),
+                                          color: Color.fromARGB(
+                                              255, 243, 251, 243),
+                                        ),
+                                        child: ListTile(
+                                          title: Text(
+                                              '${questionController.currenQuestion.value.ans4}'),
+                                          leading: Radio(
+                                            fillColor:
+                                                MaterialStateColor.resolveWith(
+                                                    (states) => Colors.green),
+                                            value: 3,
+                                            groupValue:
+                                                questionController.answerMap[
+                                                    questionController
+                                                        .currenQuestion
+                                                        .value
+                                                        .id],
+                                            onChanged: (value) {
+                                              questionController.setState(
+                                                  int.parse(value.toString()),
+                                                  questionController
+                                                      .currenQuestion
+                                                      .value
+                                                      .id!);
+                                            },
+                                          ),
+                                        ),
+                                      ),
                               ],
                             ),
                           ),
@@ -233,7 +277,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     ),
                     Center(
                       child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
+                        width: MediaQuery.of(context).size.width * 0.9,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(29),
                           child: ElevatedButton(

@@ -19,7 +19,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final patientProfileController = Get.put(PatientProfileController());
   final listDoctorController = Get.put(ListDoctorController());
   final bottomNavbarController = Get.put(BottomNavbarController());
-  final filterController = Get.put(FilterController());
+  // final filterController = Get.put(FilterController());
 
   @override
   void initState() {
@@ -62,7 +62,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               patientProfileController.getNearestHealthCheck(),
               if (index == 1)
                 {
-                  filterController.getListMajor(),
+                  // filterController.getListMajor(),
                   listDoctorController.condition.value = "",
                 },
               if (bottomNavbarController.currentIndex.value == 3)

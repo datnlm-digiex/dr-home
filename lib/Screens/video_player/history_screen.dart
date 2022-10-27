@@ -24,14 +24,31 @@ class _HistoryScreenState extends State<HistoryScreen> {
         title: Text('Lịch sử'),
         backgroundColor: kBlueColor,
       ),
+      backgroundColor: Colors.white,
       body: SizedBox(
         child: GetBuilder<ExerciseController>(
           builder: (controller) => controller.isLoading.isTrue
               ? const Center(child: CircularProgressIndicator())
               : controller.exercise.content!.length == 0
-                  ? Text(
-                      'Không có bài tập nào',
-                      style: TextStyle(fontSize: 18),
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Image.asset(
+                            "assets/images/empty.gif",
+                          ),
+                          Text(
+                            'Không tìm thấy lịch sử bài tập',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
                     )
                   : SingleChildScrollView(
                       child: Padding(
@@ -50,31 +67,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
                                   children: [
-                                    // Padding(
-                                    //   padding: const EdgeInsets.symmetric(
-                                    //       horizontal: 14.0),
-                                    //   child: Padding(
-                                    //     padding:
-                                    //         const EdgeInsets.only(top: 8.0),
-                                    //     child:
-                                    //     Row(
-                                    //       mainAxisAlignment:
-                                    //           MainAxisAlignment.spaceBetween,
-                                    //       children: [
-                                    //         Text(
-                                    //           '24 tháng 11 - 30 tháng 11',
-                                    //           style: TextStyle(
-                                    //               fontWeight: FontWeight.w300),
-                                    //         ),
-                                    //         Text(
-                                    //           '10 lần tập, 15 phút',
-                                    //           style: TextStyle(
-                                    //               fontWeight: FontWeight.w300),
-                                    //         ),
-                                    //       ],
-                                    //     ),
-                                    //   ),
-                                    // ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 8.0),
                                       child: ListView.separated(

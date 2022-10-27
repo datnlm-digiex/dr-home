@@ -226,7 +226,7 @@ class _OverViewSurveyScreenState extends State<OverViewSurveyScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
+                        width: MediaQuery.of(context).size.width * 0.9,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(29),
                           child: ElevatedButton(

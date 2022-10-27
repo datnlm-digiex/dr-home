@@ -60,8 +60,25 @@ class _SurveyHistoryScreenState extends State<SurveyHistoryScreen> {
                         ? const Center(child: CircularProgressIndicator())
                         : controller.historySurveyResponse.content!.isEmpty &&
                                 !controller.isLoading
-                            ? Container(
-                                child: Text("Không có khảo sát "),
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Image.asset(
+                                      "assets/images/empty.gif",
+                                    ),
+                                    Text(
+                                      'Không tìm thấy lịch sử bài tập',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               )
                             : ListView.builder(
                                 scrollDirection: Axis.vertical,

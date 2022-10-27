@@ -67,9 +67,7 @@ class _CellCardState extends State<SurveyHistoryCard> {
                       children: [
                         Text('Thời gian:'),
                         Text(
-                            // '${DateTime.parse('${widget.surveyResult.createdate.toString()}')}',
-                            '${DateFormat.yMMMMEEEEd('vi_VN').format(widget.surveyResult.createdate)}',
-                            // '${DateFormat("yyyy-MM-dd hh:mm").format(widget.surveyResult.createdate)}',
+                            '${DateFormat("hh:mm dd-MM-yyyy ").format(widget.surveyResult.createdate)}',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             )),

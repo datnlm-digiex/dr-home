@@ -25,7 +25,18 @@ class _ExerciseHistoryScreenState extends State<ExerciseHistoryScreen> {
   Widget build(BuildContext context) {
     return GetBuilder<ExerciseController>(
       builder: (controller) => ListTile(
-        onTap: () => {},
+        onTap: () => showModalBottomSheet<void>(
+            isScrollControlled: true,
+            // backgroundColor: Colors.transparent,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20.0),
+              ),
+            ),
+            context: context,
+            builder: (BuildContext context) {
+              return _pickupImage(context);
+            }),
         // Get.to(ExerciseScreen(exerciseModel: widget.exerciseHistory)),
         // controller.getById(widget.exerciseModel.id!, widget.patientId),
         minLeadingWidth: 65,
@@ -60,6 +71,131 @@ class _ExerciseHistoryScreenState extends State<ExerciseHistoryScreen> {
                 ),
           onPressed: () => {},
         ),
+      ),
+    );
+  }
+
+  SizedBox _pickupImage(BuildContext context) {
+    String session = '';
+    String time = '';
+    if (widget.exerciseHistory.morning != null) {
+      session = 'sáng';
+      time = widget.exerciseHistory.morning!;
+    }
+    if (widget.exerciseHistory.afternoon != null) {
+      time = widget.exerciseHistory.afternoon!;
+      if (session.trim().length != 0) {
+        session += ', ';
+      }
+      session += 'chiều';
+    }
+    if (widget.exerciseHistory.midday != null) {
+      time = widget.exerciseHistory.midday!;
+      if (session.trim().length != 0) {
+        session += ', ';
+      }
+      session += 'trưa';
+    }
+    if (widget.exerciseHistory.night != null) {
+      time = widget.exerciseHistory.night!;
+      if (session.trim().length != 0) {
+        session += ', ';
+      }
+      session += 'tối';
+    }
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.90,
+      child: Wrap(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CachedNetworkImage(
+                    imageUrl: widget.exerciseHistory.thumbnail ?? '',
+                    progressIndicatorBuilder:
+                        (context, url, downloadProgress) =>
+                            CircularProgressIndicator(
+                                value: downloadProgress.progress),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
+                ),
+                ListView(
+                  shrinkWrap: true,
+                  children: ListTile.divideTiles(context: context, tiles: [
+                    ListTile(
+                      onTap: () => {},
+                      title: Text(
+                        'Bài tập',
+                      ),
+                      trailing: Text(
+                        widget.exerciseHistory.exerciseName!,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () => {},
+                      title: Text(
+                        'Lịch tập',
+                      ),
+                      trailing: Text(
+                        '${widget.exerciseHistory.practicescheduleConvert}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () => {},
+                      title: Text(
+                        'Thời lượng',
+                      ),
+                      trailing: Text(
+                        '${widget.exerciseHistory.timepractice} phút',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () => {},
+                      title: Text(
+                        'Buổi $session',
+                      ),
+                      trailing: Text(
+                        '$time',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () => {},
+                      title: Text(
+                        'Thời gian',
+                      ),
+                      trailing: Text(
+                        '${DateFormat.yMd('vi_VN').format(widget.exerciseHistory.practiceday!)}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () => {},
+                      title: Text(
+                        'Trạng thái',
+                      ),
+                      trailing: Text(
+                        widget.exerciseHistory.iscomplete!
+                            ? 'Hoàn thành'
+                            : 'Chưa hoàn thành',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ]).toList(),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

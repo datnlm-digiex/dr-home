@@ -15,7 +15,7 @@ class CategoryCard extends StatelessWidget {
 
   CategoryCard(this._title, this._imageUrl, this._bgColor, this.click);
   final bottomNavbarController = Get.put(BottomNavbarController());
-  final filterController = Get.put(FilterController());
+  // final filterController = Get.put(FilterController());
   final listDoctorController = Get.put(ListDoctorController());
 
   @override
@@ -24,7 +24,7 @@ class CategoryCard extends StatelessWidget {
       onTap: () => {
         if (click == 1)
           {
-            filterController.getListMajor(),
+            // filterController.getListMajor(),
             bottomNavbarController.currentIndex.value = 1,
             listDoctorController.condition.value = "",
           }
@@ -33,7 +33,9 @@ class CategoryCard extends StatelessWidget {
             bottomNavbarController.currentIndex.value = 2,
           }
         else if (click == 4)
-          {Get.to(HospitalMap())}
+          {
+            // Get.to(HospitalMap())
+          }
       },
       child: Container(
         width: 130,

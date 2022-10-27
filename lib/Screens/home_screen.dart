@@ -460,7 +460,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 10,
                                   ),
                                   Text(
-                                    "${exerciseController.exerciseProcess.times}/${exerciseController.exerciseProcess.totalTimes} Bài tập",
+                                    "${exerciseController.exerciseProcess.times}/${exerciseController.exerciseProcess.totalTimes} Lần tập",
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w300,

@@ -41,6 +41,10 @@ class QuestionController extends GetxController {
 
   changeQuestion() {
     currenQuestion.value = listQuestion[numberCurrentQuestion - 1] as Question;
+    print(currenQuestion.value.ans1);
+    print(currenQuestion.value.ans2);
+    print(currenQuestion.value.ans3);
+    print(currenQuestion.value.ans4);
   }
 
   initListAnswer() {

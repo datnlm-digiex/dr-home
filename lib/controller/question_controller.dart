@@ -87,6 +87,11 @@ class QuestionController extends GetxController {
         Fluttertoast.showToast(
             msg: "Cập nhật khảo sát thành công", fontSize: 18);
         update();
+      } else {
+        Get.off(HomeScreen());
+        Fluttertoast.showToast(
+            msg: "Cập nhật khảo sát thất bại", fontSize: 18);
+        update();
       }
     });
     return true;

@@ -285,7 +285,7 @@ class FetchAPI {
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json-patch+json',
         });
-    print(response.statusCode);
+    print('Status post:  ${response.statusCode}');
     if (response.statusCode == 201 || response.statusCode == 200) {
       var contentJSon = json.decode(utf8.decode(response.bodyBytes));
       SurveyResponse contentNews = SurveyResponse.fromJson(contentJSon);

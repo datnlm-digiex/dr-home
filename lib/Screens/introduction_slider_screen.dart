@@ -15,7 +15,8 @@ class IntroductionScreenSlider extends StatefulWidget {
   const IntroductionScreenSlider({Key? key}) : super(key: key);
 
   @override
-  State<IntroductionScreenSlider> createState() => IntroductionScreenSliderState();
+  State<IntroductionScreenSlider> createState() =>
+      IntroductionScreenSliderState();
 }
 
 class IntroductionScreenSliderState extends State<IntroductionScreenSlider> {
@@ -26,13 +27,14 @@ class IntroductionScreenSliderState extends State<IntroductionScreenSlider> {
     super.initState();
     listContentConfig.add(IntroductionScreenDetail(
         image: 'assets/images/Hospital-Doctor.jpeg',
-        title: 'Làm khảo sát',
-        description: 'Làm khảo sát để kiểm tra tình trạng sức khỏe'));
-    listContentConfig.add(IntroductionScreenDetail(
-        image: 'assets/images/introduction_image_1.png',
         title: 'Tập vật lý trị liệu',
         description:
-            'Tập vật lý trị liệu giúp điều trị Covid-19 hiệu quả hơn'));
+            'Tập vật lý trị liệu giúp điều trị hậu Covid-19 hiệu quả hơn'));
+    listContentConfig.add(IntroductionScreenDetail(
+        image: 'assets/images/introduction_image_1.png',
+        title: 'Làm khảo sát',
+        description: 'Làm khảo sát để kiểm tra tình trạng sức khỏe'));
+
     listContentConfig.add(LoginScreen());
     // listContentConfig.add();
   }

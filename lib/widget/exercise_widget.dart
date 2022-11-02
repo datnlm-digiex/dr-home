@@ -35,8 +35,7 @@ class _ExerciseState extends State<Exercise> {
   Widget build(BuildContext context) {
     return GetBuilder<ExerciseController>(
       builder: (controller) => ListTile(
-        onTap: () =>
-            Get.to(ExerciseScreen(exerciseModel: widget.exerciseModel)),
+        onTap: () => Get.to(ExerciseScreen(exerciseModel: widget.exerciseModel)),
         // controller.getById(widget.exerciseModel.id!, widget.patientId),
         minLeadingWidth: 65,
         leading: ClipRRect(

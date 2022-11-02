@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "247221704893",
-    "project_id": "drhome-6cec1",
-    "storage_bucket": "drhome-6cec1.appspot.com"
+    "project_number": "219376448414",
+    "project_id": "drhome-17380",
+    "storage_bucket": "drhome-17380.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:247221704893:android:ddb2e7d72d039c499e7fd4",
+        "mobilesdk_app_id": "1:219376448414:android:2b821204be4f78c8ef1c8f",
         "android_client_info": {
           "package_name": "com.example.telemedicine_mobile"
         }
       },
       "oauth_client": [
         {
-          "client_id": "247221704893-96r3ao3sp2tm0g7bh73vg9a5jb43l1h0.apps.googleusercontent.com",
+          "client_id": "219376448414-60cmb8u56ij9odbj3h89c7i1kf0lp1mg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.telemedicine_mobile",
@@ -22,35 +22,27 @@
           }
         },
         {
-          "client_id": "247221704893-f3pu634mf6fnntprv4nnubhchsalhn7j.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.telemedicine_mobile",
-            "certificate_hash": "0ff9d52fc472227fd1c5dcd8b9a110cbc8803c77"
-          }
-        },
-        {
-          "client_id": "247221704893-56t41eaobrg9cjfh3kf00ilmc643969r.apps.googleusercontent.com",
+          "client_id": "219376448414-u8j68nkq1c0p78gku6ncpfa7nmnv4c4e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBOruyRDmpHfEEW3kUeKxrD4HjM068huvg"
+          "current_key": "AIzaSyB0Iwrwm-h7XVGhlr923px6Q2nBZDZ9jOc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "247221704893-56t41eaobrg9cjfh3kf00ilmc643969r.apps.googleusercontent.com",
+              "client_id": "219376448414-u8j68nkq1c0p78gku6ncpfa7nmnv4c4e.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "247221704893-akh12mm3q67cre673jam1a8o6sl7amh7.apps.googleusercontent.com",
+              "client_id": "219376448414-fop1k5bv73tr3307nq8uh70ghom0a4ts.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "dasda"
+                "bundle_id": "com.example.drhome"
               }
             }
           ]

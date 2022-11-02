@@ -29,7 +29,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         child: GetBuilder<ExerciseController>(
           builder: (controller) => controller.isLoading.isTrue
               ? const Center(child: CircularProgressIndicator())
-              : controller.exercise.content!.length == 0
+              :  controller.exerciseHistory.content!.length == 0
                   ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,

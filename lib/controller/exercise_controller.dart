@@ -35,7 +35,7 @@ class ExerciseController extends GetxController {
           'patient': patientId.toString(),
           'date': new DateFormat('yyyy-MM-dd').format(DateTime.now()),
           "page-offset": '1',
-          "limit": '50',
+          "limit": '999',
           'exercise-group': type.toString(),
         };
         final response = await http.get(
@@ -90,18 +90,13 @@ class ExerciseController extends GetxController {
               "Content-Type": "application/json",
               "Authorization": "Bearer $token",
             });
-        print('ex process');
-        print(response.statusCode);
         if (response.statusCode == 200) {
-          print(response.body);
           var exerciseProcessResponse = exerciseProcessFromJson(response.body);
 
           exerciseProcess = exerciseProcessResponse;
         }
       }
     } catch (e) {
-      print('nhay catch');
-      print(e.toString());
       e.toString();
     } finally {
       isLoading(false);
@@ -110,6 +105,10 @@ class ExerciseController extends GetxController {
   }
 
   Future<void> getHistory(int groupId, int patientId) async {
+    print("groupId");
+    print(groupId);
+    print("patientId");
+    print(patientId);
     try {
       isLoading(true);
       final storage = new Storage.FlutterSecureStorage();
@@ -138,11 +137,12 @@ class ExerciseController extends GetxController {
               "page-offset": '1',
               "limit": '9999',
             });
-
+        print(response.statusCode);
         if (response.statusCode == 200) {
           var exerciseResponse = exerciseHistoryPagingFromJson(response.body);
           if (exerciseResponse.content != null) {
             exerciseHistory = exerciseResponse;
+            print(exerciseHistory.content!.length);
           }
         }
       }
@@ -188,7 +188,6 @@ class ExerciseController extends GetxController {
           print("submit sucess");
         }
       }
-      print('end if');
     } catch (e) {
       print("nhay catch");
       // e.toString();

@@ -37,8 +37,6 @@ class _ExerciseHistoryScreenState extends State<ExerciseHistoryScreen> {
             builder: (BuildContext context) {
               return _pickupImage(context);
             }),
-        // Get.to(ExerciseScreen(exerciseModel: widget.exerciseHistory)),
-        // controller.getById(widget.exerciseModel.id!, widget.patientId),
         minLeadingWidth: 65,
         leading: ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
@@ -48,9 +46,7 @@ class _ExerciseHistoryScreenState extends State<ExerciseHistoryScreen> {
               progressIndicatorBuilder: (context, url, downloadProgress) =>
                   CircularProgressIndicator(value: downloadProgress.progress),
               errorWidget: (context, url, error) => const Icon(Icons.error),
-            )
-            // Image.network(widget.exerciseModel.thumbnail!, fit: BoxFit.cover),
-            ),
+            )),
         title: Text(
           '${widget.exerciseHistory.exerciseName}',
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -60,7 +56,8 @@ class _ExerciseHistoryScreenState extends State<ExerciseHistoryScreen> {
           style: const TextStyle(fontSize: 14),
         ),
         trailing: IconButton(
-          icon: widget.exerciseHistory.iscomplete!
+          icon: widget.exerciseHistory.iscomplete != null &&
+                  widget.exerciseHistory.iscomplete!
               ? Icon(
                   Icons.check,
                   color: Colors.green,
@@ -76,33 +73,6 @@ class _ExerciseHistoryScreenState extends State<ExerciseHistoryScreen> {
   }
 
   SizedBox _pickupImage(BuildContext context) {
-    String session = '';
-    String time = '';
-    if (widget.exerciseHistory.morning != null) {
-      session = 'sáng';
-      time = widget.exerciseHistory.morning!;
-    }
-    if (widget.exerciseHistory.afternoon != null) {
-      time = widget.exerciseHistory.afternoon!;
-      if (session.trim().length != 0) {
-        session += ', ';
-      }
-      session += 'chiều';
-    }
-    if (widget.exerciseHistory.midday != null) {
-      time = widget.exerciseHistory.midday!;
-      if (session.trim().length != 0) {
-        session += ', ';
-      }
-      session += 'trưa';
-    }
-    if (widget.exerciseHistory.night != null) {
-      time = widget.exerciseHistory.night!;
-      if (session.trim().length != 0) {
-        session += ', ';
-      }
-      session += 'tối';
-    }
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.90,
       child: Wrap(
@@ -129,62 +99,120 @@ class _ExerciseHistoryScreenState extends State<ExerciseHistoryScreen> {
                   shrinkWrap: true,
                   children: ListTile.divideTiles(context: context, tiles: [
                     ListTile(
+                      minLeadingWidth: 85,
                       onTap: () => {},
-                      title: Text(
+                      leading: Text(
                         'Bài tập',
                       ),
-                      trailing: Text(
+                      title: Text(
                         widget.exerciseHistory.exerciseName!,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                     ListTile(
+                      minLeadingWidth: 85,
                       onTap: () => {},
-                      title: Text(
+                      leading: Text(
                         'Lịch tập',
                       ),
-                      trailing: Text(
+                      title: Text(
                         '${widget.exerciseHistory.practicescheduleConvert}',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                     ListTile(
+                      minLeadingWidth: 85,
                       onTap: () => {},
-                      title: Text(
+                      leading: Text(
                         'Thời lượng',
                       ),
-                      trailing: Text(
+                      title: Text(
                         '${widget.exerciseHistory.timepractice} phút',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
+                    widget.exerciseHistory.morning != null
+                        ? ListTile(
+                            minLeadingWidth: 85,
+                            onTap: () => {},
+                            title: Text(
+                              'Buổi sáng',
+                            ),
+                            trailing: Text(
+                              '${widget.exerciseHistory.morning!}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          )
+                        : Container(),
+                    widget.exerciseHistory.midday != null
+                        ? ListTile(
+                            minLeadingWidth: 85,
+                            onTap: () => {},
+                            leading: Text(
+                              'Buổi trưa',
+                            ),
+                            title: Text(
+                              '${widget.exerciseHistory.midday!}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          )
+                        : Container(),
+                    widget.exerciseHistory.afternoon != null
+                        ? ListTile(
+                            minLeadingWidth: 85,
+                            onTap: () => {},
+                            leading: Text(
+                              'Buổi chiều',
+                            ),
+                            title: Text(
+                              '${widget.exerciseHistory.afternoon!}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          )
+                        : Container(),
+                    widget.exerciseHistory.night != null
+                        ? ListTile(
+                            minLeadingWidth: 85,
+                            onTap: () => {},
+                            leading: Text(
+                              'Buổi tối',
+                            ),
+                            title: Text(
+                              '${widget.exerciseHistory.night!}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          )
+                        : Container(),
                     ListTile(
+                      minLeadingWidth: 85,
                       onTap: () => {},
-                      title: Text(
-                        'Buổi $session',
-                      ),
-                      trailing: Text(
-                        '$time',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    ListTile(
-                      onTap: () => {},
-                      title: Text(
+                      leading: Text(
                         'Thời gian',
                       ),
-                      trailing: Text(
+                      title: Text(
                         '${DateFormat.yMd('vi_VN').format(widget.exerciseHistory.practiceday!)}',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            overflow: TextOverflow.ellipsis),
                       ),
                     ),
                     ListTile(
+                      minLeadingWidth: 85,
                       onTap: () => {},
-                      title: Text(
+                      leading: Text(
                         'Trạng thái',
                       ),
-                      trailing: Text(
-                        widget.exerciseHistory.iscomplete!
+                      title: Text(
+                        widget.exerciseHistory.iscomplete != null &&
+                                widget.exerciseHistory.iscomplete!
                             ? 'Hoàn thành'
                             : 'Chưa hoàn thành',
                         style: TextStyle(fontWeight: FontWeight.bold),

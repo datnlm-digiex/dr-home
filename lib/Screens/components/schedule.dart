@@ -50,7 +50,7 @@ class ScheduleCard extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context, rootNavigator: true).pop();
                   listDoctorController.slot.value = slot;
-                  Get.to(ChatBotScreen());
+                  // Get.to(ChatBotScreen());
                 },
                 child: Text('Đồng ý'),
                 isDefaultAction: true,

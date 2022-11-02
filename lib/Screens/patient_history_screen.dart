@@ -25,7 +25,7 @@ class _PatientHistoryScreenState extends State<PatientHistoryScreen> {
   void initState() {
     super.initState();
     listDoctorController.getAllDoctor();
-    patientHistoryController.getMyHistory();
+    // patientHistoryController.getMyHistory();
     patientHistoryController.sttHistory.value = "upcoming";
   }
 
@@ -533,16 +533,17 @@ class BoxHistory extends StatelessWidget {
                                                     patientHistoryController
                                                         .emptyReason
                                                         .value = true;
-                                                  } else {
-                                                    patientHistoryController
-                                                        .cancelHealthCheck(
-                                                            healthCheckID,
-                                                            reason.text);
-                                                    Navigator.of(context).pop();
-                                                    Fluttertoast.showToast(
-                                                        msg: "Đã hủy cuộc hẹn",
-                                                        fontSize: 18);
                                                   }
+                                                  //  else {
+                                                  // patientHistoryController
+                                                  //     .cancelHealthCheck(
+                                                  //         healthCheckID,
+                                                  //         reason.text);
+                                                  // Navigator.of(context).pop();
+                                                  // Fluttertoast.showToast(
+                                                  //     msg: "Đã hủy cuộc hẹn",
+                                                  //     fontSize: 18);
+                                                  // }
                                                 },
                                               ),
                                             ],

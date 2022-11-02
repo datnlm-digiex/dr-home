@@ -27,6 +27,7 @@ class GoogleButton extends StatelessWidget {
           String checkLogin =
               await Provider.of<GoogleSignInController>(context, listen: false)
                   .googleLogin();
+          print(checkLogin);
           if (checkLogin == "LoginType is incorrect!") {
             Fluttertoast.showToast(
                 msg: "Tài khoản đã được dùng trong hệ thống với vai trò khác",
@@ -35,7 +36,7 @@ class GoogleButton extends StatelessWidget {
             Fluttertoast.showToast(
                 msg: "Tài khoản của bạn đã bị khóa", fontSize: 18);
           } else if (checkLogin == "Login Success") {
-            patientHistoryController.getTopDoctor();
+            // patientHistoryController.getTopDoctor();
             Get.off(checkLoginGoogle(context));
           } else if (checkLogin == "Create Account") {
             Navigator.push(

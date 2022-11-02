@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
@@ -109,7 +110,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                 ),
                                 SizedBox(height: 30),
                                 questionController.currenQuestion.value.ans1 ==
-                                        ''
+                                            null ||
+                                        questionController
+                                                .currenQuestion.value.ans1 ==
+                                            ''
                                     ? Container()
                                     : Container(
                                         margin: EdgeInsets.only(top: 10),
@@ -150,7 +154,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                       ),
                                 SizedBox(height: 10),
                                 questionController.currenQuestion.value.ans2 ==
-                                        ''
+                                            null ||
+                                        questionController
+                                                .currenQuestion.value.ans2 ==
+                                            ''
                                     ? Container()
                                     : Container(
                                         margin: EdgeInsets.only(top: 10),
@@ -190,7 +197,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                       ),
                                 SizedBox(height: 10),
                                 questionController.currenQuestion.value.ans3 ==
-                                        null
+                                            null ||
+                                        questionController
+                                                .currenQuestion.value.ans3 ==
+                                            ''
                                     ? Container()
                                     : Container(
                                         margin: EdgeInsets.only(top: 10),
@@ -230,7 +240,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                       ),
                                 SizedBox(height: 10),
                                 questionController.currenQuestion.value.ans4 ==
-                                        null
+                                            null ||
+                                        questionController
+                                                .currenQuestion.value.ans4 ==
+                                            null
                                     ? Container()
                                     : Container(
                                         margin: EdgeInsets.only(top: 10),
@@ -291,14 +304,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                       questionController
                                           .currenQuestion.value.id] ==
                                   999) {
-                                Get.snackbar(
-                                  "Thông báo",
-                                  "Vui lòng chọn câu trả lời",
-                                  icon: Icon(Icons.notification_important,
-                                      color: Colors.white),
-                                  snackPosition: SnackPosition.TOP,
-                                  // backgroundColor: Colors.green,
-                                );
+                                Fluttertoast.showToast(
+                                    msg: "Vui lòng chọn câu trả lời",
+                                    fontSize: 18);
                               } else if (questionController
                                       .numberCurrentQuestion ==
                                   questionController.listQuestion.length) {

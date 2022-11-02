@@ -22,21 +22,21 @@ class Doctor {
 
   Doctor(
       {required this.id,
-        required this.email,
-        required this.name,
-        required this.avatar,
-        required this.practisingCertificate,
-        required this.certificateCode,
-        required this.placeOfCertificate,
-        required this.dateOfCertificate,
-        required this.scopeOfPractice,
-        required this.description,
-        required this.numberOfConsultants,
-        required this.rating,
-        required this.isVerify,
-        required this.certificationDoctors,
-        required this.hospitalDoctors,
-        required this.majorDoctors});
+      required this.email,
+      required this.name,
+      required this.avatar,
+      required this.practisingCertificate,
+      required this.certificateCode,
+      required this.placeOfCertificate,
+      required this.dateOfCertificate,
+      required this.scopeOfPractice,
+      required this.description,
+      required this.numberOfConsultants,
+      required this.rating,
+      required this.isVerify,
+      required this.certificationDoctors,
+      required this.hospitalDoctors,
+      required this.majorDoctors});
 
   Doctor.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -48,7 +48,7 @@ class Doctor {
     placeOfCertificate = json['placeOfCertificate'];
     dateOfCertificate = json['dateOfCertificate'];
     scopeOfPractice = json['scopeOfPractice'];
-    description = json['description'];
+    description = json['description'] == null ? '' : json['description'];
     numberOfConsultants = json['numberOfConsultants'];
     rating = json['rating'];
     isVerify = json['isVerify'];
@@ -68,9 +68,6 @@ class Doctor {
       });
     }
   }
-
-
-
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

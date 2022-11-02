@@ -15,29 +15,29 @@ class PatientHistoryController extends GetxController {
   RxString sttHistory = "upcoming".obs;
   RxList<dynamic> listHistorySTT = [].obs;
 
-  getMyHistory() {
-    FetchAPI.fetchMyHealthCheck(patientID.value).then((dataFromServer) {
-      listHealthCheck.value = dataFromServer;
-    });
-  }
+  // getMyHistory() {
+  //   FetchAPI.fetchMyHealthCheck(patientID.value).then((dataFromServer) {
+  //     listHealthCheck.value = dataFromServer;
+  //   });
+  // }
 
   RxList<dynamic> listTopDoctor = [].obs;
 
-  getTopDoctor() {
-    FetchAPI.fetchContentTopDoctor().then((dataFromServer) {
-      listTopDoctor.value = dataFromServer;
-    });
-  }
+  // getTopDoctor() {
+  //   FetchAPI.fetchContentTopDoctor().then((dataFromServer) {
+  //     listTopDoctor.value = dataFromServer;
+  //   });
+  // }
 
   RxBool emptyComment = false.obs;
   RxBool emptyReason = false.obs;
 
-  cancelHealthCheck(int id, String reason) {
-    HealthCheckChangeSTT healthCheckChangeSTT = new HealthCheckChangeSTT(
-        id: id, reasonCancel: reason, status: "CANCELED");
-    FetchAPI.cancelHealthCheck(healthCheckChangeSTT)
-        .then((value) => getMyHistory());
-  }
+  // cancelHealthCheck(int id, String reason) {
+  //   HealthCheckChangeSTT healthCheckChangeSTT = new HealthCheckChangeSTT(
+  //       id: id, reasonCancel: reason, status: "CANCELED");
+  //   FetchAPI.cancelHealthCheck(healthCheckChangeSTT)
+  //       .then((value) => getMyHistory());
+  // }
 
   editHealthCheckInfo(int rating, String comment, HealthCheck healthCheck,
       int height, int weight) {
@@ -78,7 +78,7 @@ class PatientHistoryController extends GetxController {
             prescriptions: healthCheck.prescriptions,
             slots: healthCheck.slots,
             symptomHealthChecks: listNewSymptom.cast<SymptomHealthCheck>());
-    FetchAPI.editHealthCheck(newHealthCheck).then((value) => getMyHistory());
+    // FetchAPI.editHealthCheck(newHealthCheck).then((value) => getMyHistory());
   }
 
   RxList<dynamic> listMySymptom = [].obs;

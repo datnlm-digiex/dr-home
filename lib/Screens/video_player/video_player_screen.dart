@@ -54,7 +54,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
             ),
             ListTile(
               title: Text(
-                'Bài tập vật lý trị liệu',
+                'Bài tập ${widget.type}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,

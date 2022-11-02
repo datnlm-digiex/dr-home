@@ -40,11 +40,18 @@ class _CellCardState extends State<SurveyHistoryCard> {
             children: [
               Text('Nội dung: '),
               InkWell(
-                child: Text('${widget.surveyResult.surveyTitle}',
-                    style: const TextStyle(
+                child: Container(
+                  constraints: BoxConstraints(
+                      minWidth: 100,
+                      maxWidth: MediaQuery.of(context).size.width / 2),
+                  child: Text('${widget.surveyResult.surveyTitle}',
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
-                        color: Colors.green)),
+                        color: Colors.green,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                ),
                 onTap: () {
                   overViewSurveyController
                       .getSurveyOverView(widget.surveyResult.surveyid);
@@ -78,16 +85,6 @@ class _CellCardState extends State<SurveyHistoryCard> {
                 const SizedBox(
                   height: 4,
                 ),
-                // Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // children: [
-                // Text('Kết quả:'),
-                // Text('Tốt',
-                // style: const TextStyle(
-                // fontWeight: FontWeight.bold,
-                // )),
-                // ],
-                // ),
               ],
             ),
           ),

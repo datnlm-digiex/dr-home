@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
+import 'package:telemedicine_mobile/Screens/video_player/exercise_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_address_api.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/controller/exercise_controller.dart';
@@ -24,6 +25,8 @@ class PatientProfileController extends GetxController {
   final accountController = Get.put(AccountController());
   final exerciseController = Get.put(ExerciseController());
   final questionController = Get.put(QuestionController());
+  RxBool isLoading = false.obs;
+
   Rx<Patient> patient = new Patient(
       id: 0,
       email: "",
@@ -83,9 +86,8 @@ class PatientProfileController extends GetxController {
   RxString statusCovid = "VietNam".obs;
 
   getMyPatient() {
+    isLoading.value = true;
     String myEmail = accountController.account.value.email;
-    print("my Email patient_profile_controller");
-    print(myEmail);
     if (myEmail.isEmpty) {
       Get.off(LoginScreen(),
           transition: Transition.leftToRightWithFade,
@@ -93,23 +95,24 @@ class PatientProfileController extends GetxController {
     } else {
       FetchAPI.fetchMyPatient(myEmail).then((dataFromServer) {
         patient.value = dataFromServer;
-        print(" patient.value.id Email patient_profile_controller");
-        print(patient.value.id);
-        patientHistoryController.patientID.value = patient.value.id;
+        patientProfileController.patient.value = patient.value;
+        // patientHistoryController.patientID.value = patient.value.id;
         exerciseController.getExerciesProcess(patient.value.id);
-        getNearestHealthCheck();
+        isLoading.value = false;
+        // getNearestHealthCheck();
         getCountUnread();
-        patientHistoryController.getMyHistory();
+        // patientHistoryController.getMyHistory();
       });
     }
+    update();
   }
 
-  getNearestHealthCheck() {
-    FetchAPI.fetchNearestHealthCheck(patientHistoryController.patientID.value)
-        .then((dataFromServer) {
-      nearestHealthCheck.value = dataFromServer;
-    });
-  }
+  // getNearestHealthCheck() {
+  //   FetchAPI.fetchNearestHealthCheck(patientHistoryController.patientID.value)
+  //       .then((dataFromServer) {
+  //     nearestHealthCheck.value = dataFromServer;
+  //   });
+  // }
 
   RxBool isMale = true.obs;
   RxString dob = "".obs;
@@ -225,7 +228,6 @@ class PatientProfileController extends GetxController {
   RxBool emptyDistrict = false.obs;
   RxBool emptyWard = false.obs;
 
-  RxBool isLoading = false.obs;
   updateAccountInfo(
       String fName, String lName, String phoneNumber, String street) {
     if (fName.isEmpty) {

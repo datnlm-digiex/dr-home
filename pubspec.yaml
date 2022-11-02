@@ -29,10 +29,10 @@ dependencies:
 
   #Library
   provider: ^6.0.0
-  consumer: ^2.3.0
+  # consumer: ^2.3.0
   flutter_svg: ^0.22.0
   get: ^4.3.8
-  bubble: ^1.1.9+1
+  # bubble: ^1.1.9+1
   # geolocator: ^9.0.2
   # geocoder: ^0.2.1
   http: ^0.13.3
@@ -48,7 +48,7 @@ dependencies:
   klocalizations_flutter: ^0.0.4
   pull_to_refresh: ^2.0.0
   fluttertoast: ^8.0.8
-  screen: ^0.0.5
+  # screen: ^0.0.5
   firebase_dynamic_links: ^2.0.11
   video_player: ^2.4.7
   cached_network_image: ^3.2.2
@@ -82,7 +82,8 @@ dependencies:
   # google_maps_flutter: ^2.0.8
   # flutter_polyline_points: ^1.0.0
   # flutter_typeahead: ^3.2.1
-
+dependency_overrides:
+  firebase_core_platform_interface: 4.5.1
 
 dev_dependencies:
   flutter_test:

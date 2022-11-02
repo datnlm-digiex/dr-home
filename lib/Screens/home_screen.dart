@@ -52,13 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
   var statisticCovid;
   NumberFormat formatter = NumberFormat('###,000');
   final overViewSurveyController = Get.put(OverViewSurveyController());
+
   @override
   void initState() {
     super.initState();
-    getNews();
-    getStatisticCovid();
-
-    patientProfileController.getNearestHealthCheck();
+    // getNews();
+    // getStatisticCovid();
     patientProfileController.getMyPatient();
     _fireBaseConfig();
     overViewSurveyController.getSuverOverViewListRespone();
@@ -79,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _fireBaseConfig() {
+    print('firebasessssss');
     _firebaseMessaging.setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
@@ -86,11 +86,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     _firebaseMessaging.subscribeToTopic('all');
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      print("message recieved");
-      print(event);
-      print(event.notification!.title);
-      print(event.notification!.body);
-      print(accountController.countNotificationUnread.value);
       accountController.countNotificationUnread.value =
           accountController.countNotificationUnread.value + 1;
       showNotification(
@@ -106,6 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
         .getToken()
         .then((token) {
           storage.write(key: "tokenFCM", value: token);
+          print("firebase token");
+          print(token);
         })
         .then((value) => {FetchAPI.makeConnection()})
         .then((value) => {FetchAPI.getCountUnreadNotification()});
@@ -138,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);
 
-  final patientHistoryController = Get.put(PatientHistoryController());
+  // final patientHistoryController = Get.put(PatientHistoryController());
   final bottomNavbarController = Get.put(BottomNavbarController());
   // final filterController = Get.put(FilterController());
 
@@ -190,25 +187,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 tag: "patientName",
                 child: Material(
                   color: Colors.transparent,
-                  child: Text(patientProfileController.patient.value.name,
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold)),
+                  child: Text(
+                    '${accountController.account.value.firstName + " " + accountController.account.value.lastName}',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
             GetBuilder<ExerciseController>(
               builder: (controller) => Padding(
-                padding: EdgeInsets.symmetric(horizontal: 14),
+                padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                 child: exerciseProcess(),
               ),
-            ),
-            SizedBox(
-              height: 26,
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 14),
@@ -233,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(
-              height: 176,
+              height: 175,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14.0),
                 child: GetBuilder<OverViewSurveyController>(
@@ -246,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: SkeletonAvatarStyle(
                               width: double.infinity,
                               minHeight: MediaQuery.of(context).size.height / 8,
-                              maxHeight: MediaQuery.of(context).size.height / 3,
+                              maxHeight: MediaQuery.of(context).size.height / 6,
                             ),
                           ),
                         )
@@ -268,8 +262,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           .surveyOverViewListResponeObject
                                           .content![index]));
                                 },
-                                gradientStartColor: index == 1 ? start : null,
-                                gradientEndColor: index == 1 ? end : null,
+                                gradientStartColor: index % 2 != 0 ? start : null,
+                                gradientEndColor: index % 2 != 0 ? end : null,
                                 title:
                                     "${controller.surveyOverViewListResponeObject.content![index].title}",
                                 subtitle:
@@ -281,101 +275,101 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 15,
-            ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14),
-              child: Text(
-                "Loại bài tập",
-                style: TextStyle(
-                    color: Color(0xff515979),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 28),
-              child: GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 19,
-                    mainAxisExtent: 125,
-                    mainAxisSpacing: 19),
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  DiscoverSmallCard(
-                    onTap: () => {
-                      _exerciseController.fetchExercise(
-                          2, patientProfileController.patient.value.id),
-                      Get.to(VideoPlayerScreen(
-                        type: "Phổi",
-                        groupId: 2,
-                      ))
-                    },
-                    title: "Bài tập phổi",
-                    gradientStartColor: Color(0xff13DEA0),
-                    gradientEndColor: Color(0xff06B782),
-                    icon: SvgAsset(
-                      assetName: AssetName.lungs,
-                      height: 24,
-                      width: 24,
-                    ),
+                  Text(
+                    "Loại bài tập",
+                    style: TextStyle(
+                        color: Color(0xff515979),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14),
                   ),
-                  DiscoverSmallCard(
-                    onTap: () => {
-                      _exerciseController.fetchExercise(
-                          4, patientProfileController.patient.value.id),
-                      Get.to(VideoPlayerScreen(
-                        type: "Tim",
-                        groupId: 4,
-                      ))
-                    },
-                    title: "Bài tập tim",
-                    gradientStartColor: Color(0xffFC67A7),
-                    gradientEndColor: Color(0xffF6815B),
-                    icon: SvgAsset(
-                      assetName: AssetName.heart,
-                      height: 24,
-                      width: 24,
-                    ),
-                  ),
-                  DiscoverSmallCard(
-                    onTap: () => {
-                      _exerciseController.fetchExercise(
-                          3, patientProfileController.patient.value.id),
-                      Get.to(VideoPlayerScreen(
-                        type: "Não",
-                        groupId: 3,
-                      ))
-                    },
-                    title: "Bài tập não",
-                    gradientStartColor: Color(0xffFFD541),
-                    gradientEndColor: Color(0xffF0B31A),
-                    icon: SvgAsset(
-                      assetName: AssetName.brain,
-                      height: 24,
-                      width: 24,
-                    ),
-                  ),
-                  DiscoverSmallCard(
-                    onTap: () => {
-                      _exerciseController.fetchExercise(
-                          1, patientProfileController.patient.value.id),
-                      Get.to(VideoPlayerScreen(
-                        type: "Vật lý trị liệu",
-                        groupId: 1,
-                      ))
-                    },
-                    title: "Bài tập vật lý trị liệu",
-                    icon: SvgAsset(
-                      assetName: AssetName.tape,
-                      height: 24,
-                      width: 24,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    child: GridView(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 19,
+                          mainAxisExtent: 125,
+                          mainAxisSpacing: 19),
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: [
+                        DiscoverSmallCard(
+                          onTap: () => {
+                            _exerciseController.fetchExercise(
+                                2, patientProfileController.patient.value.id),
+                            Get.to(VideoPlayerScreen(
+                              type: "Phổi",
+                              groupId: 2,
+                            ))
+                          },
+                          title: "Bài tập phổi",
+                          gradientStartColor: Color(0xff13DEA0),
+                          gradientEndColor: Color(0xff06B782),
+                          icon: SvgAsset(
+                            assetName: AssetName.lungs,
+                            height: 24,
+                            width: 24,
+                          ),
+                        ),
+                        DiscoverSmallCard(
+                          onTap: () => {
+                            _exerciseController.fetchExercise(
+                                4, patientProfileController.patient.value.id),
+                            Get.to(VideoPlayerScreen(
+                              type: "Tim",
+                              groupId: 4,
+                            ))
+                          },
+                          title: "Bài tập tim",
+                          gradientStartColor: Color(0xffFC67A7),
+                          gradientEndColor: Color(0xffF6815B),
+                          icon: SvgAsset(
+                            assetName: AssetName.heart,
+                            height: 24,
+                            width: 24,
+                          ),
+                        ),
+                        DiscoverSmallCard(
+                          onTap: () => {
+                            _exerciseController.fetchExercise(
+                                3, patientProfileController.patient.value.id),
+                            Get.to(VideoPlayerScreen(
+                              type: "Não",
+                              groupId: 3,
+                            ))
+                          },
+                          title: "Bài tập não",
+                          gradientStartColor: Color(0xffFFD541),
+                          gradientEndColor: Color(0xffF0B31A),
+                          icon: SvgAsset(
+                            assetName: AssetName.brain,
+                            height: 24,
+                            width: 24,
+                          ),
+                        ),
+                        DiscoverSmallCard(
+                          onTap: () => {
+                            _exerciseController.fetchExercise(
+                                1, patientProfileController.patient.value.id),
+                            Get.to(VideoPlayerScreen(
+                              type: "Vật lý trị liệu",
+                              groupId: 1,
+                            ))
+                          },
+                          title: "Bài tập vật lý trị liệu",
+                          icon: SvgAsset(
+                            assetName: AssetName.tape,
+                            height: 24,
+                            width: 24,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -414,20 +408,6 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 250,
               child: Stack(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(26),
-                    child: SvgAsset(
-                        height: 150,
-                        width: 250,
-                        assetName: AssetName.vectorBottom),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(26),
-                    child: SvgAsset(
-                        height: 150,
-                        width: 250,
-                        assetName: AssetName.vectorTop),
-                  ),
                   Padding(
                     padding: EdgeInsets.only(left: 5),
                     child: Column(
@@ -496,20 +476,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Padding welcome() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 18),
-      child: Text(
-        'Xin chào!',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-          color: kTitleTextColor,
         ),
       ),
     );

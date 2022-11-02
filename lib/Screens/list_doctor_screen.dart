@@ -106,12 +106,7 @@ class _ListDoctorScreenState extends State<ListDoctorScreen> {
                                       fontSize: 16,
                                     ),
                                   ),
-                                  // SizedBox(height: 15),
                                   Image.asset("assets/images/need_support.png")
-                                  // Image.network(
-                                  //   '${surveyRespone.resultimage}',
-                                  //   fit: BoxFit.cover,
-                                  // ),
                                 ],
                               ),
                             ),

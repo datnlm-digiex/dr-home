@@ -227,7 +227,7 @@ class ListDoctorController extends GetxController {
 
     FetchAPI.createNewHealthCheck(healthCheckPost).then((value) {
       getListDoctorSlot(slot.value.doctorId);
-      patientProfileController.getNearestHealthCheck();
+      // patientProfileController.getNearestHealthCheck();
     });
   }
 }

@@ -31,12 +31,9 @@ class GoogleSignInController with ChangeNotifier {
       firebaseAuth = FirebaseAuth.instance;
 
       User? currentUser = FirebaseAuth.instance.currentUser;
-      print(currentUser);
       if (currentUser == null) {
         final googleUser = await GoogleSignIn().signIn();
-        print(googleUser);
         final googleAuth = await googleUser!.authentication;
-
         var credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
@@ -48,27 +45,12 @@ class GoogleSignInController with ChangeNotifier {
       } else {
         idToken = await currentUser.getIdToken();
       }
-
+      print(idToken);
       await FetchAPI.loginWithToken(idToken)
           .then((value) => statusLogin = value);
-
-      // final googleUser = await _googleSignIn.signIn();
-      // if (googleUser == null) return "";
-      // _user = googleUser;
-
-      // final googleAuth = await googleUser.authentication;
-
-      // final credential = GoogleAuthProvider.credential(
-      //   accessToken: googleAuth.accessToken,
-      //   idToken: googleAuth.idToken,
-      // );
-      // var response =
-      //     await FirebaseAuth.instance.signInWithCredential(credential);
-      // await FetchAPI.loginWithToken(await response.user!.getIdToken())
-      //     .then((value) => statusLogin = value);
-
       notifyListeners();
     } catch (e) {
+      print(e.toString());
       statusLogin = "";
     } finally {
       accountController.isLoading.value = false;

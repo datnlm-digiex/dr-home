@@ -59,7 +59,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             currentIndex: bottomNavbarController.currentIndex.value,
             onTap: (index) => {
               bottomNavbarController.currentIndex.value = index,
-              patientProfileController.getNearestHealthCheck(),
+              // patientProfileController.getNearestHealthCheck(),
               if (index == 1)
                 {
                   // filterController.getListMajor(),

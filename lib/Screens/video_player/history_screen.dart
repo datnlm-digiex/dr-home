@@ -29,7 +29,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         child: GetBuilder<ExerciseController>(
           builder: (controller) => controller.isLoading.isTrue
               ? const Center(child: CircularProgressIndicator())
-              :  controller.exerciseHistory.content!.length == 0
+              : controller.exerciseHistory.content!.length == 0
                   ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -70,9 +70,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 8.0),
                                       child: ListView.separated(
-                                        shrinkWrap: true,
                                         physics:
-                                            const NeverScrollableScrollPhysics(),
+                                            const AlwaysScrollableScrollPhysics(),
+                                        shrinkWrap: true,
                                         itemCount: controller
                                             .exerciseHistory.content!.length,
                                         separatorBuilder:

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
 import 'package:get/get.dart' as GetX;
 import 'package:google_sign_in/google_sign_in.dart';
@@ -749,29 +751,59 @@ class FetchAPI {
   static Future<int> createNewAccount(
       AccountPost accountPost, String filePath) async {
     try {
-      FormData formData = new FormData.fromMap({
-        "image": await MultipartFile.fromFile(filePath, filename: "avatar"),
-        "email": accountPost.email,
-        "firstName": accountPost.firstName,
-        "lastName": accountPost.lastName,
-        "ward": accountPost.ward,
-        "streetAddress": accountPost.streetAddress,
-        "locality": accountPost.locality,
-        "city": accountPost.city,
-        "postalCode": "000000",
-        "phone": accountPost.phone,
-        "dob": accountPost.dob,
-        "isMale": accountPost.isMale,
-        "roleId": 3,
-      });
+      print("chay do day");
+      print(accountPost.streetAddress);
+      print(filePath + " aaa");
+      print("chay do dayasdasds");
+
+      FormData formData;
+
+      if (filePath == "") {
+        formData = new FormData.fromMap({
+          // "image": Image.file(File('assets/images/default_avatar.png')),
+          "image": null,
+          "email": accountPost.email,
+          "firstName": accountPost.firstName,
+          "lastName": accountPost.lastName,
+          "ward": accountPost.ward,
+          "streetAddress": accountPost.streetAddress,
+          "locality": accountPost.locality,
+          "city": accountPost.city,
+          "postalCode": "000000",
+          "phone": accountPost.phone,
+          "dob": accountPost.dob,
+          "isMale": accountPost.isMale,
+          "roleId": 3,
+        });
+      } else {
+        formData = new FormData.fromMap({
+          "image": await MultipartFile.fromFile(filePath, filename: "avatar"),
+          "email": accountPost.email,
+          "firstName": accountPost.firstName,
+          "lastName": accountPost.lastName,
+          "ward": accountPost.ward,
+          "streetAddress": accountPost.streetAddress,
+          "locality": accountPost.locality,
+          "city": accountPost.city,
+          "postalCode": "000000",
+          "phone": accountPost.phone,
+          "dob": accountPost.dob,
+          "isMale": accountPost.isMale,
+          "roleId": 3,
+        });
+      }
       Response response =
           await Dio().post("https://13.232.213.53:8189/api/v1/accounts",
               data: formData,
               options: Options(headers: <String, String>{
                 HttpHeaders.contentTypeHeader: 'multipart/form-data',
               }));
+
+      print(response.statusCode);
       return response.statusCode!;
     } on DioError catch (e) {
+      print(e.response!.data);
+      print(e.response!.statusCode);
       return e.response!.statusCode!;
     }
   }
@@ -1120,7 +1152,6 @@ class FetchAPI {
     final storage = new Storage.FlutterSecureStorage();
     final accountController = GetX.Get.put(AccountController());
     String token = await storage.read(key: "accessToken") ?? "";
-
 
     if (token.isEmpty) {
       GetX.Get.off(LoginScreen(),

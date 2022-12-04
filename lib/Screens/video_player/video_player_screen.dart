@@ -125,79 +125,47 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
             SizedBox(
               height: 20,
             ),
-            SizedBox(
-              child: controller.isLoading.isTrue
-                  ? const Center(child: CircularProgressIndicator())
-                  : controller.exercise.content!.length == 0
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Image.asset(
-                                "assets/images/empty.gif",
-                              ),
-                              Text(
-                                'Không tìm thấy bài tập',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Column(
+            controller.isLoading.isTrue
+                ? const Center(child: CircularProgressIndicator())
+                : controller.exercise.content!.length == 0
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            ListView.separated(
-                              shrinkWrap: true,
-                              itemCount:
-                                  exerciseController.exercise.content!.length,
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      const Divider(),
-                              itemBuilder: (BuildContext context, int index) {
-                                return Column(
-                                  children: [
-                                    Exercise(
-                                      exerciseModel: exerciseController
-                                          .exercise.content![index],
-                                      patientId: patientProfileController
-                                          .patient.value.id,
-                                    ),
-                                  ],
-                                );
-                              },
+                            Image.asset(
+                              "assets/images/empty.gif",
                             ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 1,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(29),
-                                child: TextButton.icon(
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 18, horizontal: 20),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                  ),
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down_sharp,
-                                    size: 32,
-                                  ),
-                                  onPressed: () => {},
-                                  // onPressed: () => Get.to(ExerciseScreen()),
-                                  label: Text(
-                                    'Xem tất cả',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
+                            Text(
+                              'Không tìm thấy bài tập',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
-                            )
+                            ),
                           ],
                         ),
-            ),
+                      )
+                    : ConstrainedBox(
+                        constraints: new BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height / 1.8,
+                        ),
+                        child: ListView.separated(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount:
+                              exerciseController.exercise.content!.length,
+                          separatorBuilder: (BuildContext context, int index) =>
+                              const Divider(),
+                          itemBuilder: (BuildContext context, int index) {
+                            return Exercise(
+                              exerciseModel:
+                                  exerciseController.exercise.content![index],
+                              patientId:
+                                  patientProfileController.patient.value.id,
+                            );
+                          },
+                        ),
+                      ),
           ],
         ),
       ),

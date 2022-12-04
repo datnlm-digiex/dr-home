@@ -69,15 +69,34 @@ class _CellCardState extends State<SurveyHistoryCard> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Thời gian:'),
-                        Text(
-                            '${DateFormat("hh:mm dd-MM-yyyy ").format(widget.surveyResult.createdate)}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            )),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Thời gian:'),
+                            Text(
+                                '${DateFormat("hh:mm dd-MM-yyyy ").format(widget.surveyResult.createdate)}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                )),
+                          ],
+                        ),
+                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Kết quả:'),
+                               Text(
+                          widget.surveyResult.rate > 0
+                              ? 'Bạn cần liên hệ với bác sĩ'
+                              : 'Bình thường',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                          ],
+                        ),
+                    
                       ],
                     ),
                   ],

@@ -377,7 +377,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   onTap: () {
                     questionController.numberCurrentQuestion = 1;
                     Navigator.pop(contextDialog);
-                    Get.off(BottomNavScreen());
+                    Get.offAll(BottomNavScreen());
                   },
                   child: Center(
                     child: Text(

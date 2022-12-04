@@ -6,10 +6,6 @@ import 'package:get/get.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:telemedicine_mobile/Screens/components/category.dart';
-import 'package:telemedicine_mobile/Screens/detail_screen.dart';
-import 'package:telemedicine_mobile/Screens/notification_screen.dart';
-import 'package:telemedicine_mobile/Screens/patient_detail_history_screen.dart';
 import 'package:telemedicine_mobile/Screens/survey_screen/over_view_survey_screen.dart';
 import 'package:telemedicine_mobile/Screens/video_player/exercise_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
@@ -17,13 +13,11 @@ import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
 import 'package:telemedicine_mobile/controller/exercise_controller.dart';
-import 'package:telemedicine_mobile/controller/filter_controller.dart';
+import 'package:telemedicine_mobile/controller/hospital_controller.dart';
 import 'package:telemedicine_mobile/controller/list_doctor_controller.dart';
 import 'package:telemedicine_mobile/controller/over_view_survey_controller.dart';
-import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/News.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../controller/history_survery_controller.dart';
 import '../widget/discover_card.dart';
@@ -48,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final storage = new FlutterSecureStorage();
   final accountController = Get.put(AccountController());
+  final HospitalController hospitalController = Get.put(HospitalController());
   List<News>? listNews;
   var statisticCovid;
   NumberFormat formatter = NumberFormat('###,000');
@@ -61,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
     patientProfileController.getMyPatient();
     _fireBaseConfig();
     overViewSurveyController.getSuverOverViewListRespone();
+    hospitalController.fetchHospital();
   }
 
   final Color start = Color(0xffFC67A7);
@@ -262,7 +258,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           .surveyOverViewListResponeObject
                                           .content![index]));
                                 },
-                                gradientStartColor: index % 2 != 0 ? start : null,
+                                gradientStartColor:
+                                    index % 2 != 0 ? start : null,
                                 gradientEndColor: index % 2 != 0 ? end : null,
                                 title:
                                     "${controller.surveyOverViewListResponeObject.content![index].title}",
@@ -289,13 +286,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontSize: 14),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    padding: EdgeInsets.symmetric(vertical: 10),
                     child: GridView(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          crossAxisSpacing: 19,
-                          mainAxisExtent: 125,
-                          mainAxisSpacing: 19),
+                          crossAxisSpacing: 10,
+                          mainAxisExtent: 150,
+                          mainAxisSpacing: 10),
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       children: [
@@ -388,8 +385,6 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: () => {},
         borderRadius: BorderRadius.circular(26),
         child: Ink(
-          height: 150,
-          width: 250,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(26),
             gradient: LinearGradient(
@@ -404,8 +399,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Padding(
             padding: EdgeInsets.only(left: 24, top: 16),
             child: Container(
-              height: 150,
-              width: 250,
+              height: MediaQuery.of(context).size.height / 6,
               child: Stack(
                 children: [
                   Padding(
@@ -417,7 +411,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(
                           children: [
                             SizedBox(
-                              width: 180,
+                              width: MediaQuery.of(context).size.width / 2.2,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -436,15 +430,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                   ),
-                                  Divider(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    "${exerciseController.exerciseProcess.times}/${exerciseController.exerciseProcess.totalTimes} Lần tập",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w300,
-                                        color: Colors.white),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10.0),
+                                    child: Text(
+                                      "${exerciseController.exerciseProcess.times}/${exerciseController.exerciseProcess.totalTimes} bài tập",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w300,
+                                          color: Colors.white),
+                                    ),
                                   ),
                                 ],
                               ),

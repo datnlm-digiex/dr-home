@@ -110,28 +110,22 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
               onPressed: () {
                 showConfirmAlertDialog(contextGobal);
               },
-              child: Text(
-                'Hoàn thành',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              )),
-          // IconButton(
-          //     onPressed: () => setState(
-          //           () {
-          //             showAlertDialog(context);
-          //             markAsDone(patientProfileController.patient.value.id);
-          //           },
-          //         ),
-          //     icon: Icon(Icons.done))
+              child: isCount
+                  ? Text(
+                      'Hoàn thành',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : Container()),
         ],
       ),
       body: GetBuilder<ExerciseController>(
         builder: (controller) => controller.isLoading.isTrue
             ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
-                child: Column(
+              child: Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -149,8 +143,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                                         () => onStart(),
                                       ),
                                     ),
-                                    VideoProgressIndicator(
-                                        videoPlayerController,
+                                    VideoProgressIndicator(videoPlayerController,
                                         allowScrubbing: true),
                                   ],
                                 ),
@@ -159,7 +152,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                                 style: SkeletonAvatarStyle(
                                   width: double.infinity,
                                   minHeight:
-                                      MediaQuery.of(context).size.height / 6,
+                                      MediaQuery.of(context).size.height / 8,
                                   maxHeight:
                                       MediaQuery.of(context).size.height / 3,
                                 ),
@@ -195,114 +188,125 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                             },
                           )
                         : Container(),
-                    ListTile(
-                      minLeadingWidth: 85,
-                      leading: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Tên bài tập:',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                      title: Text(
-                        '${widget.exerciseModel.title == null ? '' : widget.exerciseModel.title}',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    ListTile(
-                      minLeadingWidth: 85,
-                      leading: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Thời gian:',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                      title: Text(
-                        '${widget.exerciseModel.practicetime == null ? 0 : widget.exerciseModel.practicetime} phút',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    ListTile(
-                      minLeadingWidth: 85,
-                      leading: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Mức độ:',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                      title: Text(
-                        '${AppStatus.levelExercises[widget.exerciseModel.levelexercises == null ? 0 : widget.exerciseModel.levelexercises]}',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    ListTile(
-                      minLeadingWidth: 85,
-                      leading: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Lịch tập:',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                      title: Text(
-                        '${widget.exerciseModel.practiceSchedule == null ? '' : widget.exerciseModel.practiceSchedule}',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ),
                     ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: 150),
+                      constraints: new BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height / 4,
+                        maxHeight: MediaQuery.of(context).size.height / 2.6,
+                      ),
                       child: SingleChildScrollView(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 14),
-                          child: Text(
-                            '${widget.exerciseModel.description}',
-                            style: TextStyle(
-                              fontSize: 14,
+                        child: Column(
+                          children: [
+                            ListTile(
+                              minLeadingWidth: 85,
+                              leading: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Tên bài tập:',
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              title: Text(
+                                '${widget.exerciseModel.title == null ? '' : widget.exerciseModel.title}',
+                                style: const TextStyle(fontSize: 16),
+                              ),
                             ),
-                            textAlign: TextAlign.justify,
-                          ),
+                            ListTile(
+                              minLeadingWidth: 85,
+                              leading: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Thời gian:',
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              title: Text(
+                                '${widget.exerciseModel.practicetime == null ? 0 : widget.exerciseModel.practicetime} phút',
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            ListTile(
+                              minLeadingWidth: 85,
+                              leading: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Mức độ:',
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              title: Text(
+                                '${AppStatus.levelExercises[widget.exerciseModel.levelexercises == null ? 0 : widget.exerciseModel.levelexercises]}',
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            ListTile(
+                              minLeadingWidth: 85,
+                              leading: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Lịch tập:',
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              title: Text(
+                                '${widget.exerciseModel.practiceSchedule == null ? '' : widget.exerciseModel.practiceSchedule}',
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 14),
+                              child: Text(
+                                '${widget.exerciseModel.description}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(29),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 18, horizontal: 20),
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                backgroundColor: kBlueColor),
-                            onPressed: () => setState(
-                              () => onStart(),
+                    videoPlayerController.value.isInitialized
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 8.0, bottom: 20),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(29),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 18, horizontal: 20),
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      backgroundColor: kBlueColor),
+                                  onPressed: () => setState(
+                                    () => onStart(),
+                                  ),
+                                  child: Text(
+                                    videoPlayerController.value.isPlaying
+                                        ? 'Dừng lại'
+                                        : 'Tập luyện',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
                             ),
-                            child: Text(
-                              videoPlayerController.value.isPlaying
-                                  ? 'Dừng lại'
-                                  : 'Phát',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                          )
+                        : Container(),
                   ],
                 ),
-              ),
+            ),
       ),
     );
   }

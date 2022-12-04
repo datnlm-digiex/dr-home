@@ -116,7 +116,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final inviteVideoCallController = Get.put(InviteVideoCallController());
+  // final inviteVideoCallController = Get.put(InviteVideoCallController());
 
   @override
   void initState() {
@@ -136,15 +136,15 @@ class _MyAppState extends State<MyApp> {
         onSuccess: (PendingDynamicLinkData? dynamicLink) async {
           final Uri? deepLink = dynamicLink?.link;
 
-          String? healthCheckID =
-              deepLink?.queryParameters['healthCheckID'].toString();
-          inviteVideoCallController.healthCheckIDInvite.value =
-              int.parse(healthCheckID.toString());
-          if (deepLink != null) {
-            // ignore: unawaited_futures
-            Navigator.pushNamed(
-                context, "/" + deepLink.path.toString().split("/")[1]);
-          }
+          // String? healthCheckID =
+          //     deepLink?.queryParameters['healthCheckID'].toString();
+          // inviteVideoCallController.healthCheckIDInvite.value =
+          //     int.parse(healthCheckID.toString());
+          // if (deepLink != null) {
+          //   // ignore: unawaited_futures
+          //   Navigator.pushNamed(
+          //       context, "/" + deepLink.path.toString().split("/")[1]);
+          // }
         },
         onError: (OnLinkErrorException e) async {});
   }
@@ -175,7 +175,7 @@ class _MyAppState extends State<MyApp> {
           GlobalMaterialLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: [Locale('en', 'US')],
+        supportedLocales: [Locale('vi', 'VN')],
       ),
     );
   }

@@ -42,7 +42,7 @@ class GoogleSignInController with ChangeNotifier {
             await FirebaseAuth.instance.signInWithCredential(credential);
         firebaseUser = userCredentialData.user!;
         idToken = await firebaseUser.getIdToken();
-      } else {
+      } else { 
         idToken = await currentUser.getIdToken();
       }
       print(idToken);

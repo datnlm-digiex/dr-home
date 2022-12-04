@@ -33,7 +33,7 @@ class ExerciseController extends GetxController {
 
         Map<String, String> queryParams = {
           'patient': patientId.toString(),
-          'date': new DateFormat('yyyy-MM-dd').format(DateTime.now()),
+          'date': new DateFormat('yyyy-MM-dd').format(DateTime.now()), 
           "page-offset": '1',
           "limit": '999',
           'exercise-group': type.toString(),
@@ -105,24 +105,19 @@ class ExerciseController extends GetxController {
   }
 
   Future<void> getHistory(int groupId, int patientId) async {
-    print("groupId");
-    print(groupId);
-    print("patientId");
-    print(patientId);
     try {
       isLoading(true);
       final storage = new Storage.FlutterSecureStorage();
-      // final accountController = GetX.Get.put(AccountController());
       String tokenFcm = await storage.read(key: "tokenFCM") ?? "";
       String token = await storage.read(key: "accessToken") ?? "";
-      // String email = accountController.account.value.email;
       if (tokenFcm != "" && token != "") {
         final Map<String, String> data = new Map<String, String>();
         data['token'] = tokenFcm;
 
         Map<String, String> queryParams = {
           'patientid': patientId.toString(),
-          // 'date': new DateFormat('yyyy-MM-dd').format(DateTime.now()),
+          'order-by': 'Endtime',
+          'order-type': 'desc',
           'exercisegroupid': groupId.toString(),
           "page-offset": '1',
           "limit": '9999',

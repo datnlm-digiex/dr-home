@@ -135,10 +135,10 @@ class _ExerciseHistoryScreenState extends State<ExerciseHistoryScreen> {
                         ? ListTile(
                             minLeadingWidth: 85,
                             onTap: () => {},
-                            title: Text(
+                            leading: Text(
                               'Buổi sáng',
                             ),
-                            trailing: Text(
+                            title: Text(
                               '${widget.exerciseHistory.morning!}',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,

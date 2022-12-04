@@ -279,12 +279,6 @@ class _PatientProfileState extends State<PatientProfile> {
                             ),
                           ),
                           textfield(
-                            hintText: 'Lịch sử',
-                            icon: Icons.history,
-                            onTap: () =>
-                                {bottomNavbarController.currentIndex.value = 2},
-                          ),
-                          textfield(
                             hintText: 'Đăng xuất',
                             icon: Icons.logout,
                             onTap: () => showConfirmAlertDialog(context),

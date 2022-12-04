@@ -15,6 +15,17 @@ class UserInformation extends StatefulWidget {
 
 class _UserInformationState extends State<UserInformation> {
   final formAfterLoginController = Get.put(FormAfterLoginController());
+  final listBlood = <String>[
+    'Không xác định',
+    'A+',
+    'A-',
+    'B+',
+    'B-',
+    'O+',
+    'O-',
+    'AB+',
+    'AB-'
+  ];
 
   TextEditingController textFirstNameController = TextEditingController();
   TextEditingController textLastNameController = TextEditingController();
@@ -78,12 +89,12 @@ class _UserInformationState extends State<UserInformation> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Chào mừng bạn đến với",
+                                    "Chào mừng đến với ứng dụng",
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 22),
                                   ),
                                   Text(
-                                    "Ứng dụng bác sĩ tư vấn trực tuyến",
+                                    "Dr.Home - Bác sĩ của mọi nhà",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black,
@@ -137,16 +148,16 @@ class _UserInformationState extends State<UserInformation> {
                                           )),
                                     ),
                                   ),
-                                  formAfterLoginController.emptyImage.value
-                                      ? Center(
-                                          child: Text(
-                                            "Vui lòng chọn ảnh đại diện",
-                                            style: TextStyle(
-                                                color: Colors.red,
-                                                fontSize: 14),
-                                          ),
-                                        )
-                                      : Container(),
+                                  // formAfterLoginController.emptyImage.value
+                                  //     ? Center(
+                                  //         child: Text(
+                                  //           "Vui lòng chọn ảnh đại diện",
+                                  //           style: TextStyle(
+                                  //               color: Colors.red,
+                                  //               fontSize: 14),
+                                  //         ),
+                                  //       )
+                                  //     : Container(),
                                   SizedBox(height: 20),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -734,8 +745,14 @@ class _UserInformationState extends State<UserInformation> {
                                       TextField(
                                         controller: textAllergyController,
                                         decoration: InputDecoration(
-                                          hintText: "Dị ứng",
+                                          hintText:
+                                              "Dị ứng (ghi Không nếu không có)",
                                           border: OutlineInputBorder(),
+                                          errorText: formAfterLoginController
+                                                  .emptyAllergy.value
+                                              ? "Vui lòng nhập 'Không' nếu không bệnh nền"
+                                              : null,
+                                          errorStyle: TextStyle(fontSize: 14),
                                         ),
                                         keyboardType: TextInputType.name,
                                       ),
@@ -757,16 +774,101 @@ class _UserInformationState extends State<UserInformation> {
                                       SizedBox(
                                         height: 8,
                                       ),
-                                      TextField(
-                                        controller: textBloodGroupController,
-                                        decoration: InputDecoration(
-                                          hintText: "Nhóm máu",
-                                          border: OutlineInputBorder(),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                          border: Border.all(
+                                              color: Colors.grey, width: 1),
                                         ),
-                                        keyboardType: TextInputType.name,
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton(
+                                            value: textBloodGroupController
+                                                    .text.isNotEmpty
+                                                ? textBloodGroupController.text
+                                                : listBlood[0],
+                                            hint: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10.0),
+                                              child: Text("Chọn nhóm máu"),
+                                            ),
+                                            onChanged: (value) {
+                                              setState(() {
+                                                textBloodGroupController.text =
+                                                    value.toString();
+                                              });
+                                            },
+                                            // value: listBlood,
+                                            isExpanded: true,
+                                            items: listBlood
+                                                .map<DropdownMenuItem<String>>(
+                                                    (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          10, 0, 10, 0),
+                                                  child: Text(
+                                                    value,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        //Color(0xff6200ee),
+                                                        fontSize: 16.0,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                            // items: listBlood.map((valueItem) {
+                                            //   return DropdownMenuItem(
+                                            //     value: valueItem,
+                                            //     child: Padding(
+                                            //       padding:
+                                            //           const EdgeInsets.fromLTRB(
+                                            //               10, 0, 10, 0),
+                                            //       child: Text(
+                                            //         valueItem,
+                                            //         style: TextStyle(
+                                            //             color: Colors.black,
+                                            //             //Color(0xff6200ee),
+                                            //             fontSize: 16.0,
+                                            //             fontWeight:
+                                            //                 FontWeight.w500),
+                                            //       ),
+                                            //     ),
+                                            //   );
+                                            // }).toList(),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
+                                  // Column(
+                                  //   crossAxisAlignment:
+                                  //       CrossAxisAlignment.start,
+                                  //   children: [
+                                  //     Text(
+                                  //       "Nhóm máu:",
+                                  //       style: TextStyle(
+                                  //         fontSize: 17,
+                                  //       ),
+                                  //     ),
+                                  //     SizedBox(
+                                  //       height: 8,
+                                  //     ),
+                                  //     TextField(
+                                  //       controller: textBloodGroupController,
+                                  //       decoration: InputDecoration(
+                                  //         hintText:
+                                  //             "Nhóm máu (bỏ trống nếu chưa xác định được)",
+                                  //         border: OutlineInputBorder(),
+                                  //       ),
+                                  //       keyboardType: TextInputType.name,
+                                  //     ),
+                                  //   ],
+                                  // ),
                                   SizedBox(
                                     height: 20,
                                   ),
@@ -787,7 +889,13 @@ class _UserInformationState extends State<UserInformation> {
                                         controller:
                                             textBackgroundDiseaseController,
                                         decoration: InputDecoration(
-                                          hintText: "Bệnh nền",
+                                          hintText:
+                                              "Bệnh nền (ghi Không nếu không có)",
+                                          errorText: formAfterLoginController
+                                                  .emptyBackgroundDisease.value
+                                              ? "Vui lòng nhập 'Không' nếu không bệnh nền"
+                                              : null,
+                                          errorStyle: TextStyle(fontSize: 14),
                                           border: OutlineInputBorder(),
                                         ),
                                         keyboardType: TextInputType.name,

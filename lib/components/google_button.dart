@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/form_after_login_screen.dart';
+import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/google_login_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 
@@ -17,17 +18,17 @@ class GoogleButton extends StatelessWidget {
   final patientHistoryController = Get.put(PatientHistoryController());
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: GestureDetector(
-        child: Image.asset(
-          "assets/images/google.png",
-          width: 250,
+    return ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          shape: StadiumBorder(),
+          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          backgroundColor: kBackgroundColor,
         ),
-        onTap: () async {
+        onPressed: () async {
           String checkLogin =
               await Provider.of<GoogleSignInController>(context, listen: false)
                   .googleLogin();
-          print(checkLogin);
           if (checkLogin == "LoginType is incorrect!") {
             Fluttertoast.showToast(
                 msg: "Tài khoản đã được dùng trong hệ thống với vai trò khác",
@@ -45,8 +46,11 @@ class GoogleButton extends StatelessWidget {
             Fluttertoast.showToast(msg: "Đăng nhập thất bại", fontSize: 18);
           }
         },
-      ),
-    );
+        icon: new Image.asset("assets/images/google.png"),
+        label: Text(
+          "Đăng nhập với Google",
+          style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+        ));
   }
 
   Widget checkLoginGoogle(BuildContext context) {

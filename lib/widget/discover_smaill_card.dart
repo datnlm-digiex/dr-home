@@ -50,24 +50,25 @@ class DiscoverSmallCard extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              height: 125,
-              width: 150,
+              height: 150,
+              // height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
             ),
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: SizedBox(
-                height: 125,
+                height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: Stack(
                   children: [
                     SizedBox(
-                      height: 125,
+                      height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
                       child: SvgAsset(assetName: AssetName.vectorSmallBottom),
                     ),
                     SizedBox(
                       child: SvgAsset(
-                          height: 125,
+                          height: MediaQuery.of(context).size.height,
                           width: MediaQuery.of(context).size.width,
                           fit: BoxFit.fitHeight,
                           assetName: AssetName.vectorSmallTop),
@@ -77,8 +78,9 @@ class DiscoverSmallCard extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 125,
-              width: 150,
+              height: 150,
+              // height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
               child: Padding(
                 padding: EdgeInsets.only(left: 20, top: 20, bottom: 20),
                 child: Column(

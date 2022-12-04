@@ -11,8 +11,10 @@ import 'package:provider/provider.dart';
 import 'package:telemedicine_mobile/Screens/components/loading.dart';
 import 'package:telemedicine_mobile/Screens/dynamic_link_screen.dart';
 import 'package:telemedicine_mobile/controller/invite_videocall_controller.dart';
+import 'Screens/introduction_slider_screen.dart';
 import 'controller/facebook_login_controller.dart';
 import 'controller/google_login_controller.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -114,7 +116,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final inviteVideoCallController = Get.put(InviteVideoCallController());
+  // final inviteVideoCallController = Get.put(InviteVideoCallController());
 
   @override
   void initState() {
@@ -134,15 +136,15 @@ class _MyAppState extends State<MyApp> {
         onSuccess: (PendingDynamicLinkData? dynamicLink) async {
           final Uri? deepLink = dynamicLink?.link;
 
-          String? healthCheckID =
-              deepLink?.queryParameters['healthCheckID'].toString();
-          inviteVideoCallController.healthCheckIDInvite.value =
-              int.parse(healthCheckID.toString());
-          if (deepLink != null) {
-            // ignore: unawaited_futures
-            Navigator.pushNamed(
-                context, "/" + deepLink.path.toString().split("/")[1]);
-          }
+          // String? healthCheckID =
+          //     deepLink?.queryParameters['healthCheckID'].toString();
+          // inviteVideoCallController.healthCheckIDInvite.value =
+          //     int.parse(healthCheckID.toString());
+          // if (deepLink != null) {
+          //   // ignore: unawaited_futures
+          //   Navigator.pushNamed(
+          //       context, "/" + deepLink.path.toString().split("/")[1]);
+          // }
         },
         onError: (OnLinkErrorException e) async {});
   }
@@ -161,18 +163,19 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: GetMaterialApp(
-        title: 'Tele Medicine',
+        title: 'Dr.Home',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
         debugShowCheckedModeBanner: false,
-        home: LoginScreen(),
+        home: IntroductionScreenSlider(),
+        // LoginScreen(),
         localizationsDelegates: [
           GlobalWidgetsLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: [Locale('en', 'US')],
+        supportedLocales: [Locale('vi', 'VN')],
       ),
     );
   }

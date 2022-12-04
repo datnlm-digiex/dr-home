@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>247221704893-r62d2bifhk6hsut1q37gqqe4m4brvigb.apps.googleusercontent.com</string>
+	<string>219376448414-jdpfealabp20tnmrnbgt224ihns1vjof.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.247221704893-r62d2bifhk6hsut1q37gqqe4m4brvigb</string>
+	<string>com.googleusercontent.apps.219376448414-jdpfealabp20tnmrnbgt224ihns1vjof</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>247221704893-96r3ao3sp2tm0g7bh73vg9a5jb43l1h0.apps.googleusercontent.com</string>
+	<string>219376448414-60cmb8u56ij9odbj3h89c7i1kf0lp1mg.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBMm3bIkV5YvlZpH-ZkIYhix7iYg6opNuE</string>
+	<string>AIzaSyDmKcTIUeHRiKow_uzxYIWTiEBoyp1GqyQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>247221704893</string>
+	<string>219376448414</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.telemedicineMobile</string>
+	<string>com.example.drhome</string>
 	<key>PROJECT_ID</key>
-	<string>drhome-6cec1</string>
+	<string>drhome-17380</string>
 	<key>STORAGE_BUCKET</key>
-	<string>drhome-6cec1.appspot.com</string>
+	<string>drhome-17380.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:247221704893:ios:d74481e6274c470a9e7fd4</string>
+	<string>1:219376448414:ios:6c5601be0ad4a531ef1c8f</string>
 </dict>
 </plist>

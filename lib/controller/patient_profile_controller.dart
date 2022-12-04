@@ -7,8 +7,10 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
+import 'package:telemedicine_mobile/Screens/video_player/exercise_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_address_api.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
+import 'package:telemedicine_mobile/controller/exercise_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_history_controller.dart';
 import 'package:telemedicine_mobile/models/Account.dart';
 import 'package:telemedicine_mobile/models/HealthCheck.dart';
@@ -16,10 +18,15 @@ import 'package:telemedicine_mobile/models/Patient.dart';
 import 'package:telemedicine_mobile/models/Role.dart';
 
 import 'account_controller.dart';
+import 'question_controller.dart';
 
 class PatientProfileController extends GetxController {
   final patientHistoryController = Get.put(PatientHistoryController());
   final accountController = Get.put(AccountController());
+  final exerciseController = Get.put(ExerciseController());
+  final questionController = Get.put(QuestionController());
+  RxBool isLoading = false.obs;
+
   Rx<Patient> patient = new Patient(
       id: 0,
       email: "",
@@ -77,7 +84,9 @@ class PatientProfileController extends GetxController {
       slots: [],
       symptomHealthChecks: []).obs;
   RxString statusCovid = "VietNam".obs;
+
   getMyPatient() {
+    isLoading.value = true;
     String myEmail = accountController.account.value.email;
     if (myEmail.isEmpty) {
       Get.off(LoginScreen(),
@@ -86,20 +95,24 @@ class PatientProfileController extends GetxController {
     } else {
       FetchAPI.fetchMyPatient(myEmail).then((dataFromServer) {
         patient.value = dataFromServer;
-        patientHistoryController.patientID.value = patient.value.id;
-        getNearestHealthCheck();
+        patientProfileController.patient.value = patient.value;
+        // patientHistoryController.patientID.value = patient.value.id;
+        exerciseController.getExerciesProcess(patient.value.id);
+        isLoading.value = false;
+        // getNearestHealthCheck();
         getCountUnread();
-        patientHistoryController.getMyHistory();
+        // patientHistoryController.getMyHistory();
       });
     }
+    update();
   }
 
-  getNearestHealthCheck() {
-    FetchAPI.fetchNearestHealthCheck(patientHistoryController.patientID.value)
-        .then((dataFromServer) {
-      nearestHealthCheck.value = dataFromServer;
-    });
-  }
+  // getNearestHealthCheck() {
+  //   FetchAPI.fetchNearestHealthCheck(patientHistoryController.patientID.value)
+  //       .then((dataFromServer) {
+  //     nearestHealthCheck.value = dataFromServer;
+  //   });
+  // }
 
   RxBool isMale = true.obs;
   RxString dob = "".obs;
@@ -215,7 +228,6 @@ class PatientProfileController extends GetxController {
   RxBool emptyDistrict = false.obs;
   RxBool emptyWard = false.obs;
 
-  RxBool isLoading = false.obs;
   updateAccountInfo(
       String fName, String lName, String phoneNumber, String street) {
     if (fName.isEmpty) {
@@ -304,7 +316,7 @@ class PatientProfileController extends GetxController {
   logout() {
     FetchAPI.userLogout().then((value) {
       if (value)
-        Get.offAll(() => LoginScreen(), duration: Duration(microseconds: 600));
+        Get.off(() => LoginScreen(), duration: Duration(microseconds: 600));
       Fluttertoast.showToast(msg: "Đăng xuất thành công", fontSize: 18);
     });
   }

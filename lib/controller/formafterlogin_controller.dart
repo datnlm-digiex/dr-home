@@ -14,7 +14,11 @@ import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/AccountPost.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
 
+import '../Screens/bottom_nav_screen.dart';
 import 'account_controller.dart';
+
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:path_provider/path_provider.dart';
 
 class FormAfterLoginController extends GetxController {
   final patientProfileController = Get.put(PatientProfileController());
@@ -64,7 +68,6 @@ class FormAfterLoginController extends GetxController {
   }
 
   Rx<File> image = new File("").obs;
-
   Future pickImage(ImageSource source) async {
     try {
       final pImage = await ImagePicker().pickImage(source: source);
@@ -88,6 +91,8 @@ class FormAfterLoginController extends GetxController {
   RxBool emptyWard = false.obs;
   RxBool emptyStreet = false.obs;
   RxBool emptyImage = false.obs;
+  RxBool emptyBackgroundDisease = false.obs;
+  RxBool emptyAllergy = false.obs;
 
   RxBool done = false.obs;
   RxBool isLoading = false.obs;
@@ -112,12 +117,7 @@ class FormAfterLoginController extends GetxController {
       String street,
       String allergy,
       String bloodGroup,
-      String backgroundDisease) {
-    if (image.value.path.isEmpty) {
-      emptyImage.value = true;
-    } else {
-      emptyImage.value = false;
-    }
+      String backgroundDisease) async {
     if (fName.isEmpty) {
       emptyFName.value = true;
     } else {
@@ -158,15 +158,29 @@ class FormAfterLoginController extends GetxController {
     } else {
       emptyStreet.value = false;
     }
+
+    if(backgroundDisease.isEmpty){
+      emptyBackgroundDisease.value = true;
+    } else {
+      emptyBackgroundDisease.value = false;
+    }
+    
+    if(allergy.isEmpty){
+      emptyAllergy.value = true;
+    } else {
+      emptyAllergy.value = false;
+    }
+
+
     if (emptyFName.isFalse &&
         emptyLName.isFalse &&
         emptyDOB.isFalse &&
         emptyPhone.isFalse &&
         emptyCity.isFalse &&
         emptyDistrict.isFalse &&
-        emptyWard.isFalse &&
-        emptyStreet.isFalse &&
-        emptyImage.isFalse) {
+        emptyWard.isFalse && 
+        emptyBackgroundDisease.isFalse &&
+        emptyAllergy.isFalse) {
       isLoading.value = true;
       AccountPost newAccount = new AccountPost(
         email: accountController.account.value.email,

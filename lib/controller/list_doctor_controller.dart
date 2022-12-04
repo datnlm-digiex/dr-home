@@ -209,9 +209,9 @@ class ListDoctorController extends GetxController {
           FetchAPI.getTokenHealthCheck(healthCheckID).then((value) => {
                 healthCheckToken.value = value,
                 inviteVideoCallController.getLinkVideoCall(healthCheckID),
-                Get.to(CallScreen(
-                  uid: valueJoinCall.uid,
-                )),
+                // Get.to(CallScreen(
+                //   uid: valueJoinCall.uid,
+                // )),
               })
         });
   }
@@ -227,7 +227,7 @@ class ListDoctorController extends GetxController {
 
     FetchAPI.createNewHealthCheck(healthCheckPost).then((value) {
       getListDoctorSlot(slot.value.doctorId);
-      patientProfileController.getNearestHealthCheck();
+      // patientProfileController.getNearestHealthCheck();
     });
   }
 }

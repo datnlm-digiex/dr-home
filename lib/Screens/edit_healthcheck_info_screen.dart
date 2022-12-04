@@ -151,40 +151,73 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                       ),
                       keyboardType: TextInputType.name,
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 24),
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(24)),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(29),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 18, horizontal: 20),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  backgroundColor: kBlueColor),
+                              onPressed: () => {
+                                Fluttertoast.showToast(
+                                    msg: "Đã lưu", fontSize: 18),
+                                patientProfileController.updatePatientInfo(
+                                    textBackgroundDiseaseController.text,
+                                    textAllergyController.text,
+                                    textBloodTypeController.text),
+                                Get.back(),
+                              },
+                              child: Text(
+                                "Lưu",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                        ),
-                        onPressed: () => {
-                          Fluttertoast.showToast(msg: "Đã lưu", fontSize: 18),
-                          patientProfileController.updatePatientInfo(
-                              textBackgroundDiseaseController.text,
-                              textAllergyController.text,
-                              textBloodTypeController.text),
-                          bottomNavbarController.currentIndex.value = 3,
-                          Get.to(() => BottomNavScreen(),
-                              transition: Transition.rightToLeftWithFade,
-                              duration: Duration(milliseconds: 600))
-                        },
-                        child: Text(
-                          "Lưu",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
                           ),
                         ),
                       ),
                     ),
+                    // Container(
+                    //   margin: const EdgeInsets.only(top: 24),
+                    //   width: double.infinity,
+                    //   height: 50,
+                    //   child: ElevatedButton(
+                    //     style: ButtonStyle(
+                    //       shape:
+                    //           MaterialStateProperty.all<RoundedRectangleBorder>(
+                    //         RoundedRectangleBorder(
+                    //           borderRadius:
+                    //               BorderRadius.all(Radius.circular(24)),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     onPressed: () => {
+                    //       Fluttertoast.showToast(msg: "Đã lưu", fontSize: 18),
+                    //       patientProfileController.updatePatientInfo(
+                    //           textBackgroundDiseaseController.text,
+                    //           textAllergyController.text,
+                    //           textBloodTypeController.text),
+                    //       bottomNavbarController.currentIndex.value = 3,
+                    //       Get.to(() => BottomNavScreen(),
+                    //           transition: Transition.rightToLeftWithFade,
+                    //           duration: Duration(milliseconds: 600))
+                    //     },
+                    //     child: Text(
+                    //       "Lưu",
+                    //       style: TextStyle(
+                    //         color: Colors.white,
+                    //         fontSize: 20,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

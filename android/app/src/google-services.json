@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "219376448414",
+    "project_id": "drhome-17380",
+    "storage_bucket": "drhome-17380.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219376448414:android:2b78660ed90d97dcef1c8f",
+        "android_client_info": {
+          "package_name": "com.bv.telemedicine_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219376448414-9l26cjg87uhgvbn53h2afest7j3042mc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bv.telemedicine_mobile",
+            "certificate_hash": "8c2d40762d4c6f13e45ece91b3841e352e4b1fbb"
+          }
+        },
+        {
+          "client_id": "219376448414-u8j68nkq1c0p78gku6ncpfa7nmnv4c4e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0Iwrwm-h7XVGhlr923px6Q2nBZDZ9jOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "219376448414-u8j68nkq1c0p78gku6ncpfa7nmnv4c4e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "219376448414-fop1k5bv73tr3307nq8uh70ghom0a4ts.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.telemedicineMobile"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219376448414:android:2b821204be4f78c8ef1c8f",
+        "android_client_info": {
+          "package_name": "com.example.telemedicine_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219376448414-60cmb8u56ij9odbj3h89c7i1kf0lp1mg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.telemedicine_mobile",
+            "certificate_hash": "8c2d40762d4c6f13e45ece91b3841e352e4b1fbb"
+          }
+        },
+        {
+          "client_id": "219376448414-u8j68nkq1c0p78gku6ncpfa7nmnv4c4e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0Iwrwm-h7XVGhlr923px6Q2nBZDZ9jOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "219376448414-u8j68nkq1c0p78gku6ncpfa7nmnv4c4e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "219376448414-fop1k5bv73tr3307nq8uh70ghom0a4ts.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.telemedicineMobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

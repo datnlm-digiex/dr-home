@@ -1,61 +1,44 @@
-import 'dart:typed_data';
-
-import 'package:flutter/services.dart';
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
+import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:telemedicine_mobile/Screens/list_doctor_screen.dart';
-import 'package:telemedicine_mobile/api/fetch_api.dart';
-import 'package:telemedicine_mobile/controller/address_controller.dart';
-import 'package:telemedicine_mobile/controller/filter_controller.dart';
-import 'package:telemedicine_mobile/models/ContentHospital.dart';
-import 'dart:ui' as ui;
+import 'package:telemedicine_mobile/models/Hospital.dart';
 
 class HospitalController extends GetxController {
-  RxList<dynamic> listHospital = [].obs;
-  RxList<Marker> listMarkers = RxList();
+  Hospital hospital = Hospital();
+  var isLoading = false.obs;
 
-  FilterController filterController = Get.put(FilterController());
-  AddressController addressController = Get.put(AddressController());
-  @override
-  void onInit() {
-    super.onInit();
-    getNearHospital(addressController.location.value.lat,
-        addressController.location.value.lng);
-  }
+  Future<void> fetchHospital() async {
+    try {
+      isLoading(true);
+      final storage = new Storage.FlutterSecureStorage();
+      // final accountController = GetX.Get.put(AccountController());
+      String tokenFcm = await storage.read(key: "tokenFCM") ?? "";
+      String token = await storage.read(key: "accessToken") ?? "";
+      // String email = accountController.account.value.email;
+      if (tokenFcm != "" && token != "") {
+        final Map<String, String> data = new Map<String, String>();
+        data['token'] = tokenFcm;
 
-  Future<Uint8List> getBytesFromAsset(String path, int width) async {
-    ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
-        .buffer
-        .asUint8List();
-  }
+        final response = await http.get(
+            Uri.parse('https://13.232.213.53:8189/api/v1/hospitals/1'),
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer $token",
+            });
 
-  Future<ContentHospital?> getNearHospital(double lat, double lng) async {
-    ContentHospital contentHospital =
-        await FetchAPI.getListNearHospital(lat, lng);
-    listHospital.value = contentHospital.hospital;
-    List<Marker> listMarker = [];
-    Uint8List markerIcon =
-        await getBytesFromAsset('assets/icons/hospital.png', 50);
-    contentHospital.hospital.forEach((e) => {
-          listMarker.add(new Marker(
-              markerId: MarkerId(e.id.toString()),
-              position: LatLng(e.lat, e.long),
-              icon: BitmapDescriptor.fromBytes(markerIcon),
-              infoWindow: InfoWindow(
-                  title: e.name,
-                  onTap: () {
-                    filterController.hospitalId.value = e.id;
-                    filterController.searchDoctorByNearest();
-                    Get.to(ListDoctorScreen());
-                  },
-                  snippet: e.address)))
-        });
-    listMarkers.value = listMarker;
+        if (response.statusCode == 200) {
+          var hospitalResponse = hospitalFromJson(response.body);
+          if (hospitalResponse.id != null) {
+            hospital = hospitalResponse;
+          }
+        }
+      }
+    } catch (e) {
+      e.toString();
+    } finally {
+      isLoading(false);
+      update();
+    }
   }
 }

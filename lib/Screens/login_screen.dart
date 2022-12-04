@@ -40,14 +40,20 @@ class _LoginScreenState extends State<LoginScreen> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SvgPicture.asset(
-                  "assets/icons/covid-19.svg",
-                  height: size.height * 0.5,
+                Text(
+                  "Chào mừng đến với ứng dụng Dr.Home - Bác sĩ của mọi nhà",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      color: Colors.green),
                 ),
-                FacebookButton(),
-                SizedBox(
-                  height: 20,
-                ),
+                Image(
+                    image: AssetImage("assets/images/login_doctor_image.png")),
+                // FacebookButton(),
+                // SizedBox(
+                //   height: 20,
+                // ),
                 GoogleButton(),
               ],
             ),

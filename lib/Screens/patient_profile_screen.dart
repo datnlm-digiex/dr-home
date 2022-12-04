@@ -61,13 +61,13 @@ class _PatientProfileState extends State<PatientProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 8,
-        title: Text("Thông tin của tôi"),
-        centerTitle: true,
-        backgroundColor: kBlueColor,
-        automaticallyImplyLeading: false,
-      ),
+      // appBar: AppBar(
+      //   elevation: 8,
+      //   title: Text("Thông tin của tôi"),
+      //   centerTitle: true,
+      //   backgroundColor: kBlueColor,
+      //   automaticallyImplyLeading: false,
+      // ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Obx(
@@ -279,17 +279,13 @@ class _PatientProfileState extends State<PatientProfile> {
                             ),
                           ),
                           textfield(
-                            hintText: 'Lịch sử',
-                            icon: Icons.history,
-                            onTap: () =>
-                                {bottomNavbarController.currentIndex.value = 2},
-                          ),
-                          textfield(
                             hintText: 'Đăng xuất',
                             icon: Icons.logout,
-                            onTap: () => {
-                              patientProfileController.logout(),
-                            },
+                            onTap: () => showConfirmAlertDialog(context),
+                            // {
+
+                            // patientProfileController.logout(),
+                            // },
                           ),
                         ],
                       ),
@@ -301,6 +297,86 @@ class _PatientProfileState extends State<PatientProfile> {
           ),
         ),
       ),
+    );
+  }
+
+  showConfirmAlertDialog(BuildContext context) {
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext contextDialog) {
+        return Dialog(
+          elevation: 0,
+          backgroundColor: const Color(0xffffffff),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 15),
+              Text(
+                "Đăng xuất",
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 15),
+              Text("Bạn có muốn đăng xuất"),
+              const SizedBox(height: 20),
+              const Divider(
+                height: 1,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+                child: InkWell(
+                  highlightColor: Colors.grey[200],
+                  onTap: () => {
+                    Navigator.pop(contextDialog),
+                    patientProfileController.logout()
+                  },
+                  child: Center(
+                    child: Text(
+                      'Xác nhận',
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const Divider(
+                height: 1,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+                child: InkWell(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(15.0),
+                    bottomRight: Radius.circular(15.0),
+                  ),
+                  highlightColor: Colors.grey[200],
+                  onTap: () => Navigator.pop(contextDialog),
+                  child: Center(
+                    child: Text(
+                      "Huỷ",
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

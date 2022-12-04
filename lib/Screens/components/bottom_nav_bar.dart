@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/home_screen.dart';
-import 'package:telemedicine_mobile/Screens/list_doctor_screen.dart';
+import 'package:telemedicine_mobile/Screens/hospital.dart';
 import 'package:telemedicine_mobile/Screens/patient_history_screen.dart';
 import 'package:telemedicine_mobile/Screens/patient_profile_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
@@ -19,7 +19,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final patientProfileController = Get.put(PatientProfileController());
   final listDoctorController = Get.put(ListDoctorController());
   final bottomNavbarController = Get.put(BottomNavbarController());
-  final filterController = Get.put(FilterController());
+  // final filterController = Get.put(FilterController());
 
   @override
   void initState() {
@@ -27,14 +27,25 @@ class _BottomNavBarState extends State<BottomNavBar> {
     patientProfileController.getMyPatient();
   }
 
+  final screenLabel = ["Trang chủ", "Tư vấn", "Lịch sử", "Thông tin của tôi"];
+
   final screens = [
     HomeScreen(),
     ListDoctorScreen(),
-    PatientHistoryScreen(),
+    // PatientHistoryScreen(),
     PatientProfile(),
   ];
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: Obx(() => Text(
+              "${screenLabel[bottomNavbarController.currentIndex.value]}")),
+          automaticallyImplyLeading: false,
+          centerTitle: false,
+          backgroundColor: kBlueColor,
+
+          // actions: [notification()],
+        ),
         body: Obx(() => SafeArea(
             child: screens[bottomNavbarController.currentIndex.value])),
         bottomNavigationBar: Obx(
@@ -42,16 +53,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
             type: BottomNavigationBarType.fixed,
             backgroundColor: kBackgroundColor,
             selectedItemColor: kBlueColor,
-            showUnselectedLabels: false,
+            // showUnselectedLabels: false,
             iconSize: 25,
-            selectedFontSize: 8,
+            selectedFontSize: 14,
             currentIndex: bottomNavbarController.currentIndex.value,
             onTap: (index) => {
               bottomNavbarController.currentIndex.value = index,
-              patientProfileController.getNearestHealthCheck(),
+              // patientProfileController.getNearestHealthCheck(),
               if (index == 1)
                 {
-                  filterController.getListMajor(),
+                  // filterController.getListMajor(),
                   listDoctorController.condition.value = "",
                 },
               if (bottomNavbarController.currentIndex.value == 3)
@@ -67,15 +78,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.local_hospital),
-                label: "Danh sách bác sĩ",
+                label: "Tư vấn",
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.history),
-                label: "Lịch sử",
-              ),
+              // BottomNavigationBarItem(
+              //   icon: Icon(Icons.history),
+              //   label: "Lịch sử",
+              // ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                label: "Trang cá nhân",
+                label: "Cá nhân",
               ),
             ],
           ),

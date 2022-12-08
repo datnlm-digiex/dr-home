@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:telemedicine_mobile/Screens/change_pass_screen.dart';
 import 'package:telemedicine_mobile/Screens/edit_healthcheck_info_screen.dart';
 import 'package:telemedicine_mobile/Screens/edit_patient_profile_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
@@ -279,13 +280,14 @@ class _PatientProfileState extends State<PatientProfile> {
                             ),
                           ),
                           textfield(
+                            hintText: 'Đổi mật khẩu',
+                            icon: Icons.key,
+                            onTap: () => Get.to(ChangePasswordScreen()),
+                          ),
+                          textfield(
                             hintText: 'Đăng xuất',
                             icon: Icons.logout,
                             onTap: () => showConfirmAlertDialog(context),
-                            // {
-
-                            // patientProfileController.logout(),
-                            // },
                           ),
                         ],
                       ),

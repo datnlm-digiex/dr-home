@@ -33,7 +33,7 @@ class ExerciseController extends GetxController {
 
         Map<String, String> queryParams = {
           'patient': patientId.toString(),
-          'date': new DateFormat('yyyy-MM-dd').format(DateTime.now()), 
+          'date': new DateFormat('yyyy-MM-dd').format(DateTime.now()),
           "page-offset": '1',
           "limit": '999',
           'exercise-group': type.toString(),
@@ -158,9 +158,8 @@ class ExerciseController extends GetxController {
       // final accountController = GetX.Get.put(AccountController());
       String tokenFcm = await storage.read(key: "tokenFCM") ?? "";
       String token = await storage.read(key: "accessToken") ?? "";
-      print('if');
+
       if (tokenFcm != "" && token != "") {
-        print('chay do if');
         String body = json.encode({
           "patientid": patientId.toString(),
           "exerciseid": exerciseId.toString(),

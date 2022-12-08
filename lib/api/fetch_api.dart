@@ -43,7 +43,6 @@ import 'package:telemedicine_mobile/models/SurveyRespone.dart';
 import 'package:telemedicine_mobile/models/Symptom.dart';
 import 'package:telemedicine_mobile/models/TimeFrame.dart';
 import 'package:dio/dio.dart';
-
 import '../models/SurveyHistoryResponse.dart';
 
 class FetchAPI {
@@ -67,6 +66,64 @@ class FetchAPI {
           message = value;
         });
       }
+      if (response.statusCode == 200) {
+        if (bodyJson.length == 1) {
+          accountController.account.value = new Account(
+              id: 0,
+              email: message,
+              firstName: "",
+              lastName: "",
+              ward: "",
+              streetAddress: "",
+              locality: "",
+              city: "",
+              postalCode: "",
+              phone: "",
+              avatar: "",
+              dob: "",
+              active: true,
+              isMale: true,
+              role: new Role(id: 0, name: "", isActive: true));
+          return "Create Account";
+        }
+        var accountJson = json.decode(utf8.decode(response.bodyBytes));
+        Account account = Account.fromJson(accountJson['account']);
+        storage.write(key: "accessToken", value: accountJson['accessToken']);
+        accountController.account.value = account;
+        return message;
+      } else {
+        return message;
+      }
+    } catch (e) {
+      print(e.toString());
+      return "";
+    }
+  }
+
+  static Future<String> loginWithPhone(String phone, String password) async {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final storage = new Storage.FlutterSecureStorage();
+
+    data['phone'] = phone;
+    data['password'] = password;
+    data['loginType'] = '3';
+    final accountController = GetX.Get.put(AccountController());
+    try {
+      final response = await http.post(
+          Uri.parse("https://13.232.213.53:8189/api/v1/login-phone"),
+          headers: <String, String>{
+            HttpHeaders.contentTypeHeader: 'application/json',
+          },
+          body: jsonEncode(data));
+      print(response.statusCode);
+      Map bodyJson = json.decode(utf8.decode(response.bodyBytes));
+      String message = "Login Success";
+      if (bodyJson.length == 1) {
+        bodyJson.values.forEach((value) {
+          message = value;
+        });
+      }
+
       if (response.statusCode == 200) {
         if (bodyJson.length == 1) {
           accountController.account.value = new Account(
@@ -680,40 +737,6 @@ class FetchAPI {
     }
   }
 
-  // static Future<List<HealthCheck>> fetchMyHealthCheck(int patientID) async {
-  //   final storage = new Storage.FlutterSecureStorage();
-  //   String token = await storage.read(key: "accessToken") ?? "";
-  //   if (token.isEmpty) {
-  //     GetX.Get.offAll(LoginScreen(),
-  //         transition: GetX.Transition.leftToRightWithFade,
-  //         duration: Duration(milliseconds: 500));
-  //     throw Exception("Error: UnAuthentication");
-  //   } else {
-  //     final response = await http.get(
-  //       Uri.parse(
-  //           "https://13.232.213.53:8189/api/v1/health-checks?patient-id=" +
-  //               patientID.toString() +
-  //               "&page-offset=1&limit=50"),
-  //       headers: <String, String>{
-  //         HttpHeaders.contentTypeHeader: 'application/json',
-  //         HttpHeaders.authorizationHeader: 'Bearer $token',
-  //       },
-  //     );
-  //     if (response.statusCode == 200) {
-  //       var contentJSon = json.decode(utf8.decode(response.bodyBytes));
-  //       ContentHealthCheck contentHealthCheck =
-  //           ContentHealthCheck.fromJson(contentJSon);
-  //       return contentHealthCheck.healthCheck;
-  //     } else if (response.statusCode == 404) {
-  //       throw Exception("Not found health checks");
-  //     } else if (response.statusCode == 400) {
-  //       throw Exception("Bad requests");
-  //     } else {
-  //       throw Exception("Internal server error");
-  //     }
-  //   }
-  // }
-
   static Future<List<Slot>> fetchContentSlot(int doctorID) async {
     final storage = new Storage.FlutterSecureStorage();
     String assignedDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
@@ -751,11 +774,6 @@ class FetchAPI {
   static Future<int> createNewAccount(
       AccountPost accountPost, String filePath) async {
     try {
-      print("chay do day");
-      print(accountPost.streetAddress);
-      print(filePath + " aaa");
-      print("chay do dayasdasds");
-
       FormData formData;
 
       if (filePath == "") {
@@ -774,6 +792,7 @@ class FetchAPI {
           "dob": accountPost.dob,
           "isMale": accountPost.isMale,
           "roleId": 3,
+          "password": accountPost.password
         });
       } else {
         formData = new FormData.fromMap({
@@ -872,6 +891,7 @@ class FetchAPI {
             "phone": account.phone,
             "dob": account.dob,
             "isMale": account.isMale,
+            "email": account.email
           });
         } else {
           formData = new FormData.fromMap({
@@ -887,6 +907,7 @@ class FetchAPI {
             "phone": account.phone,
             "dob": account.dob,
             "isMale": account.isMale,
+            "email": account.email
           });
         }
         Response response =
@@ -1248,6 +1269,52 @@ class FetchAPI {
       } else {
         throw Exception("Internal server error");
       }
+    }
+  }
+
+  static Future<bool> checkPhone(String phone) async {
+    final response = await http.get(
+      Uri.parse(
+          "https://13.232.213.53:8189/api/v1/accounts/check-phone?phone=$phone"),
+      headers: <String, String>{
+        HttpHeaders.contentTypeHeader: 'application/json'
+      },
+    );
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return false;
+  }
+
+  static Future<String> changePassowrd(
+      String oldPassword, String newPassword) async {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final storage = new Storage.FlutterSecureStorage();
+
+    String token = await storage.read(key: "accessToken") ?? "";
+
+    final accountController = GetX.Get.find<AccountController>();
+    if (token != "") {
+      final Map<String, String> data = new Map<String, String>();
+    }
+    try {
+      final response = await http.put(
+        Uri.parse(
+            "https://13.232.213.53:8189/api/v1/accounts/change-password?idAcc=${accountController.account.value.id.toString()}&passwordOld=$oldPassword&passwordNew=$newPassword"),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        return "Đổi mật khẩu thành công";
+      } else {
+        return "Đổi mật khẩu thất bại";
+      }
+    } catch (e) {
+      print(e.toString());
+      return "";
     }
   }
 }

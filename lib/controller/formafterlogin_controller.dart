@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -14,15 +13,23 @@ import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 import 'package:telemedicine_mobile/models/AccountPost.dart';
 import 'package:telemedicine_mobile/models/Patient.dart';
 
-import '../Screens/bottom_nav_screen.dart';
 import 'account_controller.dart';
-
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:path_provider/path_provider.dart';
 
 class FormAfterLoginController extends GetxController {
   final patientProfileController = Get.put(PatientProfileController());
   final accountController = Get.put(AccountController());
+
+  TextEditingController textPhoneController = TextEditingController();
+  TextEditingController textPasswordController = TextEditingController();
+  TextEditingController textConfirmController = TextEditingController();
+  TextEditingController textFirstNameController = TextEditingController();
+  TextEditingController textEmailController = TextEditingController();
+  TextEditingController textLastNameController = TextEditingController();
+  TextEditingController textStreetController = TextEditingController();
+  TextEditingController textAllergyController = TextEditingController();
+  TextEditingController textBloodGroupController = TextEditingController();
+  TextEditingController textBackgroundDiseaseController =
+      TextEditingController();
 
   RxBool selectedGender = false.obs;
   Rx<DateTime> dob = DateTime.now().obs;
@@ -100,6 +107,7 @@ class FormAfterLoginController extends GetxController {
   Future pickDate(BuildContext context) async {
     final initialDate = DateTime.parse("2000-01-01");
     final newDate = await showDatePicker(
+        locale: const Locale("vi", "VN"),
         context: context,
         initialDate: initialDate,
         firstDate: DateTime(1900),
@@ -159,18 +167,17 @@ class FormAfterLoginController extends GetxController {
       emptyStreet.value = false;
     }
 
-    if(backgroundDisease.isEmpty){
+    if (backgroundDisease.isEmpty) {
       emptyBackgroundDisease.value = true;
     } else {
       emptyBackgroundDisease.value = false;
     }
-    
-    if(allergy.isEmpty){
+
+    if (allergy.isEmpty) {
       emptyAllergy.value = true;
     } else {
       emptyAllergy.value = false;
     }
-
 
     if (emptyFName.isFalse &&
         emptyLName.isFalse &&
@@ -178,29 +185,29 @@ class FormAfterLoginController extends GetxController {
         emptyPhone.isFalse &&
         emptyCity.isFalse &&
         emptyDistrict.isFalse &&
-        emptyWard.isFalse && 
+        emptyWard.isFalse &&
         emptyBackgroundDisease.isFalse &&
         emptyAllergy.isFalse) {
       isLoading.value = true;
       AccountPost newAccount = new AccountPost(
-        email: accountController.account.value.email,
-        firstName: fName,
-        lastName: lName,
-        image: "",
-        ward: ward.value,
-        streetAddress: street,
-        locality: district.value,
-        city: provinceOrCity.value,
-        postalCode: "000000",
-        phone: phoneNumber,
-        dob: DateFormat("yyyy-MM-dd").format(dob.value),
-        isMale: selectedGender.value,
-        roleId: 3,
-      );
+          email: textEmailController.text,
+          firstName: fName,
+          lastName: lName,
+          image: "",
+          ward: ward.value,
+          streetAddress: street,
+          locality: district.value,
+          city: provinceOrCity.value,
+          postalCode: "000000",
+          phone: phoneNumber,
+          dob: DateFormat("yyyy-MM-dd").format(dob.value),
+          isMale: selectedGender.value,
+          roleId: 3,
+          password: textPasswordController.text);
 
       Patient newPatient = new Patient(
           id: 0,
-          email: accountController.account.value.email,
+          email: textEmailController.text,
           name: fName + " " + lName,
           avatar: "",
           backgroundDisease: backgroundDisease,
@@ -213,7 +220,7 @@ class FormAfterLoginController extends GetxController {
           FetchAPI.createNewPatient(newPatient).then((value) {
             done.value = true;
             isLoading.value = false;
-            Get.to(LoginScreen());
+            Get.offAll(LoginScreen());
             Fluttertoast.showToast(
                 msg: "Đăng ký tài khoản thành công", fontSize: 18);
           });

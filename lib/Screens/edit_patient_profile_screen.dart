@@ -22,6 +22,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
   TextEditingController textFirstNameController = TextEditingController();
   TextEditingController textLastNameController = TextEditingController();
   TextEditingController textPhoneController = TextEditingController();
+  TextEditingController textEmailController = TextEditingController();
   TextEditingController textStreetController = TextEditingController();
 
   @override
@@ -379,6 +380,36 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
+                            "Email:",
+                            style: TextStyle(
+                              fontSize: 17,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          TextField(
+                            controller: textEmailController,
+                            decoration: InputDecoration(
+                              hintText:
+                                  patientProfileController.account.value.email,
+                              hintStyle: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black,
+                              ),
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.phone,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
                             "Thành phố:",
                             style: TextStyle(
                               fontSize: 17,
@@ -399,7 +430,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                   child: Text("Chọn Tỉnh/Thành phố"),
                                 ),
                                 onChanged: (newValue) {
-                                   patientProfileController.city.value =
+                                  patientProfileController.city.value =
                                       newValue.toString();
                                   patientProfileController
                                       .setListDistrict(newValue);
@@ -462,12 +493,14 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                   patientProfileController.district.value =
                                       newValue.toString();
                                   patientProfileController.ward.value = "";
-                                  patientProfileController.setListWard(newValue);
+                                  patientProfileController
+                                      .setListWard(newValue);
                                 },
-                                value:
-                                    patientProfileController.district.value == ""
-                                        ? null
-                                        : patientProfileController.district.value,
+                                value: patientProfileController
+                                            .district.value ==
+                                        ""
+                                    ? null
+                                    : patientProfileController.district.value,
                                 isExpanded: true,
                                 items: patientProfileController.listDistrict
                                     .map((x) => x.name)
@@ -475,8 +508,8 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                   return DropdownMenuItem(
                                     value: valueItem,
                                     child: Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 0, 10, 0),
                                       child: Text(
                                         valueItem,
                                         style: TextStyle(
@@ -498,7 +531,8 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                               padding: const EdgeInsets.only(top: 10, left: 10),
                               child: Text(
                                 "Vui lòng chọn quận, huyện",
-                                style: TextStyle(color: Colors.red, fontSize: 14),
+                                style:
+                                    TextStyle(color: Colors.red, fontSize: 14),
                               ),
                             )
                           : Container(),
@@ -542,8 +576,8 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                   return DropdownMenuItem(
                                     value: valueItem,
                                     child: Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 0, 10, 0),
                                       child: Text(
                                         valueItem,
                                         style: TextStyle(
@@ -565,7 +599,8 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                               padding: const EdgeInsets.only(top: 10, left: 10),
                               child: Text(
                                 "Vui lòng chọn phường, xã",
-                                style: TextStyle(color: Colors.red, fontSize: 14),
+                                style:
+                                    TextStyle(color: Colors.red, fontSize: 14),
                               ),
                             )
                           : Container(),
@@ -618,7 +653,8 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                       textFirstNameController.text,
                                       textLastNameController.text,
                                       textPhoneController.text,
-                                      textStreetController.text),
+                                      textStreetController.text,
+                                      textEmailController.text),
                                   if (patientProfileController.done.value)
                                     {
                                       Fluttertoast.showToast(

@@ -12,22 +12,23 @@ class AccountPost {
   late String dob;
   late bool isMale;
   late int roleId;
+  late String password;
 
-  AccountPost({
-    required this.email,
-    required this.firstName,
-    required this.lastName,
-    required this.image,
-    required this.ward,
-    required this.streetAddress,
-    required this.locality,
-    required this.city,
-    required this.postalCode,
-    required this.phone,
-    required this.dob,
-    required this.isMale,
-    required this.roleId,
-  });
+  AccountPost(
+      {required this.email,
+      required this.firstName,
+      required this.lastName,
+      required this.image,
+      required this.ward,
+      required this.streetAddress,
+      required this.locality,
+      required this.city,
+      required this.postalCode,
+      required this.phone,
+      required this.dob,
+      required this.isMale,
+      required this.roleId,
+      required this.password});
 
   AccountPost.fromJson(Map<String, dynamic> json) {
     email = json['email'];
@@ -43,6 +44,7 @@ class AccountPost {
     dob = json['dob'];
     isMale = json['isMale'];
     roleId = json['roleId'];
+    password = json['password'];
   }
 
   Map<String, dynamic> toJson() {
@@ -60,6 +62,7 @@ class AccountPost {
     data['dob'] = this.dob;
     data['isMale'] = this.isMale;
     data['roleId'] = this.roleId;
+    data['password'] = this.password;
     return data;
   }
 }

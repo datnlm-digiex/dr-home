@@ -27,19 +27,12 @@ class _UserInformationState extends State<UserInformation> {
     'AB-'
   ];
 
-  TextEditingController textFirstNameController = TextEditingController();
-  TextEditingController textLastNameController = TextEditingController();
-  TextEditingController textPhoneController = TextEditingController();
-  TextEditingController textStreetController = TextEditingController();
-  TextEditingController textAllergyController = TextEditingController();
-  TextEditingController textBloodGroupController = TextEditingController();
-  TextEditingController textBackgroundDiseaseController =
-      TextEditingController();
-
   @override
   void initState() {
     super.initState();
     formAfterLoginController.getAddress();
+    print(formAfterLoginController.textPhoneController.text);
+    print(formAfterLoginController.textPasswordController.text);
   }
 
   void _showOptions(BuildContext context) {
@@ -148,16 +141,6 @@ class _UserInformationState extends State<UserInformation> {
                                           )),
                                     ),
                                   ),
-                                  // formAfterLoginController.emptyImage.value
-                                  //     ? Center(
-                                  //         child: Text(
-                                  //           "Vui lòng chọn ảnh đại diện",
-                                  //           style: TextStyle(
-                                  //               color: Colors.red,
-                                  //               fontSize: 14),
-                                  //         ),
-                                  //       )
-                                  //     : Container(),
                                   SizedBox(height: 20),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -174,7 +157,8 @@ class _UserInformationState extends State<UserInformation> {
                                         height: 8,
                                       ),
                                       TextField(
-                                        controller: textFirstNameController,
+                                        controller: formAfterLoginController
+                                            .textFirstNameController,
                                         decoration: InputDecoration(
                                           hintText: "Họ",
                                           border: OutlineInputBorder(),
@@ -203,7 +187,8 @@ class _UserInformationState extends State<UserInformation> {
                                         height: 8,
                                       ),
                                       TextField(
-                                        controller: textLastNameController,
+                                        controller: formAfterLoginController
+                                            .textLastNameController,
                                         decoration: InputDecoration(
                                           hintText: "Tên",
                                           border: OutlineInputBorder(),
@@ -211,6 +196,32 @@ class _UserInformationState extends State<UserInformation> {
                                                   .emptyLName.value
                                               ? "Vui lòng nhập tên của bạn"
                                               : null,
+                                          errorStyle: TextStyle(fontSize: 14),
+                                        ),
+                                        keyboardType: TextInputType.name,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 20),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Email:",
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      TextField(
+                                        controller: formAfterLoginController
+                                            .textEmailController,
+                                        decoration: InputDecoration(
+                                          hintText: "Địa chỉ email",
+                                          border: OutlineInputBorder(),
                                           errorStyle: TextStyle(fontSize: 14),
                                         ),
                                         keyboardType: TextInputType.name,
@@ -406,37 +417,6 @@ class _UserInformationState extends State<UserInformation> {
                                         )
                                       : Container(),
                                   SizedBox(height: 20),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Điện thoại:",
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      TextField(
-                                        controller: textPhoneController,
-                                        decoration: InputDecoration(
-                                          hintText: "Số điện thoại",
-                                          border: OutlineInputBorder(),
-                                          errorText: formAfterLoginController
-                                                  .emptyPhone.value
-                                              ? "Vui lòng nhập số điện thoại"
-                                              : null,
-                                          errorStyle: TextStyle(fontSize: 14),
-                                        ),
-                                        keyboardType: TextInputType.phone,
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -702,7 +682,8 @@ class _UserInformationState extends State<UserInformation> {
                                         height: 8,
                                       ),
                                       TextField(
-                                        controller: textStreetController,
+                                        controller: formAfterLoginController
+                                            .textStreetController,
                                         decoration: InputDecoration(
                                           hintText: "Đường",
                                           border: OutlineInputBorder(),
@@ -743,7 +724,8 @@ class _UserInformationState extends State<UserInformation> {
                                         height: 8,
                                       ),
                                       TextField(
-                                        controller: textAllergyController,
+                                        controller: formAfterLoginController
+                                            .textAllergyController,
                                         decoration: InputDecoration(
                                           hintText:
                                               "Dị ứng (ghi Không nếu không có)",
@@ -783,9 +765,13 @@ class _UserInformationState extends State<UserInformation> {
                                         ),
                                         child: DropdownButtonHideUnderline(
                                           child: DropdownButton(
-                                            value: textBloodGroupController
-                                                    .text.isNotEmpty
-                                                ? textBloodGroupController.text
+                                            value: formAfterLoginController
+                                                    .textBloodGroupController
+                                                    .text
+                                                    .isNotEmpty
+                                                ? formAfterLoginController
+                                                    .textBloodGroupController
+                                                    .text
                                                 : listBlood[0],
                                             hint: Padding(
                                               padding: const EdgeInsets.only(
@@ -794,8 +780,9 @@ class _UserInformationState extends State<UserInformation> {
                                             ),
                                             onChanged: (value) {
                                               setState(() {
-                                                textBloodGroupController.text =
-                                                    value.toString();
+                                                formAfterLoginController
+                                                    .textBloodGroupController
+                                                    .text = value.toString();
                                               });
                                             },
                                             // value: listBlood,
@@ -821,54 +808,11 @@ class _UserInformationState extends State<UserInformation> {
                                                 ),
                                               );
                                             }).toList(),
-                                            // items: listBlood.map((valueItem) {
-                                            //   return DropdownMenuItem(
-                                            //     value: valueItem,
-                                            //     child: Padding(
-                                            //       padding:
-                                            //           const EdgeInsets.fromLTRB(
-                                            //               10, 0, 10, 0),
-                                            //       child: Text(
-                                            //         valueItem,
-                                            //         style: TextStyle(
-                                            //             color: Colors.black,
-                                            //             //Color(0xff6200ee),
-                                            //             fontSize: 16.0,
-                                            //             fontWeight:
-                                            //                 FontWeight.w500),
-                                            //       ),
-                                            //     ),
-                                            //   );
-                                            // }).toList(),
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                  // Column(
-                                  //   crossAxisAlignment:
-                                  //       CrossAxisAlignment.start,
-                                  //   children: [
-                                  //     Text(
-                                  //       "Nhóm máu:",
-                                  //       style: TextStyle(
-                                  //         fontSize: 17,
-                                  //       ),
-                                  //     ),
-                                  //     SizedBox(
-                                  //       height: 8,
-                                  //     ),
-                                  //     TextField(
-                                  //       controller: textBloodGroupController,
-                                  //       decoration: InputDecoration(
-                                  //         hintText:
-                                  //             "Nhóm máu (bỏ trống nếu chưa xác định được)",
-                                  //         border: OutlineInputBorder(),
-                                  //       ),
-                                  //       keyboardType: TextInputType.name,
-                                  //     ),
-                                  //   ],
-                                  // ),
                                   SizedBox(
                                     height: 20,
                                   ),
@@ -886,8 +830,8 @@ class _UserInformationState extends State<UserInformation> {
                                         height: 8,
                                       ),
                                       TextField(
-                                        controller:
-                                            textBackgroundDiseaseController,
+                                        controller: formAfterLoginController
+                                            .textBackgroundDiseaseController,
                                         decoration: InputDecoration(
                                           hintText:
                                               "Bệnh nền (ghi Không nếu không có)",
@@ -924,20 +868,27 @@ class _UserInformationState extends State<UserInformation> {
                                                         .shrinkWrap,
                                                 backgroundColor: kBlueColor),
                                             onPressed: () => {
-                                              formAfterLoginController
-                                                  .createAccountPatient(
-                                                      textFirstNameController
-                                                          .text,
-                                                      textLastNameController
-                                                          .text,
-                                                      textPhoneController.text,
-                                                      textStreetController.text,
-                                                      textAllergyController
-                                                          .text,
-                                                      textBloodGroupController
-                                                          .text,
-                                                      textBackgroundDiseaseController
-                                                          .text),
+                                              formAfterLoginController.createAccountPatient(
+                                                  formAfterLoginController
+                                                      .textFirstNameController
+                                                      .text,
+                                                  formAfterLoginController
+                                                      .textLastNameController
+                                                      .text,
+                                                  formAfterLoginController
+                                                      .textPhoneController.text,
+                                                  formAfterLoginController
+                                                      .textStreetController
+                                                      .text,
+                                                  formAfterLoginController
+                                                      .textAllergyController
+                                                      .text,
+                                                  formAfterLoginController
+                                                      .textBloodGroupController
+                                                      .text,
+                                                  formAfterLoginController
+                                                      .textBackgroundDiseaseController
+                                                      .text),
                                             },
                                             child: Text(
                                               "Hoàn tất",

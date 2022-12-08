@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
+import 'package:http/http.dart' as http;
 
 class GoogleSignInController with ChangeNotifier {
   late FirebaseApp firebaseApp;
@@ -42,10 +45,9 @@ class GoogleSignInController with ChangeNotifier {
             await FirebaseAuth.instance.signInWithCredential(credential);
         firebaseUser = userCredentialData.user!;
         idToken = await firebaseUser.getIdToken();
-      } else { 
+      } else {
         idToken = await currentUser.getIdToken();
       }
-      print(idToken);
       await FetchAPI.loginWithToken(idToken)
           .then((value) => statusLogin = value);
       notifyListeners();
@@ -63,5 +65,14 @@ class GoogleSignInController with ChangeNotifier {
     final storage = new FlutterSecureStorage();
     storage.deleteAll();
     notifyListeners();
+  }
+
+  Future<String> login(String phone, String password) async {
+    String statusLogin = "";
+    await FetchAPI.loginWithPhone(phone, password)
+        .then((value) => statusLogin = value);
+    notifyListeners();
+
+    return statusLogin;
   }
 }

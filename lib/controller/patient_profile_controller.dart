@@ -168,12 +168,16 @@ class PatientProfileController extends GetxController {
       city.value = account.value.city;
       district.value = account.value.locality;
       ward.value = account.value.ward;
+
+      print("**********************");
+      print(account.value.id);
     });
   }
 
   Future pickDate(BuildContext context) async {
     final initialDate = DateTime.parse("2000-01-01");
     final newDate = await showDatePicker(
+        locale: const Locale("vi", "VN"),
         context: context,
         initialDate: initialDate,
         firstDate: DateTime(1900),
@@ -228,8 +232,8 @@ class PatientProfileController extends GetxController {
   RxBool emptyDistrict = false.obs;
   RxBool emptyWard = false.obs;
 
-  updateAccountInfo(
-      String fName, String lName, String phoneNumber, String street) {
+  updateAccountInfo(String fName, String lName, String phoneNumber,
+      String street, String email) {
     if (fName.isEmpty) {
       fName = account.value.firstName;
     }
@@ -255,7 +259,7 @@ class PatientProfileController extends GetxController {
     }
     Account newAccount = new Account(
         id: account.value.id,
-        email: account.value.email,
+        email: email,
         firstName: fName,
         lastName: lName,
         ward: account.value.ward.contains(ward.value)

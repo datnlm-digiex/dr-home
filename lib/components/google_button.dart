@@ -21,7 +21,7 @@ class GoogleButton extends StatelessWidget {
     return ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
           shape: StadiumBorder(),
-          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 40),
+          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           backgroundColor: kBackgroundColor,
         ),

@@ -18,6 +18,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Create a [AndroidNotificationChannel] for heads up notifications
 late AndroidNotificationChannel channel;
@@ -25,9 +26,15 @@ late AndroidNotificationChannel channel;
 /// Initialize the [FlutterLocalNotificationsPlugin] package.
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     new FlutterLocalNotificationsPlugin();
+late bool status = false;
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final prefShare = await SharedPreferences.getInstance();
+  status = prefShare.getBool('isNew') != null ? prefShare.getBool('isNew')! : false;
+  await prefShare.setBool('isNew', true);
+
   await Firebase.initializeApp();
   await [Permission.microphone, Permission.camera, Permission.location]
       .request();
@@ -168,7 +175,7 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.blue,
         ),
         debugShowCheckedModeBanner: false,
-        home: IntroductionScreenSlider(),
+        home: status ? LoginScreen() : IntroductionScreenSlider(),
         // LoginScreen(),
         localizationsDelegates: [
           GlobalWidgetsLocalizations.delegate,
@@ -181,10 +188,11 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class MyHttpOverrides extends HttpOverrides{
+class MyHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext? context){
+  HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

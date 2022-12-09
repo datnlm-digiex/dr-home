@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:telemedicine_mobile/Screens/bottom_nav_screen.dart';
 import 'package:telemedicine_mobile/Screens/components/loading.dart';
 import 'package:telemedicine_mobile/Screens/dynamic_link_screen.dart';
 import 'package:telemedicine_mobile/controller/invite_videocall_controller.dart';
@@ -27,12 +29,16 @@ late AndroidNotificationChannel channel;
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     new FlutterLocalNotificationsPlugin();
 late bool status = false;
+late String token = "";
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final prefShare = await SharedPreferences.getInstance();
-  status = prefShare.getBool('isNew') != null ? prefShare.getBool('isNew')! : false;
+  status =
+      prefShare.getBool('isNew') != null ? prefShare.getBool('isNew')! : false;
+  final storage = new Storage.FlutterSecureStorage();
+  token = await storage.read(key: "accessToken") ?? "";
   await prefShare.setBool('isNew', true);
 
   await Firebase.initializeApp();
@@ -175,7 +181,11 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.blue,
         ),
         debugShowCheckedModeBanner: false,
-        home: status ? LoginScreen() : IntroductionScreenSlider(),
+        home: status
+            ? token == ""
+                ? LoginScreen()
+                : BottomNavScreen()
+            : IntroductionScreenSlider(),
         // LoginScreen(),
         localizationsDelegates: [
           GlobalWidgetsLocalizations.delegate,

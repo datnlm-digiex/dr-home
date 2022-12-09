@@ -6,9 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:http/http.dart' as http;
+
+import '../Screens/login_form_screen.dart';
 
 class GoogleSignInController with ChangeNotifier {
   late FirebaseApp firebaseApp;
@@ -65,14 +68,24 @@ class GoogleSignInController with ChangeNotifier {
     final storage = new FlutterSecureStorage();
     storage.deleteAll();
     notifyListeners();
+    Get.off(LoginScreen());
   }
 
   Future<String> login(String phone, String password) async {
+    final accountController = Get.put(AccountController());
     String statusLogin = "";
-    await FetchAPI.loginWithPhone(phone, password)
-        .then((value) => statusLogin = value);
-    notifyListeners();
-
+    try {
+      accountController.isLoading.value = true;
+      await FetchAPI.loginWithPhone(phone, password).then(
+        (value) => statusLogin = value,
+      );
+      notifyListeners();
+    } catch (e) {
+      print(e.toString());
+      statusLogin = "";
+    } finally {
+      accountController.isLoading.value = false;
+    }
     return statusLogin;
   }
 }

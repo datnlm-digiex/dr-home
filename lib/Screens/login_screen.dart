@@ -104,13 +104,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
-            Positioned.fill(
-                child: Align(
-              alignment: Alignment.center,
-              child: Obx(() => accountController.isLoading.value
-                  ? CircularProgressIndicator(color: kWhiteColor)
-                  : Container()),
-            )),
           ],
         ),
       ),

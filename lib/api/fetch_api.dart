@@ -673,8 +673,10 @@ class FetchAPI {
     }
   }
 
-  static Future<Patient> fetchMyPatient(String email) async {
+  static Future<Patient> fetchMyPatient(String id) async {
     final storage = new Storage.FlutterSecureStorage();
+    print("https://13.232.213.53:8189/api/v1/patients/");
+    print(id);
     String token = await storage.read(key: "accessToken") ?? "";
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
@@ -686,8 +688,8 @@ class FetchAPI {
       print(token);
       final response = await http.get(
         Uri.parse("https://13.232.213.53:8189/api/v1/patients/" +
-            email +
-            "?search-type=Email"),
+            id +
+            "?search-type=Id"),
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -707,7 +709,7 @@ class FetchAPI {
     }
   }
 
-  static Future<Account> fetchAccountDetail(String email) async {
+  static Future<Account> fetchAccountDetail(String id) async {
     final storage = new Storage.FlutterSecureStorage();
     String token = await storage.read(key: "accessToken") ?? "";
     if (token.isEmpty) {
@@ -718,8 +720,8 @@ class FetchAPI {
     } else {
       final response = await http.get(
         Uri.parse("https://13.232.213.53:8189/api/v1/accounts/" +
-            email +
-            "?search-type=Email"),
+            id +
+            "?search-type=Id"),
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $token',

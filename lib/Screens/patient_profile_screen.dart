@@ -6,6 +6,7 @@ import 'package:telemedicine_mobile/Screens/edit_healthcheck_info_screen.dart';
 import 'package:telemedicine_mobile/Screens/edit_patient_profile_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:telemedicine_mobile/controller/bottom_navbar_controller.dart';
+import 'package:telemedicine_mobile/controller/google_login_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
 
 class PatientProfile extends StatefulWidget {
@@ -16,6 +17,8 @@ class PatientProfile extends StatefulWidget {
 }
 
 class _PatientProfileState extends State<PatientProfile> {
+  final GoogleSignInController googleSignInController =
+      Get.put(GoogleSignInController());
   Widget textfield({@required hintText, @required icon, onTap}) {
     return Material(
       elevation: 4,
@@ -337,7 +340,7 @@ class _PatientProfileState extends State<PatientProfile> {
                   highlightColor: Colors.grey[200],
                   onTap: () => {
                     Navigator.pop(contextDialog),
-                    patientProfileController.logout()
+                    googleSignInController.logOut()
                   },
                   child: Center(
                     child: Text(

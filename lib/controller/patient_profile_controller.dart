@@ -87,13 +87,13 @@ class PatientProfileController extends GetxController {
 
   getMyPatient() {
     isLoading.value = true;
-    String myEmail = accountController.account.value.email;
-    if (myEmail.isEmpty) {
+    String id = accountController.account.value.id.toString();
+    if (id.isEmpty) {
       Get.off(LoginScreen(),
           transition: Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
     } else {
-      FetchAPI.fetchMyPatient(myEmail).then((dataFromServer) {
+      FetchAPI.fetchMyPatient(id).then((dataFromServer) {
         patient.value = dataFromServer;
         patientProfileController.patient.value = patient.value;
         // patientHistoryController.patientID.value = patient.value.id;
@@ -153,14 +153,14 @@ class PatientProfileController extends GetxController {
   }
 
   getMyAccount() {
-    String myEmail = accountController.account.value.email;
-    if (myEmail.isEmpty) {
+    String id = accountController.account.value.id.toString();
+    if (id.isEmpty) {
       Get.offAll(LoginScreen(),
           transition: Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       return;
     }
-    FetchAPI.fetchAccountDetail(myEmail).then((dataFromServer) {
+    FetchAPI.fetchAccountDetail(id).then((dataFromServer) {
       account.value = dataFromServer;
       isMale.value = account.value.isMale;
       dob.value =
@@ -319,6 +319,8 @@ class PatientProfileController extends GetxController {
 
   logout() {
     FetchAPI.userLogout().then((value) {
+      print("asdasd");
+      print(value);
       if (value)
         Get.off(() => LoginScreen(), duration: Duration(microseconds: 600));
       Fluttertoast.showToast(msg: "Đăng xuất thành công", fontSize: 18);

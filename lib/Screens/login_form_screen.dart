@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:telemedicine_mobile/Screens/register_screen.dart';
 import 'package:telemedicine_mobile/constant.dart';
 import 'package:provider/provider.dart';
+import 'package:telemedicine_mobile/controller/account_controller.dart';
 import '../controller/google_login_controller.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -17,6 +18,7 @@ class LoginFormScreen extends StatefulWidget {
 }
 
 class _LoginFormScreenState extends State<LoginFormScreen> {
+  final AccountController accountController = Get.find<AccountController>();
   TextEditingController textPhoneController = TextEditingController();
   TextEditingController textPasswordController = TextEditingController();
   bool emptyPassword = false;
@@ -123,64 +125,89 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                                 width: MediaQuery.of(context).size.width * 0.9,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(29),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 18, horizontal: 20),
-                                        tapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                        backgroundColor: kBlueColor),
-                                    onPressed: () async {
-                                      setState(() {
-                                        textPasswordController.text == ''
-                                            ? emptyPassword = true
-                                            : emptyPassword = false;
-                                        textPhoneController.text == ''
-                                            ? phone = true
-                                            : phone = false;
-                                      });
+                                  child: Obx(
+                                    () => ElevatedButton.icon(
+                                      icon: accountController.isLoading.value
+                                          ? Container(
+                                              width: 24,
+                                              height: 24,
+                                              padding:
+                                                  const EdgeInsets.all(2.0),
+                                              child:
+                                                  const CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 3,
+                                              ),
+                                            )
+                                          : Container(),
+                                      style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 18, horizontal: 20),
+                                          tapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                          backgroundColor: kBlueColor),
+                                      onPressed: () async {
+                                        if (!accountController
+                                            .isLoading.value) {
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
+                                          setState(() {
+                                            textPasswordController.text == ''
+                                                ? emptyPassword = true
+                                                : emptyPassword = false;
+                                            textPhoneController.text == ''
+                                                ? phone = true
+                                                : phone = false;
+                                          });
 
-                                      if (!emptyPassword && !phone) {
-                                        String checkLogin = await Provider.of<
-                                                    GoogleSignInController>(
-                                                context,
-                                                listen: false)
-                                            .login(textPhoneController.text,
-                                                textPasswordController.text);
-                                        if (checkLogin ==
-                                            "LoginType is incorrect!") {
-                                          Fluttertoast.showToast(
-                                              msg:
-                                                  "Tài khoản đã được dùng trong hệ thống với vai trò khác",
-                                              fontSize: 18);
-                                        } else if (checkLogin ==
-                                            "Account is ban!") {
-                                          Fluttertoast.showToast(
-                                              msg:
-                                                  "Tài khoản của bạn đã bị khóa",
-                                              fontSize: 18);
-                                        } else if (checkLogin ==
-                                            "Login Success") {
-                                          // patientHistoryController.getTopDoctor();
-                                          Get.off(checkLoginGoogle(context));
-                                          // } else if (checkLogin ==
-                                          //     "Create Account") {
-                                          //   Navigator.push(
-                                          //       context,
-                                          //       MaterialPageRoute(
-                                          //           builder: checkNewAccount));
-                                        } else {
-                                          Fluttertoast.showToast(
-                                              msg: "Đăng nhập thất bại",
-                                              fontSize: 18);
+                                          if (!emptyPassword && !phone) {
+                                            String checkLogin = await Provider
+                                                    .of<GoogleSignInController>(
+                                                        context,
+                                                        listen: false)
+                                                .login(
+                                                    textPhoneController.text,
+                                                    textPasswordController
+                                                        .text);
+                                            if (checkLogin ==
+                                                "LoginType is incorrect!") {
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "Tài khoản đã được dùng trong hệ thống với vai trò khác",
+                                                  fontSize: 18);
+                                            } else if (checkLogin ==
+                                                "Account is ban!") {
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "Tài khoản của bạn đã bị khóa",
+                                                  fontSize: 18);
+                                            } else if (checkLogin ==
+                                                "Login Success") {
+                                              // patientHistoryController.getTopDoctor();
+                                              Get.off(
+                                                  checkLoginGoogle(context));
+                                              // } else if (checkLogin ==
+                                              //     "Create Account") {
+                                              //   Navigator.push(
+                                              //       context,
+                                              //       MaterialPageRoute(
+                                              //           builder: checkNewAccount));
+                                            } else {
+                                              Fluttertoast.showToast(
+                                                  msg: "Đăng nhập thất bại",
+                                                  fontSize: 18);
+                                            }
+                                          }
                                         }
-                                      }
-                                    },
-                                    child: Text(
-                                      "Đăng nhập",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
+                                      },
+                                      label: Text(
+                                        accountController.isLoading.value
+                                            ? ''
+                                            : "Đăng nhập",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                     ),
                                   ),
                                 ),

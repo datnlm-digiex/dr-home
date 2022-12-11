@@ -37,8 +37,9 @@ Future main() async {
   final prefShare = await SharedPreferences.getInstance();
   status =
       prefShare.getBool('isNew') != null ? prefShare.getBool('isNew')! : false;
-  final storage = new Storage.FlutterSecureStorage();
-  token = await storage.read(key: "accessToken") ?? "";
+  token = prefShare.getString('accessToken') != null
+      ? prefShare.getString('accessToken')!
+      : '';
   await prefShare.setBool('isNew', true);
 
   await Firebase.initializeApp();

@@ -64,6 +64,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 {
                   // filterController.getListMajor(),
                   listDoctorController.condition.value = "",
+                  patientProfileController.getMyAccount(),
                 },
               if (bottomNavbarController.currentIndex.value == 3)
                 {

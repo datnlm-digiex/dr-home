@@ -4,6 +4,7 @@ import 'package:get/get.dart' as GetX;
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:telemedicine_mobile/Screens/video_player/exercise_screen.dart';
 import 'package:telemedicine_mobile/models/ExercisePaging.dart';
 
@@ -22,15 +23,12 @@ class ExerciseController extends GetxController {
   Future<void> fetchExercise(int type, int patientId) async {
     try {
       isLoading(true);
-      final storage = new Storage.FlutterSecureStorage();
-      // final accountController = GetX.Get.put(AccountController());
-      String tokenFcm = await storage.read(key: "tokenFCM") ?? "";
-      String token = await storage.read(key: "accessToken") ?? "";
+      final prefShare = await SharedPreferences.getInstance();
+      String token = prefShare.getString('accessToken') != null
+          ? prefShare.getString('accessToken')!
+          : '';
       // String email = accountController.account.value.email;
-      if (tokenFcm != "" && token != "") {
-        final Map<String, String> data = new Map<String, String>();
-        data['token'] = tokenFcm;
-
+      if (token != "") {
         Map<String, String> queryParams = {
           'patient': patientId.toString(),
           'date': new DateFormat('yyyy-MM-dd').format(DateTime.now()),
@@ -68,15 +66,12 @@ class ExerciseController extends GetxController {
   Future<void> getExerciesProcess(int patientId) async {
     try {
       isLoading(true);
-      final storage = new Storage.FlutterSecureStorage();
-      // final accountController = GetX.Get.put(AccountController());
-      String tokenFcm = await storage.read(key: "tokenFCM") ?? "";
-      String token = await storage.read(key: "accessToken") ?? "";
+      final prefShare = await SharedPreferences.getInstance();
+      String token = prefShare.getString('accessToken') != null
+          ? prefShare.getString('accessToken')!
+          : '';
       // String email = accountController.account.value.email;
-      if (tokenFcm != "" && token != "") {
-        final Map<String, String> data = new Map<String, String>();
-        data['token'] = tokenFcm;
-
+      if (token != "") {
         Map<String, String> queryParams = {
           'patient': patientId.toString(),
           'date': new DateFormat('yyyy-MM-dd').format(DateTime.now()),
@@ -107,13 +102,11 @@ class ExerciseController extends GetxController {
   Future<void> getHistory(int groupId, int patientId) async {
     try {
       isLoading(true);
-      final storage = new Storage.FlutterSecureStorage();
-      String tokenFcm = await storage.read(key: "tokenFCM") ?? "";
-      String token = await storage.read(key: "accessToken") ?? "";
-      if (tokenFcm != "" && token != "") {
-        final Map<String, String> data = new Map<String, String>();
-        data['token'] = tokenFcm;
-
+      final prefShare = await SharedPreferences.getInstance();
+      String token = prefShare.getString('accessToken') != null
+          ? prefShare.getString('accessToken')!
+          : '';
+      if (token != "") {
         Map<String, String> queryParams = {
           'patientid': patientId.toString(),
           'order-by': 'Endtime',

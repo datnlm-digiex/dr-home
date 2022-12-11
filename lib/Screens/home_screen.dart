@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -54,11 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
     // getNews();
     // getStatisticCovid();
     patientProfileController.getMyPatient();
+    patientProfileController.getMyAccount();
     _fireBaseConfig();
     overViewSurveyController.getSuverOverViewListRespone();
     hospitalController.fetchHospital();
   }
-
   final Color start = Color(0xffFC67A7);
   final Color end = Color(0xffF6815B);
 
@@ -74,7 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _fireBaseConfig() {
-    print('firebasessssss');
     _firebaseMessaging.setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
@@ -105,7 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void showNotification(String title, String body) async {
-    print("kkkkkkkkk");
     await _demoNotification(title, body);
   }
 
@@ -120,10 +119,8 @@ class _HomeScreenState extends State<HomeScreen> {
     var iOSChannelSpecifics = DarwinNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics, iOS: iOSChannelSpecifics);
-    print("mm");
     await flutterLocalNotificationsPlugin
         .show(0, title, body, platformChannelSpecifics, payload: 'test');
-    print("nn");
   }
 
   final historySurveyController = Get.put(HistorySurveyController());

@@ -23,6 +23,17 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
   TextEditingController textBackgroundDiseaseController =
       TextEditingController();
 
+  final listBlood = <String>[
+    'Không xác định',
+    'A+',
+    'A-',
+    'B+',
+    'B-',
+    'O+',
+    'O-',
+    'AB+',
+    'AB-'
+  ];
   @override
   void initState() {
     super.initState();
@@ -104,21 +115,50 @@ class _EditHealthCheckInfoScreenState extends State<EditHealthCheckInfoScreen> {
                         SizedBox(
                           height: 8,
                         ),
-                        TextField(
-                          controller: textBloodTypeController,
-                          decoration: InputDecoration(
-                            hintText: patientProfileController
-                                    .patient.value.bloodGroup.isEmpty
-                                ? "Chưa xác định"
-                                : patientProfileController
-                                    .patient.value.bloodGroup,
-                            hintStyle: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                            border: OutlineInputBorder(),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: Colors.grey, width: 1),
                           ),
-                          keyboardType: TextInputType.name,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              value: patientProfileController
+                                      .patient.value.bloodGroup.isEmpty
+                                  ? listBlood[0]
+                                  : patientProfileController
+                                      .patient.value.bloodGroup,
+                              hint: Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Text("Chọn nhóm máu"),
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  patientProfileController.patient.value
+                                      .bloodGroup = value.toString();
+                                });
+                              },
+                              // value: listBlood,
+                              isExpanded: true,
+                              items: listBlood.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          //Color(0xff6200ee),
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
                         ),
                       ],
                     ),

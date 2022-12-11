@@ -112,6 +112,9 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                               ),
                             ],
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           Text(
                             "Sử dụng 8 kí tự trở lên",
                             style:
@@ -186,12 +189,6 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                                               // patientHistoryController.getTopDoctor();
                                               Get.off(
                                                   checkLoginGoogle(context));
-                                              // } else if (checkLogin ==
-                                              //     "Create Account") {
-                                              //   Navigator.push(
-                                              //       context,
-                                              //       MaterialPageRoute(
-                                              //           builder: checkNewAccount));
                                             } else {
                                               Fluttertoast.showToast(
                                                   msg: "Đăng nhập thất bại",

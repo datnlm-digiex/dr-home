@@ -16,16 +16,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final accountController = Get.put(AccountController());
-  final storage = new Storage.FlutterSecureStorage();
 
   @override
   void initState() {
-    clearStorage();
     super.initState();
-  }
-
-  clearStorage() async {
-    await storage.deleteAll();
   }
 
   @override

@@ -8,6 +8,7 @@ import 'package:get/get.dart' as GetX;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
 import 'package:telemedicine_mobile/controller/patient_profile_controller.dart';
@@ -102,8 +103,6 @@ class FetchAPI {
 
   static Future<String> loginWithPhone(String phone, String password) async {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    final storage = new Storage.FlutterSecureStorage();
-
     data['phone'] = phone;
     data['password'] = password;
     data['loginType'] = '3';
@@ -146,7 +145,9 @@ class FetchAPI {
         }
         var accountJson = json.decode(utf8.decode(response.bodyBytes));
         Account account = Account.fromJson(accountJson['account']);
-        storage.write(key: "accessToken", value: accountJson['accessToken']);
+        final prefShare = await SharedPreferences.getInstance();
+        prefShare.setString('accessToken', accountJson['accessToken']);
+        prefShare.setString('id', account.id.toString());
         accountController.account.value = account;
         return message;
       } else {
@@ -162,7 +163,10 @@ class FetchAPI {
     final storage = new Storage.FlutterSecureStorage();
     final accountController = GetX.Get.put(AccountController());
     String tokenFcm = await storage.read(key: "tokenFCM") ?? "";
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : "";
     String email = accountController.account.value.email;
     if (tokenFcm != "" && email.isNotEmpty && token != "") {
       final Map<String, String> data = new Map<String, String>();
@@ -186,9 +190,11 @@ class FetchAPI {
   }
 
   static Future<void> getCountUnreadNotification() async {
-    final storage = new Storage.FlutterSecureStorage();
     final accountController = GetX.Get.put(AccountController());
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     int userId = accountController.account.value.id;
     if (userId != 0 && token != "") {
       final response = await http.get(
@@ -242,8 +248,10 @@ class FetchAPI {
   }
 
   static Future<Survey> fetchSurveyOverView(int SurveyID) async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
@@ -272,8 +280,10 @@ class FetchAPI {
   }
 
   static Future<List<Question>> fetchListQuestion(int surveyId) async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
@@ -302,8 +312,10 @@ class FetchAPI {
   }
 
   static Future<SurveyOverViewListRespone> fetchListSurveyOverView() async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
@@ -388,8 +400,10 @@ class FetchAPI {
   }
 
   static Future<List<Doctor>> fetchContentAllDoctor() async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
@@ -451,8 +465,10 @@ class FetchAPI {
 
   static Future<HealthCheck> fetchNearestHealthCheck(int patientID) async {
     final patientProfileController = GetX.Get.put(PatientProfileController());
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
@@ -592,8 +608,10 @@ class FetchAPI {
   }
 
   static Future<List<Symptom>> fetchContentSymptom() async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
@@ -646,8 +664,10 @@ class FetchAPI {
   }
 
   static Future<List<Hospital>> fetchContentHospital() async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
@@ -674,18 +694,16 @@ class FetchAPI {
   }
 
   static Future<Patient> fetchMyPatient(String id) async {
-    final storage = new Storage.FlutterSecureStorage();
-    print("https://13.232.213.53:8189/api/v1/patients/");
-    print(id);
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
           duration: Duration(milliseconds: 500));
       throw Exception("Error: UnAuthentication");
     } else {
-      print("token gg");
-      print(token);
       final response = await http.get(
         Uri.parse("https://13.232.213.53:8189/api/v1/patients/" +
             id +
@@ -695,7 +713,6 @@ class FetchAPI {
           HttpHeaders.authorizationHeader: 'Bearer $token',
         },
       );
-      print('fetchMyPatient - fetech api *************');
       print(response.statusCode);
       if (response.statusCode == 200) {
         var contentJSon = json.decode(utf8.decode(response.bodyBytes));
@@ -710,8 +727,10 @@ class FetchAPI {
   }
 
   static Future<Account> fetchAccountDetail(String id) async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
@@ -730,6 +749,8 @@ class FetchAPI {
       if (response.statusCode == 200) {
         var contentJSon = json.decode(utf8.decode(response.bodyBytes));
         Account account = Account.fromJson(contentJSon);
+        final accountController = GetX.Get.put(AccountController());
+        accountController.account.value = account;
         return account;
       } else if (response.statusCode == 404) {
         throw Exception("No account found with the type");
@@ -841,8 +862,10 @@ class FetchAPI {
 
   static Future<String> createNewHealthCheck(
       HealthCheckPost healthCheckPost) async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
@@ -927,8 +950,10 @@ class FetchAPI {
   }
 
   static Future<String> updateMyPatientInfo(Patient patient) async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
@@ -984,8 +1009,10 @@ class FetchAPI {
   }
 
   static Future<JoinCallResponse> joinCall(int healthCheckID) async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     final accountController = GetX.Get.put(AccountController());
     String email = accountController.account.value.email;
     String displayName = accountController.account.value.firstName +
@@ -1052,8 +1079,10 @@ class FetchAPI {
   }
 
   static Future<String> editHealthCheck(HealthCheck healthCheck) async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
@@ -1113,8 +1142,10 @@ class FetchAPI {
   }
 
   static Future<int> unReadNotification(int userID) async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     int countUnread = 0;
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
@@ -1174,7 +1205,10 @@ class FetchAPI {
   static Future<bool> userLogout() async {
     final storage = new Storage.FlutterSecureStorage();
     final accountController = GetX.Get.put(AccountController());
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
 
     if (token.isEmpty) {
       GetX.Get.off(LoginScreen(),
@@ -1210,8 +1244,10 @@ class FetchAPI {
 
   static Future<ContentHospital> getListNearHospital(
       double lat, double lng) async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
@@ -1243,8 +1279,10 @@ class FetchAPI {
 
   static Future<SurveyHistoryResponse> fetchListHistorySurvey(
       int patientId) async {
-    final storage = new Storage.FlutterSecureStorage();
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
     if (token.isEmpty) {
       GetX.Get.offAll(LoginScreen(),
           transition: GetX.Transition.leftToRightWithFade,
@@ -1291,9 +1329,10 @@ class FetchAPI {
   static Future<String> changePassowrd(
       String oldPassword, String newPassword) async {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    final storage = new Storage.FlutterSecureStorage();
-
-    String token = await storage.read(key: "accessToken") ?? "";
+    final prefShare = await SharedPreferences.getInstance();
+    String token = prefShare.getString('accessToken') != null
+        ? prefShare.getString('accessToken')!
+        : '';
 
     final accountController = GetX.Get.find<AccountController>();
     if (token != "") {

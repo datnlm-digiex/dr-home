@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_api.dart';
 import 'package:telemedicine_mobile/controller/account_controller.dart';
@@ -65,8 +66,8 @@ class GoogleSignInController with ChangeNotifier {
 
   logOut() async {
     this._user = await _googleSignIn.signOut();
-    final storage = new FlutterSecureStorage();
-    storage.deleteAll();
+    final prefShare = await SharedPreferences.getInstance();
+    prefShare.setString('accessToken', '');
     notifyListeners();
     Get.off(LoginScreen());
   }

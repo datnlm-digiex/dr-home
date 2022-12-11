@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:telemedicine_mobile/Screens/login_screen.dart';
 import 'package:telemedicine_mobile/Screens/video_player/exercise_screen.dart';
 import 'package:telemedicine_mobile/api/fetch_address_api.dart';
@@ -85,9 +86,11 @@ class PatientProfileController extends GetxController {
       symptomHealthChecks: []).obs;
   RxString statusCovid = "VietNam".obs;
 
-  getMyPatient() {
+  getMyPatient() async {
     isLoading.value = true;
-    String id = accountController.account.value.id.toString();
+    final prefShare = await SharedPreferences.getInstance();
+    String id =
+        prefShare.getString('id') != null ? prefShare.getString('id')! : '';
     if (id.isEmpty) {
       Get.off(LoginScreen(),
           transition: Transition.leftToRightWithFade,
@@ -152,8 +155,10 @@ class PatientProfileController extends GetxController {
         .toList();
   }
 
-  getMyAccount() {
-    String id = accountController.account.value.id.toString();
+  getMyAccount() async {
+    final prefShare = await SharedPreferences.getInstance();
+    String id =
+        prefShare.getString('id') != null ? prefShare.getString('id')! : '';
     if (id.isEmpty) {
       Get.offAll(LoginScreen(),
           transition: Transition.leftToRightWithFade,
@@ -168,10 +173,8 @@ class PatientProfileController extends GetxController {
       city.value = account.value.city;
       district.value = account.value.locality;
       ward.value = account.value.ward;
-
-      print("**********************");
-      print(account.value.id);
     });
+    update();
   }
 
   Future pickDate(BuildContext context) async {
@@ -319,8 +322,6 @@ class PatientProfileController extends GetxController {
 
   logout() {
     FetchAPI.userLogout().then((value) {
-      print("asdasd");
-      print(value);
       if (value)
         Get.off(() => LoginScreen(), duration: Duration(microseconds: 600));
       Fluttertoast.showToast(msg: "Đăng xuất thành công", fontSize: 18);

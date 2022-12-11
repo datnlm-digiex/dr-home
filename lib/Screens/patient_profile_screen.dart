@@ -17,6 +17,17 @@ class PatientProfile extends StatefulWidget {
 }
 
 class _PatientProfileState extends State<PatientProfile> {
+  final listBlood = <String>[
+    'Không xác định',
+    'A+',
+    'A-',
+    'B+',
+    'B-',
+    'O+',
+    'O-',
+    'AB+',
+    'AB-'
+  ];
   final GoogleSignInController googleSignInController =
       Get.put(GoogleSignInController());
   Widget textfield({@required hintText, @required icon, onTap}) {

@@ -163,7 +163,7 @@ class ListDoctorController extends GetxController {
           status: "",
           patient: new Patient(
               id: 0,
-              email: "",
+              phone: "",
               name: "",
               avatar: "",
               backgroundDisease: "",
@@ -191,7 +191,7 @@ class ListDoctorController extends GetxController {
       status: "",
       patient: new Patient(
           id: 0,
-          email: "",
+          phone: "",
           name: "",
           avatar: "",
           backgroundDisease: "",

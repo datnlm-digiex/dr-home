@@ -178,7 +178,7 @@ class _PatientProfileState extends State<PatientProfile> {
                           ),
                           textfield(
                             hintText:
-                                patientProfileController.patient.value.email,
+                                patientProfileController.account.value.email,
                             icon: Icons.email_outlined,
                           ),
                           textfield(

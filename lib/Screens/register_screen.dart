@@ -20,6 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool emptyPassword = false;
   bool phone = false;
   bool result = false;
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +76,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       TextField(
                                         controller: formAfterLoginController
                                             .textPhoneController,
+                                        maxLength: 10,
                                         decoration: InputDecoration(
                                           hintText: "Số điện thoại",
                                           border: OutlineInputBorder(),
@@ -170,7 +172,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(29),
-                                          child: ElevatedButton(
+                                          child: ElevatedButton.icon(
+                                            icon: loading
+                                                ? Container(
+                                                    width: 24,
+                                                    height: 24,
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            2.0),
+                                                    child:
+                                                        const CircularProgressIndicator(
+                                                      color: Colors.white,
+                                                      strokeWidth: 3,
+                                                    ),
+                                                  )
+                                                : Container(),
                                             style: ElevatedButton.styleFrom(
                                                 padding:
                                                     const EdgeInsets.symmetric(
@@ -180,69 +196,75 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                     MaterialTapTargetSize
                                                         .shrinkWrap,
                                                 backgroundColor: kBlueColor),
-                                            onPressed: () => setState(() {
-                                              if (formAfterLoginController
-                                                          .textPasswordController
-                                                          .text ==
-                                                      '' ||
-                                                  formAfterLoginController
-                                                          .textPasswordController
-                                                          .text
-                                                          .length <
-                                                      7) {
-                                                emptyPassword = true;
-                                              } else {
-                                                emptyPassword = false;
-                                              }
-
-                                              if (formAfterLoginController
-                                                      .textPasswordController
-                                                      .text ==
-                                                  formAfterLoginController
-                                                      .textConfirmController
-                                                      .text) {
-                                                wrongPassword = false;
-                                              } else {
-                                                wrongPassword = true;
-                                              }
-                                              if (formAfterLoginController
-                                                      .textPhoneController
-                                                      .text ==
-                                                  '') {
-                                                phone = true;
-                                              } else {
-                                                phone = false;
-                                                FetchAPI.checkPhone(
+                                            onPressed: () => loading
+                                                ? null
+                                                : setState(() {
+                                                    if (formAfterLoginController
+                                                                .textPasswordController
+                                                                .text ==
+                                                            '' ||
                                                         formAfterLoginController
+                                                                .textPasswordController
+                                                                .text
+                                                                .length <
+                                                            7) {
+                                                      emptyPassword = true;
+                                                    } else {
+                                                      emptyPassword = false;
+                                                    }
+
+                                                    if (formAfterLoginController
+                                                            .textPasswordController
+                                                            .text ==
+                                                        formAfterLoginController
+                                                            .textConfirmController
+                                                            .text) {
+                                                      wrongPassword = false;
+                                                    } else {
+                                                      wrongPassword = true;
+                                                    }
+                                                    if (formAfterLoginController
                                                             .textPhoneController
-                                                            .text)
-                                                    .then((value) => setState(
-                                                          () {
-                                                            result = value;
-                                                            if (!value &&
-                                                                formAfterLoginController
-                                                                        .textPhoneController
-                                                                        .text !=
-                                                                    '' &&
-                                                                formAfterLoginController
-                                                                        .textPasswordController
-                                                                        .text !=
-                                                                    '' &&
-                                                                formAfterLoginController
-                                                                        .textPasswordController
-                                                                        .text ==
-                                                                    formAfterLoginController
-                                                                        .textConfirmController
-                                                                        .text) {
-                                                              Get.to(
-                                                                  UserInformation());
-                                                            }
-                                                          },
-                                                        ));
-                                              }
-                                            }),
-                                            child: Text(
-                                              "Đăng kí",
+                                                            .text ==
+                                                        '') {
+                                                      phone = true;
+                                                    } else if (formAfterLoginController
+                                                            .textPhoneController
+                                                            .text
+                                                            .length !=
+                                                        10) {
+                                                      phone = true;
+                                                    } else {
+                                                      phone = false;
+                                                      loading = true;
+                                                      FetchAPI.checkPhone(
+                                                              formAfterLoginController
+                                                                  .textPhoneController
+                                                                  .text)
+                                                          .then(
+                                                              (value) =>
+                                                                  setState(
+                                                                    () {
+                                                                      loading =
+                                                                          false;
+                                                                      result =
+                                                                          value;
+                                                                      if (!value &&
+                                                                          formAfterLoginController.textPhoneController.text !=
+                                                                              '' &&
+                                                                          formAfterLoginController.textPasswordController.text !=
+                                                                              '' &&
+                                                                          formAfterLoginController.textPasswordController.text ==
+                                                                              formAfterLoginController.textConfirmController.text) {
+                                                                        Get.to(
+                                                                            UserInformation());
+                                                                      }
+                                                                    },
+                                                                  ));
+                                                    }
+                                                  }),
+                                            label: Text(
+                                              loading ? '' : "Đăng kí",
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold),

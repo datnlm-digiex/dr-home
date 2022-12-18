@@ -71,6 +71,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                               ),
                               TextField(
                                 controller: textPhoneController,
+                                maxLength: 10,
                                 decoration: InputDecoration(
                                   hintText: "Số điện thoại",
                                   border: OutlineInputBorder(),

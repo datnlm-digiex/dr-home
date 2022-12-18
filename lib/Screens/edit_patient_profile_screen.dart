@@ -24,12 +24,14 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
   TextEditingController textPhoneController = TextEditingController();
   TextEditingController textEmailController = TextEditingController();
   TextEditingController textStreetController = TextEditingController();
+  bool invalidEmail = false;
 
   @override
   void initState() {
     super.initState();
     patientProfileController.getAddress();
     patientProfileController.image = new File("").obs;
+    invalidEmail = false;
   }
 
   void _showOptions(BuildContext context) {
@@ -55,6 +57,18 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                     title: Text("Chọn ảnh trong máy"))
               ]));
         });
+  }
+
+  void validateEmail(String value) {
+    String pattern =
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+        r"{0,253}[a-zA-Z0-9])?)*$";
+    RegExp regex = RegExp(pattern);
+    if (value.isEmpty || !regex.hasMatch(value))
+      invalidEmail = true;
+    else
+      invalidEmail = false;
   }
 
   @override
@@ -359,6 +373,7 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                             height: 8,
                           ),
                           TextField(
+                            readOnly: true,
                             controller: textPhoneController,
                             decoration: InputDecoration(
                               hintText:
@@ -398,8 +413,11 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                 color: Colors.black,
                               ),
                               border: OutlineInputBorder(),
+                              errorText:
+                                  invalidEmail ? "Email không hợp lệ" : null,
+                              errorStyle: TextStyle(fontSize: 14),
                             ),
-                            keyboardType: TextInputType.phone,
+                            keyboardType: TextInputType.emailAddress,
                           ),
                         ],
                       ),
@@ -648,20 +666,29 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                                     tapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
                                     backgroundColor: kBlueColor),
-                                onPressed: () => {
-                                  patientProfileController.updateAccountInfo(
-                                      textFirstNameController.text,
-                                      textLastNameController.text,
-                                      textPhoneController.text,
-                                      textStreetController.text,
-                                      textEmailController.text),
-                                  if (patientProfileController.done.value)
-                                    {
-                                      Fluttertoast.showToast(
-                                          msg: "Lưu thành công", fontSize: 18),
-                                      Get.back(),
+                                onPressed: () => setState(() {
+                                  {
+                                    if (textEmailController.text != '') {
+                                      validateEmail(textEmailController.text);
                                     }
-                                },
+                                    if (!invalidEmail) {
+                                      patientProfileController
+                                          .updateAccountInfo(
+                                              textFirstNameController.text,
+                                              textLastNameController.text,
+                                              textPhoneController.text,
+                                              textStreetController.text,
+                                              textEmailController.text);
+                                      if (patientProfileController.done.value) {
+                                        Fluttertoast.showToast(
+                                            msg: "Lưu thành công",
+                                            fontSize: 18);
+                                        Get.back();
+                                      }
+                                    }
+                                  }
+                                  ;
+                                }),
                                 child: Text(
                                   "Lưu",
                                   style: TextStyle(
@@ -678,22 +705,6 @@ class _EditPatientProfileState extends State<EditPatientProfile> {
                 ),
               ),
             ),
-            // Obx(
-            //   () => patientProfileController.isLoading.value
-            //       ? Container(
-            //           width: double.infinity,
-            //           height: double.infinity,
-            //           color: Colors.black.withOpacity(0.5),
-            //         )
-            //       : Container(),
-            // ),
-            // Positioned.fill(
-            //     child: Align(
-            //   alignment: Alignment.center,
-            //   child: Obx(() => patientProfileController.isLoading.value
-            //       ? CircularProgressIndicator(color: kBlueColor)
-            //       : Container()),
-            // )),
           ],
         ),
       )),

@@ -30,7 +30,7 @@ class PatientProfileController extends GetxController {
 
   Rx<Patient> patient = new Patient(
       id: 0,
-      email: "",
+      phone: "",
       name: "",
       avatar: "",
       backgroundDisease: "",
@@ -72,7 +72,7 @@ class PatientProfileController extends GetxController {
       status: "",
       patient: new Patient(
           id: 0,
-          email: "",
+          phone: "",
           name: "",
           avatar: "",
           backgroundDisease: "",
@@ -90,7 +90,7 @@ class PatientProfileController extends GetxController {
     isLoading.value = true;
     final prefShare = await SharedPreferences.getInstance();
     String id =
-        prefShare.getString('id') != null ? prefShare.getString('id')! : '';
+        prefShare.getString('phone') != null ? prefShare.getString('phone')! : '';
     if (id.isEmpty) {
       Get.off(LoginScreen(),
           transition: Transition.leftToRightWithFade,
@@ -204,7 +204,7 @@ class PatientProfileController extends GetxController {
 
     Patient newPatient = new Patient(
         id: patient.value.id,
-        email: patient.value.email,
+        phone: patient.value.phone,
         name: patient.value.name,
         avatar: patient.value.avatar,
         backgroundDisease: backgroundDisease,
@@ -248,6 +248,9 @@ class PatientProfileController extends GetxController {
     }
     if (street.isEmpty) {
       street = account.value.streetAddress;
+    }
+    if (email.isEmpty) {
+      email = account.value.email;
     }
 
     if (district.value.isEmpty) {

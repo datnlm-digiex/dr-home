@@ -52,7 +52,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>This app requires access to the camera to take a picture for the profile when you need it.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Photo Library Access</string>
+	<string>This app requires access to the photo library access to take a picture for the profile when you need it.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

@@ -202,32 +202,32 @@ class _UserInformationState extends State<UserInformation> {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 20),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Email:",
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      TextField(
-                                        controller: formAfterLoginController
-                                            .textEmailController,
-                                        decoration: InputDecoration(
-                                          hintText: "Địa chỉ email",
-                                          border: OutlineInputBorder(),
-                                          errorStyle: TextStyle(fontSize: 14),
-                                        ),
-                                        keyboardType: TextInputType.name,
-                                      ),
-                                    ],
-                                  ),
+                                  // SizedBox(height: 20),
+                                  // Column(
+                                  //   crossAxisAlignment:
+                                  //       CrossAxisAlignment.start,
+                                  //   children: [
+                                  //     Text(
+                                  //       "Email:",
+                                  //       style: TextStyle(
+                                  //         fontSize: 17,
+                                  //       ),
+                                  //     ),
+                                  //     SizedBox(
+                                  //       height: 8,
+                                  //     ),
+                                  //     TextField(
+                                  //       controller: formAfterLoginController
+                                  //           .textEmailController,
+                                  //       decoration: InputDecoration(
+                                  //         hintText: "Địa chỉ email",
+                                  //         border: OutlineInputBorder(),
+                                  //         errorStyle: TextStyle(fontSize: 14),
+                                  //       ),
+                                  //       keyboardType: TextInputType.name,
+                                  //     ),
+                                  //   ],
+                                  // ),
                                   SizedBox(height: 20),
                                   Column(
                                     crossAxisAlignment:

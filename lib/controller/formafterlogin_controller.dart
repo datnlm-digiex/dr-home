@@ -190,7 +190,7 @@ class FormAfterLoginController extends GetxController {
         emptyAllergy.isFalse) {
       isLoading.value = true;
       AccountPost newAccount = new AccountPost(
-          email: textEmailController.text,
+          email: "",
           firstName: fName,
           lastName: lName,
           image: "",
@@ -207,7 +207,7 @@ class FormAfterLoginController extends GetxController {
 
       Patient newPatient = new Patient(
           id: 0,
-          email: textEmailController.text,
+          phone: phoneNumber,
           name: fName + " " + lName,
           avatar: "",
           backgroundDisease: backgroundDisease,
@@ -216,6 +216,8 @@ class FormAfterLoginController extends GetxController {
           isActive: true,
           healthChecks: []);
       FetchAPI.createNewAccount(newAccount, image.value.path).then((value) {
+        print("create new account");
+        print(value);
         if (value == 201 || value == 200) {
           FetchAPI.createNewPatient(newPatient).then((value) {
             done.value = true;

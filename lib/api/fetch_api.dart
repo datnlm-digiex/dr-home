@@ -114,7 +114,6 @@ class FetchAPI {
             HttpHeaders.contentTypeHeader: 'application/json',
           },
           body: jsonEncode(data));
-      print(response.statusCode);
       Map bodyJson = json.decode(utf8.decode(response.bodyBytes));
       String message = "Login Success";
       if (bodyJson.length == 1) {
@@ -148,6 +147,7 @@ class FetchAPI {
         final prefShare = await SharedPreferences.getInstance();
         prefShare.setString('accessToken', accountJson['accessToken']);
         prefShare.setString('id', account.id.toString());
+        prefShare.setString('phone', account.phone.toString());
         accountController.account.value = account;
         return message;
       } else {
@@ -505,7 +505,7 @@ class FetchAPI {
             status: "",
             patient: new Patient(
                 id: 0,
-                email: "",
+                phone: "",
                 name: "",
                 avatar: "",
                 backgroundDisease: "",
@@ -534,7 +534,7 @@ class FetchAPI {
             status: "",
             patient: new Patient(
                 id: 0,
-                email: "",
+                phone: "",
                 name: "",
                 avatar: "",
                 backgroundDisease: "",
@@ -563,7 +563,7 @@ class FetchAPI {
             status: "",
             patient: new Patient(
                 id: 0,
-                email: "",
+                phone: "",
                 name: "",
                 avatar: "",
                 backgroundDisease: "",
@@ -693,7 +693,7 @@ class FetchAPI {
     }
   }
 
-  static Future<Patient> fetchMyPatient(String id) async {
+  static Future<Patient> fetchMyPatient(String phone) async {
     final prefShare = await SharedPreferences.getInstance();
     String token = prefShare.getString('accessToken') != null
         ? prefShare.getString('accessToken')!
@@ -706,8 +706,8 @@ class FetchAPI {
     } else {
       final response = await http.get(
         Uri.parse("https://13.232.213.53:8189/api/v1/patients/" +
-            id +
-            "?search-type=Id"),
+            phone +
+            "?search-type=Phone"),
         headers: <String, String>{
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -746,11 +746,16 @@ class FetchAPI {
           HttpHeaders.authorizationHeader: 'Bearer $token',
         },
       );
+      print("luan");
+      print(response.statusCode);
       if (response.statusCode == 200) {
         var contentJSon = json.decode(utf8.decode(response.bodyBytes));
         Account account = Account.fromJson(contentJSon);
         final accountController = GetX.Get.put(AccountController());
         accountController.account.value = account;
+        print(account.email);
+        print("account");
+        print(accountController.account.value.email);
         return account;
       } else if (response.statusCode == 404) {
         throw Exception("No account found with the type");
@@ -803,7 +808,6 @@ class FetchAPI {
         formData = new FormData.fromMap({
           // "image": Image.file(File('assets/images/default_avatar.png')),
           "image": null,
-          "email": accountPost.email,
           "firstName": accountPost.firstName,
           "lastName": accountPost.lastName,
           "ward": accountPost.ward,
@@ -820,7 +824,6 @@ class FetchAPI {
       } else {
         formData = new FormData.fromMap({
           "image": await MultipartFile.fromFile(filePath, filename: "avatar"),
-          "email": accountPost.email,
           "firstName": accountPost.firstName,
           "lastName": accountPost.lastName,
           "ward": accountPost.ward,
@@ -841,7 +844,7 @@ class FetchAPI {
                 HttpHeaders.contentTypeHeader: 'multipart/form-data',
               }));
 
-      print(response.statusCode);
+      print(response.data);
       return response.statusCode!;
     } on DioError catch (e) {
       print(e.response!.data);
@@ -894,6 +897,10 @@ class FetchAPI {
   static Future<int> updateMyAccountInfo(
       Account account, String filePath) async {
     try {
+      print(account.id);
+      print("accountt");
+      print(account.email);
+      print("acccount. email");
       final storage = new Storage.FlutterSecureStorage();
       String token = await storage.read(key: "accessToken") ?? "";
       if (token.isEmpty) {

@@ -2,7 +2,7 @@ import 'package:telemedicine_mobile/models/HealthCheck.dart';
 
 class Patient {
   late int id;
-  late String email;
+  late String phone;
   late String name;
   late String avatar;
   late String backgroundDisease;
@@ -13,7 +13,7 @@ class Patient {
 
   Patient(
       {required this.id,
-      required this.email,
+      required this.phone,
       required this.name,
       required this.avatar,
       required this.backgroundDisease,
@@ -24,7 +24,7 @@ class Patient {
 
   Patient.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    email = json['email'];
+    phone = json['phone'];
     name = json['name'];
     avatar = json['avatar'];
     backgroundDisease = json['backgroundDisease'];
@@ -41,7 +41,7 @@ class Patient {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['email'] = this.email;
+    data['phone'] = this.phone;
     data['name'] = this.name;
     data['avatar'] = this.avatar;
     data['backgroundDisease'] = this.backgroundDisease;
